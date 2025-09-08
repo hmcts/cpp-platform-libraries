@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -13,7 +11,7 @@
     <groupId>uk.gov.moj.platform.libraries</groupId>
     <artifactId>platform-libraries-parent-pom</artifactId>
     <name>cpp.platform.libraries</name>
-    <version>17.102.12-SNAPSHOT</version>
+    <version>17.103.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -29,6 +27,7 @@
         <module>system-users-library</module>
         <module>unifiedsearch-library-parent</module>
         <module>healthchecks-parent</module>
+        <module>metrics-micrometer</module>
     </modules>
 
     <properties>
@@ -38,13 +37,14 @@
             2. While release through ADO pipeline, for white listed release branches (main/release-8.x.x) it's done through git hook (legacy solution) via azure pipeline code
             3. While release through ADO pipeline, for branches other than white listed release branches, it's done through versions:set command via azure pipeline code
          -->
-        <cpp.platform-libraries.version>17.102.11-SNAPSHOT</cpp.platform-libraries.version>
+        <cpp.platform-libraries.version>17.103.3-SNAPSHOT</cpp.platform-libraries.version>
 
         <!-- Github libraries versions -->
-        <framework-libraries.version>17.102.2</framework-libraries.version>
-        <framework.version>17.102.2</framework.version>
-        <event-store.version>17.102.3</event-store.version>
-        <cpp.common-bom.version>17.102.2</cpp.common-bom.version>
+        <file-service.version>17.103.1</file-service.version>
+        <framework-libraries.version>17.103.0</framework-libraries.version>
+        <framework.version>17.103.0</framework.version>
+        <event-store.version>17.103.1</event-store.version>
+        <cpp.common-bom.version>17.103.1</cpp.common-bom.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 

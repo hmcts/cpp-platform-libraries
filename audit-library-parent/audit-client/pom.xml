@@ -3,7 +3,7 @@
     <parent>
         <artifactId>audit-library-parent</artifactId>
         <groupId>uk.gov.moj.cpp.audit</groupId>
-        <version>17.102.12-SNAPSHOT</version>
+        <version>17.103.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -37,10 +37,14 @@
             <artifactId>framework-api-messaging-jms</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
-            <groupId>uk.gov.justice.services</groupId>
-            <artifactId>framework-metrics</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.platform.libraries</groupId>
+            <artifactId>metrics-micrometer</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

@@ -3,7 +3,7 @@
     <parent>
         <artifactId>activiti-parent</artifactId>
         <groupId>uk.gov.moj.cpp.activiti</groupId>
-        <version>17.102.12-SNAPSHOT</version>
+        <version>17.103.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

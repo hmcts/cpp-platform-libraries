@@ -4,12 +4,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.audit.client.AuditMetricsRecorder;
-import uk.gov.justice.services.metrics.TimerRegistrar;
+import uk.gov.justice.services.metrics.micrometer.prometheus.TimerRegistrar;
 
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,20 +19,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class AuditMetricsRecorderTest {
 
     @Mock
-    private MeterRegistry meterRegistry;
+    private PrometheusMeterRegistry prometheusMeterRegistry;
 
     private AuditMetricsRecorder auditMetricsRecorder;
 
     @BeforeEach
     void setUp() {
-        auditMetricsRecorder = new AuditMetricsRecorder(meterRegistry, mock(TimerRegistrar.class));
+        auditMetricsRecorder = new AuditMetricsRecorder(prometheusMeterRegistry, mock(TimerRegistrar.class));
     }
 
     @Test
     void shouldRegisterTimersAsPartOfConstructor() {
         final TimerRegistrar timerRegistrar = mock(TimerRegistrar.class);
 
-        new AuditMetricsRecorder(meterRegistry, timerRegistrar);
+        new AuditMetricsRecorder(prometheusMeterRegistry, timerRegistrar);
 
         verify(timerRegistrar).registerTimer("audit.artemis.success.latency", 0.5, 0.95, 0.99);
         verify(timerRegistrar).registerTimer("audit.artemis.failure.latency", 0.5, 0.95, 0.99);
@@ -46,7 +45,7 @@ class AuditMetricsRecorderTest {
     void shouldRecordArtemisSuccessLatency() {
         final Timer.Sample sample = mock(Timer.Sample.class);
         final Timer registeredTimer = mock(Timer.class);
-        when(meterRegistry.timer("audit.artemis.success.latency")).thenReturn(registeredTimer);
+        when(prometheusMeterRegistry.timer("audit.artemis.success.latency")).thenReturn(registeredTimer);
 
         auditMetricsRecorder.recordArtemisSuccessLatency(sample);
 
@@ -57,7 +56,7 @@ class AuditMetricsRecorderTest {
     void shouldRecordArtemisFailureLatency() {
         final Timer.Sample sample = mock(Timer.Sample.class);
         final Timer registeredTimer = mock(Timer.class);
-        when(meterRegistry.timer("audit.artemis.failure.latency")).thenReturn(registeredTimer);
+        when(prometheusMeterRegistry.timer("audit.artemis.failure.latency")).thenReturn(registeredTimer);
 
         auditMetricsRecorder.recordArtemisFailureLatency(sample);
 
@@ -68,7 +67,7 @@ class AuditMetricsRecorderTest {
     void shouldRecordDataLakeSyncSuccessLatency() {
         final Timer.Sample sample = mock(Timer.Sample.class);
         final Timer registeredTimer = mock(Timer.class);
-        when(meterRegistry.timer("audit.datalake.sync.success.latency")).thenReturn(registeredTimer);
+        when(prometheusMeterRegistry.timer("audit.datalake.sync.success.latency")).thenReturn(registeredTimer);
 
         auditMetricsRecorder.recordDataLakeSyncSuccessLatency(sample);
 
@@ -79,7 +78,7 @@ class AuditMetricsRecorderTest {
     void shouldRecordDataLakeSyncFailureLatency() {
         final Timer.Sample sample = mock(Timer.Sample.class);
         final Timer registeredTimer = mock(Timer.class);
-        when(meterRegistry.timer("audit.datalake.sync.failure.latency")).thenReturn(registeredTimer);
+        when(prometheusMeterRegistry.timer("audit.datalake.sync.failure.latency")).thenReturn(registeredTimer);
 
         auditMetricsRecorder.recordDataLakeSyncFailureLatency(sample);
 
@@ -90,7 +89,7 @@ class AuditMetricsRecorderTest {
     void shouldRecordDataLakeASyncSuccessLatency() {
         final Timer.Sample sample = mock(Timer.Sample.class);
         final Timer registeredTimer = mock(Timer.class);
-        when(meterRegistry.timer("audit.datalake.async.success.latency")).thenReturn(registeredTimer);
+        when(prometheusMeterRegistry.timer("audit.datalake.async.success.latency")).thenReturn(registeredTimer);
 
         auditMetricsRecorder.recordDataLakeASyncSuccessLatency(sample);
 
@@ -101,7 +100,7 @@ class AuditMetricsRecorderTest {
     void shouldRecordDataLakeThroughput() {
         long fileSizeInBytes = 1024L;
         final Counter counter = mock(Counter.class);
-        when(meterRegistry.counter("audit.datalake.throughput.bytes")).thenReturn(counter);
+        when(prometheusMeterRegistry.counter("audit.datalake.throughput.bytes")).thenReturn(counter);
 
         auditMetricsRecorder.recordDataLakeThroughput(fileSizeInBytes);
 
