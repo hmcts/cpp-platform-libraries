@@ -1,0 +1,69 @@
+{
+  "caseId": "123456",
+  "caseReference": "TFL12345",
+  "prosecutingAuthority": "TFL",
+  "caseStatus": "active",
+  "_case_type": "ATCM",
+  "_is_charging": false,
+  "_is_sjp": true,
+  "_is_magistrates": true,
+  "_is_crown": false,
+  "parties": [
+    {
+      "partyId": "7377637b-a078-43f3-9215-d947f06356d2",
+      "masterPartyId":"2d818e9d-e499-4df7-8cab-333b99a6dad3",
+      "croNumber": "SF20/123456M",
+      "firstName": "Harry",
+      "middleName": "Jack",
+      "lastName": "Kane Junior",
+      "title": "MR",
+      "dateOfBirth": "2010-01-01",
+      "gender": "MALE",
+      "addressLines": "22,Acacia Avenue,Acacia Town,Acacia City,Acacia Country",
+      "postCode": "GIR 0AA",
+      "pncId": "1234567",
+      "arrestSummonsNumber": "arrest123",
+      "_party_type": "superParty",
+      "organisationName": "MoJ",
+      "aliases": [
+        {
+          "firstName": "johnny",
+          "lastName": "robber"
+        },
+        {
+          "firstName": "jack",
+          "middleName": "the",
+          "lastName": "knife"
+        }
+      ]
+    }
+  ],
+  "hearings": [
+    {
+      "hearingId": "3a2b91f3-7e11-413e-a160-fc79b18a1866",
+      "courtId": "f93d22ee-e06b-48e1-8e50-133ff475d025",
+      "courtCentreName": "3",
+      "hearingTypeId" : "2daefec3-2f76-8109-82d9-2e60544a6c02",
+      "hearingTypeLabel": "Trial",
+      "hearingDates": [
+        "22-01-2019",
+        "2019-01-24"
+      ],
+      "jurisdictionType": "MAGISTRATES",
+      "judiciaryTypes":  [
+        "Type 1",
+        "Type 2"
+      ]
+    }
+  ],
+  "applications": [
+    {
+      "applicationId": "dbd11c67-1795-47f4-b003-758dd0759590",
+      "applicationReference": "APPLICATION 1",
+      "applicationType": "APP TYPE 1",
+      "receivedDate": "2019-01-01",
+      "decisionDate": "2019-02-02",
+      "dueDate": "2019-02-03"
+    }
+  ]
+}

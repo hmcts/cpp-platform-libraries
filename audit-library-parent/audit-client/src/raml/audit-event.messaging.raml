@@ -1,0 +1,11 @@
+#%RAML 0.8
+title: Audit events
+baseUri: message://message/audit
+/auditing.event:
+  get:
+      responses:
+          200:
+              body:
+                  application/vnd.audit.events.audit-recorded+json:
+                      schema: !include json/schema/audit.events.audit-recorded.json
+                      example: !include json/audit.events.audit-recorded.json

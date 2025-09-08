@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.moj.cpp.access-control</groupId>
+        <artifactId>access-control-parent</artifactId>
+        <version>17.104.0-M1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>access-control-providers</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>access-control-common-providers</module>
+        <module>access-control-progression-providers</module>
+        <module>access-control-hearing-providers</module>
+        <module>access-control-assignment-providers</module>
+        <module>access-control-sjp-providers</module>
+        <module>access-control-refdata-providers</module>
+    </modules>
+</project>
