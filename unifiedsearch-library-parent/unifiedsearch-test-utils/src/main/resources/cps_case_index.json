@@ -1,0 +1,304 @@
+{
+  "settings": {
+    "index": {
+      "refresh_interval" : "1s",
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "analysis": {
+      "filter": {
+        "name_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 10
+        },
+        "word_joiner": {
+          "type": "shingle",
+          "output_unigrams": "true",
+          "token_separator": ""
+        },
+        "synonym": {
+          "type": "synonym",
+          "synonyms": [
+            "rd,road",
+            "ln,lane",
+            "boulevard, blvd",
+            "building, bldg",
+            "court, crt",
+            "station, stn",
+            "street, st"
+          ]
+        }
+      },
+      "analyzer": {
+        "name_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "name_filter"
+          ]
+        }
+      },
+      "normalizer": {
+        "lowercase_normalizer": {
+          "type": "custom",
+          "filter": [
+            "lowercase"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "caseId": {
+        "type": "keyword"
+      },
+      "urn": {
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
+      },
+      "cpsUnitCode": {
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
+      },
+      "cjsAreaCodes": {
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
+      },
+      "cpsAreaCode": {
+        "type": "keyword",
+        "normalizer": "lowercase_normalizer"
+      },
+      "caseType": {
+        "type": "keyword"
+      },
+      "caseStatusCode": {
+        "type": "keyword"
+      },
+      "operationName": {
+        "type": "text",
+        "fields": {
+          "ngrammed": {
+            "type": "text",
+            "analyzer": "name_analyzer",
+            "search_analyzer": "standard"
+          }
+        }
+      },
+      "paralegalOfficer": {
+        "type": "text",
+        "fields": {
+          "exact": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          }
+        }
+      },
+      "crownAdvocate": {
+        "type": "text",
+        "fields": {
+          "exact": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          }
+        }
+      },
+      "prosecutor": {
+        "type": "text",
+        "fields": {
+          "exact": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          }
+        }
+      },
+      "witnessCareUnitCode": {
+        "type": "text"
+      },
+      "witnessCareOfficer": {
+        "type": "text"
+      },
+      "unit": {
+        "type": "text"
+      },
+      "unitGroup": {
+        "type": "text"
+      },
+      "linked": {
+        "type": "boolean"
+      },
+      "parties": {
+        "type": "nested",
+        "properties": {
+          "partyId": {
+            "type": "keyword"
+          },
+          "_party_type": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          },
+          "firstName": {
+            "type": "text",
+            "fields": {
+              "exact": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+              },
+              "ngrammed": {
+                "type": "text",
+                "analyzer": "name_analyzer",
+                "search_analyzer": "standard"
+              }
+            }
+          },
+          "lastName": {
+            "type": "text",
+            "copy_to": "parties.lastOrOrganisationName",
+            "fields": {
+              "exact": {
+                "type": "keyword",
+                "normalizer": "lowercase_normalizer"
+              },
+              "ngrammed": {
+                "type": "text",
+                "analyzer": "name_analyzer",
+                "search_analyzer": "standard"
+              }
+            }
+          },
+          "aliases": {
+            "type": "nested",
+            "properties": {
+              "firstName": {
+                "type": "text",
+                "fields": {
+                  "ngrammed": {
+                    "type": "text",
+                    "analyzer": "name_analyzer",
+                    "search_analyzer": "standard"
+                  }
+                }
+              },
+              "lastName": {
+                "type": "text",
+                "fields": {
+                  "ngrammed": {
+                    "type": "text",
+                    "analyzer": "name_analyzer",
+                    "search_analyzer": "standard"
+                  }
+                }
+              }
+            }
+          },
+          "dateOfBirth": {
+            "type": "date",
+            "format": "yyyy-MM-dd",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "asn": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          },
+          "pncId": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          },
+          "organisationName": {
+            "type": "text",
+            "copy_to": "parties.lastOrOrganisationName",
+            "fields": {
+              "ngrammed": {
+                "type": "text",
+                "analyzer": "name_analyzer",
+                "search_analyzer": "standard"
+              }
+            }
+          },
+          "oicShoulderNumber": {
+            "type": "text"
+          },
+          "lastOrOrganisationName": {
+            "type": "keyword",
+            "normalizer": "lowercase_normalizer"
+          },
+          "offences": {
+            "type": "nested",
+            "properties": {
+              "offenceId": {"type":  "keyword"},
+              "offenceCode": {"type":  "keyword"},
+              "custodyTimeLimit": {
+                "type": "date",
+                "format": "yyyy-MM-dd"
+              },
+              "type": {"type":  "text"},
+              "description": {
+                "type":  "text",
+                "fields": {
+                  "exact": {
+                    "type": "keyword",
+                    "normalizer": "lowercase_normalizer"
+                  }
+                }
+              },
+              "startDate": {
+                "type": "date",
+                "format": "yyyy-MM-dd"
+              },
+              "endDate": {
+                "type": "date",
+                "format": "yyyy-MM-dd"
+              }
+            }
+          }
+        }
+      },
+      "hearings": {
+        "type": "nested",
+        "properties": {
+          "hearingId": {
+            "type": "keyword"
+          },
+          "hearingDateTime": {
+            "type": "date",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "courtHouse": {
+            "type": "keyword"
+          },
+          "courtRoom": {
+            "type": "keyword"
+          },
+          "hearingType": {
+            "type": "keyword"
+          },
+          "jurisdiction": {
+            "type": "keyword"
+          }
+        }
+      },
+      "linkedCases": {
+        "type": "nested",
+        "properties": {
+          "linkedCaseId": {
+            "type": "keyword"
+          },
+          "manuallyLinked": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "dynamic": "strict"
+  }
+}

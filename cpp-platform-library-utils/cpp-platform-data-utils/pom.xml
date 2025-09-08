@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.gov.moj.cpp.common.library.utils</groupId>
+        <artifactId>cpp-platform-library-utils</artifactId>
+        <version>17.104.0-M1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cpp-platform-data-utils</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>cpp-platform-data-utils-persistence</module>
+        <module>cpp-platform-data-utils-service</module>
+        <module>cpp-platform-data-utils-test-utils</module>
+        <module>cpp-platform-data-utils-rest</module>
+    </modules>
+</project>

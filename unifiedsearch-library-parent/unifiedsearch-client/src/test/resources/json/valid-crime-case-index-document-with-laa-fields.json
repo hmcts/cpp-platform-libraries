@@ -1,0 +1,139 @@
+{
+  "caseId": "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27",
+  "caseReference": "TFL12345",
+  "prosecutingAuthority": "TFL",
+  "caseStatus": "active",
+  "_case_type": "ATCM",
+  "_is_charging": false,
+  "_is_sjp": true,
+  "_is_magistrates": true,
+  "_is_crown": false,
+  "sjpNoticeServed": "2019-01-01",
+  "parties": [
+    {
+      "partyId": "7377637b-a078-43f3-9215-d947f06356d2",
+      "firstName": "Harry",
+      "middleName": "Jack",
+      "masterPartyId": "ec535c0e-3ecd-420d-abed-23cc3c8a2151",
+      "courtProceedingsInitiated":"2019-03-18T09:00:00.000Z",
+      "partyId": "7377637b-a078-43f3-9215-d947f06356d2",
+      "lastName": "Kane Junior",
+      "title": "MR",
+      "dateOfBirth": "2010-01-01",
+      "gender": "MALE",
+      "addressLines": "22,Acacia Avenue,Acacia Town,Acacia City,Acacia Country",
+      "postCode": "GIR 0AA",
+      "pncId": "1234567",
+      "arrestSummonsNumber": "arrest123",
+      "_party_type": "superParty",
+      "organisationName": "MoJ",
+      "aliases": [
+        {
+          "title": "MR",
+          "firstName": "johnny",
+          "lastName": "robber"
+        },
+        {
+          "firstName": "jack",
+          "middleName": "the",
+          "lastName": "knife"
+        }
+      ],
+      "nationalInsuranceNumber": "NN763534D",
+      "proceedingsConcluded": false,
+      "representationOrder": {
+          "applicationReference": "LAA REF 1",
+          "effectiveFromDate": "2019-08-12",
+          "effectiveToDate": "2019-10-12",
+          "laaContractNumber": "LAA CONTRACT NO"
+      },
+      "offences": [
+        {
+          "offenceId": "e9cb3ddd-587e-44af-b849-9af2337f1422",
+          "offenceCode": "OFFENCE CODE 1",
+          "offenceTitle": "OFFENCE TITLE 1",
+          "offenceLegislation": "OFFENCE LEGISLATION 1",
+          "proceedingsConcluded": false,
+          "arrestDate": "2019-09-02",
+          "dateOfInformation": "2019-09-02",
+          "endDate": "2019-09-02",
+          "startDate": "2019-09-02",
+          "chargeDate": "2019-09-02",
+          "modeOfTrial": "CROWN",
+          "orderIndex": 1,
+          "wording": "OFFENCE WORDING 1",
+          "laaReference": {
+            "applicationReference": "LAA REF OFF 1",
+            "statusId": "bbf6f4b1-79cd-45ef-8255-66ae0845a06d",
+            "statusCode": "LAA STATUS CODE OFF 1",
+            "statusDescription": "LAA STATUS DESC OFF 1"
+          }
+        },
+        {
+          "offenceId": "59bf6632-d6c7-476d-a280-41a736850441",
+          "offenceCode": "OFFENCE CODE 2",
+          "offenceTitle": "OFFENCE TITLE 2",
+          "offenceLegislation": "OFFENCE LEGISLATION 2",
+          "proceedingsConcluded": false,
+          "arrestDate": "2019-09-02",
+          "dateOfInformation": "2019-09-02",
+          "endDate": "2019-09-02",
+          "startDate": "2019-09-02",
+          "chargeDate": "2019-09-02",
+          "modeOfTrial": "CROWN",
+          "orderIndex": 2,
+          "wording": "OFFENCE WORDING 2",
+          "laaReference": {
+            "applicationReference": "LAA REF OFF 2",
+            "statusId": "bbf6f4b1-79cd-45ef-8255-66ae0845a06d",
+            "statusCode": "LAA STATUS CODE OFF 2",
+            "statusDescription": "LAA STATUS DESC OFF 2"
+          }
+        }
+      ]
+    }
+  ],
+  "hearings": [
+    {
+      "hearingId": "3a2b91f3-7e11-413e-a160-fc79b18a1866",
+      "courtId": "f93d22ee-e06b-48e1-8e50-133ff475d025",
+      "courtCentreName": "LONDON CROWN COURT CENTRE",
+      "courtCentreRoomId": "4ab9c698-f559-48ee-beae-00fb5fe2483e",
+      "courtCentreRoomName": "WEST ROOM",
+      "courtCentreWelshName": "CANOLFAN LLYS CROWN LLUNDAIN",
+      "courtCentreRoomWelshName": "YSTAFELL GORLLEWIN",
+      "courtCentreAddress": {
+          "address1": "123 JUSTICE SQUARE",
+          "address2": "LEGAL ROW",
+          "address3": "FARRINGDON",
+          "address4": "LONDON",
+          "postCode": "NE1 6FT"
+      },
+      "hearingTypeId" : "2daefec3-2f76-8109-82d9-2e60544a6c02",
+      "hearingTypeLabel": "Trial",
+      "hearingTypeCode": "HEARING TYPE CODE 1",
+      "hearingDates": ["2019-01-22", "2019-01-23"],
+      "hearingDays": [
+        {"courtCentreId": "2ffa8961-58a3-4352-a87d-09aa45f68c7f","courtRoomId":"5bce0e2f-21e6-442d-8a25-ef74eafbe132","sittingDay": "2019-01-22T10:00:00Z", "listingSequence":  1, "listedDurationMinutes":  60},
+        {"courtCentreId": "2852e834-02c4-4043-ba5b-771541d05a1b","courtRoomId":"9ec8f27d-158e-4e9d-b3eb-74f92969ee4d","sittingDay": "2019-01-23T13:00:00Z", "listingSequence":  2, "listedDurationMinutes":  60}
+      ],
+      "jurisdictionType": "MAGISTRATES",
+      "judiciaryTypes":  [
+        "Type 1",
+        "Type 2"
+      ],
+      "isBoxHearing": true,
+      "isVirtualBoxHearing": true
+    }
+  ],
+  "applications": [
+    {
+      "applicationId": "dbd11c67-1795-47f4-b003-758dd0759590",
+      "applicationReference": "APPLICATION 1",
+      "applicationType": "APP TYPE 1",
+      "receivedDate": "2019-01-01",
+      "decisionDate": "2019-02-02",
+      "dueDate": "2019-02-03"
+    }
+  ]
+}
