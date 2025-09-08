@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>uk.gov.moj.platform.libraries</groupId>
+        <artifactId>platform-libraries-parent-pom</artifactId>
+        <version>17.102.12-SNAPSHOT</version>
+    </parent>
+
+    <groupId>uk.gov.moj.cpp.unifiedsearch</groupId>
+    <artifactId>unifiedsearch-library-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>unifiedsearch-client</module>
+        <module>unifiedsearch-test-utils</module>
+    </modules>
+
+</project>

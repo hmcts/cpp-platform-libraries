@@ -1,0 +1,48 @@
+{
+  "id": "df2c2845-5db8-4241-bb94-62d821bc02ae",
+  "section": "HEARING",
+  "documentCategory": "documentCategory",
+  "actionRequired": false,
+  "courtDocumentTypeRBAC": {
+    "readUserGroups": [
+      {
+        "cppGroup": {
+          "id": "ff9fb2c8-2738-4d77-87e5-56b5781b4113",
+          "groupName": "GROUP_NAME"
+        },
+        "validFrom": "VALLIDFROM",
+        "validTo": "VALLIDTO"
+      }
+    ],
+    "uploadUserGroups": [
+      {
+        "cppGroup": {
+          "id": "ff9fb2c8-2738-4d77-87e5-56b5781b4113",
+          "groupName": "GROUP_NAME"
+        },
+        "validFrom": "VALLIDFROM",
+        "validTo": "VALLIDTO"
+      }
+    ],
+    "downloadUserGroups": [
+      {
+        "cppGroup": {
+          "id": "ff9fb2c8-2738-4d77-87e5-56b5781b4113",
+          "groupName": "GROUP_NAME"
+        },
+        "validFrom": "VALLIDFROM",
+        "validTo": "VALLIDTO"
+      }
+    ],
+    "deleteUserGroups": [
+      {
+        "cppGroup": {
+          "id": "ff9fb2c8-2738-4d77-87e5-56b5781b4113",
+          "groupName": "GROUP_NAME"
+        },
+        "validFrom": "VALLIDFROM",
+        "validTo": "VALLIDTO"
+      }
+    ]
+  }
+}

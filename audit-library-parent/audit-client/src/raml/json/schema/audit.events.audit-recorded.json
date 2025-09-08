@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "id": "/timestamp",
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp",
+      "name": "Timestamp",
+      "title": "Timestamp"
+    },
+    "origin": {
+      "id": "/origin",
+      "type": "string",
+      "description": "The context which raised the audit event",
+      "name": "Origin",
+      "title": "Origin"
+    },
+    "content": {
+      "id": "/content",
+      "type": "object",
+      "description": "The audit entry content",
+      "name": "Content",
+      "title": "Content",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "timestamp",
+    "origin",
+    "content"
+  ]
+}

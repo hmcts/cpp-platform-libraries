@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "etag": "9RWbAnIEf54fOH8CDK4fi4yY551",
+      "key": ".appconfig.environment/ENV11",
+      "label": "ENV11",
+      "content_type": "",
+      "value": "http://base-url:8080/usersgroups-query-api/query/api/rest/usersgroups",
+      "tags": {},
+      "locked": false,
+      "last_modified": "2020-11-13T12:26:06+00:00"
+    },
+    {
+      "etag": "7snPwtKLz3RgKe6kePHUWmPtIp6",
+      "key": ".appconfig.featureflag/bulkscan-reviewNewDocuments",
+      "label": "ENV11",
+      "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+      "value": "{\"id\":\"bulkscan-reviewNewDocuments\",\"description\":\"For testing\",\"enabled\":true,\"conditions\":{\"client_filters\":[]}}",
+      "tags": {},
+      "locked": false,
+      "last_modified": "2020-11-11T10:13:45+00:00"
+    },
+    {
+      "etag": "Q8N8gCcYLJJVWxZySvRdMF1n1U8",
+      "key": ".appconfig.featureflag/ENV11",
+      "label": "ENV11",
+      "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+      "value": "{\"id\":\"ENV11\",\"description\":\"Sample Feature\",\"enabled\":true,\"conditions\":{\"client_filters\":[]}}",
+      "tags": {},
+      "locked": false,
+      "last_modified": "2020-11-04T22:24:35+00:00"
+    }
+  ]
+}
