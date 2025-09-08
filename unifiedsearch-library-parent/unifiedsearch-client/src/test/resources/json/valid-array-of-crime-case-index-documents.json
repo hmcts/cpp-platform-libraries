@@ -1,0 +1,77 @@
+{
+  "caseDocuments": [
+    {
+      "caseId": "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27",
+      "caseReference": "TFL12345",
+      "_case_type": "ATCM",
+      "parties": [
+        {
+          "partyId": "7377637b-a078-43f3-9215-d947f06356d2",
+          "masterPartyId": "ec535c0e-3ecd-420d-abed-23cc3c8a2151",
+          "courtProceedingsInitiated":"2019-03-18T09:00:00.000Z",
+          "_party_type": "DEFENDANT"
+
+        }
+      ],
+      "hearings": [
+        {
+          "hearingId": "3a2b91f3-7e11-413e-a160-fc79b18a1866"
+        }
+      ],
+      "applications": [
+        {
+          "applicationId": "dbd11c67-1795-47f4-b003-758dd0759590"
+        }
+      ]
+    },
+    {
+      "caseId": "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27",
+      "caseReference": "TFL12345",
+      "_case_type": "ATCM",
+      "parties": [
+        {
+          "partyId": "7377637b-a078-43f3-9215-d947f06356d2",
+          "_party_type": "DEFENDANT",
+          "courtProceedingsInitiated":"2019-03-18T09:00:00.000Z",
+          "masterPartyId": "ec535c0e-3ecd-420d-abed-23cc3c8a2151"
+        }
+      ],
+      "hearings": [
+        {
+          "hearingId": "3a2b91f3-7e11-413e-a160-fc79b18a1866"
+        }
+      ],
+      "applications": [
+        {
+          "applicationId": "dbd11c67-1795-47f4-b003-758dd0759590"
+        }
+      ]
+    },
+    {
+      "caseId": "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27",
+      "caseReference": "TFL12345",
+      "_case_type": "ATCM",
+      "parties": [
+        {
+          "partyId": "7377637b-a078-43f3-9215-d947f06356d2",
+          "courtProceedingsInitiated":"2019-03-18T09:00:00.000Z",
+          "masterPartyId": "ec535c0e-3ecd-420d-abed-23cc3c8a2151",
+          "_party_type": "APPLICANT"
+        }
+      ],
+      "hearings": [
+        {
+          "hearingId": "3a2b91f3-7e11-413e-a160-fc79b18a1866"
+        }
+      ],
+      "applications": [
+        {
+          "applicationId": "dbd11c67-1795-47f4-b003-758dd0759590"
+        }
+      ]
+    }
+  ]
+}
+
+
+

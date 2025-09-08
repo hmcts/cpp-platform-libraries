@@ -1,0 +1,603 @@
+{
+  "settings": {
+    "index": {
+      "refresh_interval" : "1s",
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "analysis": {
+      "filter": {
+        "name_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 10
+        },
+        "address_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 20
+        },
+        "word_joiner": {
+          "type": "shingle",
+          "output_unigrams": "true",
+          "token_separator": ""
+        },
+        "synonym": {
+          "type": "synonym",
+          "synonyms": [
+            "rd,road",
+            "ln,lane",
+            "boulevard, blvd",
+            "building, bldg",
+            "court, crt",
+            "station, stn",
+            "street, st"
+          ]
+        }
+      },
+      "char_filter": {
+        "address1_specialchar_char_filter": {
+          "type" : "pattern_replace",
+          "pattern": "[^A-Za-z0-9]",
+          "replacement":""
+        },
+        "address1_street_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)street",
+          "replacement":"st"
+        },
+        "address1_road_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)road",
+          "replacement":"rd"
+        },
+        "address1_lane_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)lane",
+          "replacement":"ln"
+        },
+        "address1_boulevard_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)boulevard",
+          "replacement":"blvd"
+        },
+        "address1_building_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)building",
+          "replacement":"bldg"
+        },
+        "address1_court_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)court",
+          "replacement":"crt"
+        },
+        "address1_station_char_filter" : {
+          "type" : "pattern_replace",
+          "pattern": "(?i)station",
+          "replacement":"stn"
+        }
+      },
+      "analyzer": {
+        "name_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "name_filter"
+          ]
+        },
+        "address_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "synonym",
+            "address_filter"
+          ]
+        },
+        "postcode_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "word_joiner"
+          ]
+        }
+      },
+      "normalizer": {
+        "lowercase_normalizer": {
+          "type": "custom",
+          "filter": [
+            "lowercase"
+          ]
+        },
+        "address1_lowercase_synonym_normalizer": {
+          "type": "custom",
+          "char_filter" : [
+            "address1_specialchar_char_filter",
+            "address1_street_char_filter",
+            "address1_road_char_filter",
+            "address1_lane_char_filter",
+            "address1_boulevard_char_filter",
+            "address1_building_char_filter",
+            "address1_court_char_filter",
+            "address1_station_char_filter"
+          ],
+          "filter": ["lowercase"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+        "caseId": {
+          "type": "keyword"
+        },
+        "caseReference": {
+          "type": "keyword",
+          "normalizer": "lowercase_normalizer"
+        },
+        "prosecutingAuthority": {
+          "type": "keyword",
+          "normalizer": "lowercase_normalizer"
+        },
+        "caseStatus": {
+          "type": "keyword"
+        },
+        "_case_type": {
+          "type": "keyword"
+        },
+        "_is_sjp": {
+          "type": "boolean"
+        },
+        "_is_magistrates": {
+          "type": "boolean"
+        },
+        "_is_crown": {
+          "type": "boolean"
+        },
+        "_is_charging": {
+          "type": "boolean"
+        },
+        "sjpNoticeServed": {
+          "type": "date",
+          "format": "yyyy-MM-dd"
+        },
+        "parties": {
+          "type": "nested",
+          "properties": {
+            "partyId": {
+              "type": "keyword"
+            },
+            "croNumber": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "courtProceedingsInitiated": {
+              "type":   "date",
+              "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+            },
+            "masterPartyId": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "firstName": {
+              "type": "text",
+              "fields": {
+                "exact": {
+                  "type": "keyword",
+                  "normalizer": "lowercase_normalizer"
+                },
+                "ngrammed": {
+                  "type": "text",
+                  "analyzer": "name_analyzer",
+                  "search_analyzer": "standard"
+                }
+              }
+            },
+            "middleName": {
+              "type": "text"
+            },
+            "lastName": {
+              "type": "text",
+              "fields": {
+                "exact": {
+                  "type": "keyword",
+                  "normalizer": "lowercase_normalizer"
+                },
+                "ngrammed": {
+                  "type": "text",
+                  "analyzer": "name_analyzer",
+                  "search_analyzer": "standard"
+                }
+              }
+            },
+            "title": {
+              "type": "keyword"
+            },
+            "dateOfBirth": {
+              "type": "date",
+              "format": "yyyy-MM-dd"
+            },
+            "gender": {
+              "type": "keyword"
+            },
+            "addressLines": {
+              "type": "text",
+              "analyzer": "address_analyzer",
+              "search_analyzer": "standard"
+            },
+            "defendantAddress": {
+              "properties": {
+                "address1": {
+                  "type": "keyword",
+                  "normalizer":"address1_lowercase_synonym_normalizer"
+                },
+                "address2": {"type":  "text"},
+                "address3": {"type":  "text"},
+                "address4": {"type":  "text"},
+                "address5": {"type":  "text"},
+                "postCode": {
+                  "type": "text",
+                  "analyzer": "postcode_analyzer"
+                }
+              }
+            },
+            "postCode": {
+              "type": "text",
+              "analyzer": "postcode_analyzer"
+            },
+            "pncId": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "arrestSummonsNumber": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "_party_type": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "organisationName": {
+              "type": "text",
+              "analyzer": "name_analyzer",
+              "search_analyzer": "standard"
+            },
+            "aliases": {
+              "type": "nested",
+              "properties": {
+                "title": {
+                  "type": "keyword"
+                },
+                "firstName": {
+                  "type": "text",
+                  "fields": {
+                    "ngrammed": {
+                      "type": "text",
+                      "analyzer": "name_analyzer",
+                      "search_analyzer": "standard"
+                    }
+                  }
+                },
+                "middleName": {
+                  "type": "text"
+                },
+                "lastName": {
+                  "type": "text",
+                  "fields": {
+                    "ngrammed": {
+                      "type": "text",
+                      "analyzer": "name_analyzer",
+                      "search_analyzer": "standard"
+                    }
+                  }
+                },
+                "organisationName": {
+                  "type": "text",
+                  "analyzer": "name_analyzer",
+                  "search_analyzer": "standard"
+                }
+              }
+            },
+            "nationalInsuranceNumber": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "proceedingsConcluded": {"type":  "boolean"},
+            "representationOrder": {
+              "properties": {
+                "applicationReference": {
+                  "type": "keyword",
+                  "normalizer": "lowercase_normalizer"
+                },
+                "effectiveFromDate": {"type":  "date"},
+                "effectiveToDate": {"type":  "date"},
+                "laaContractNumber": {
+                  "type": "keyword",
+                  "normalizer": "lowercase_normalizer"
+                }
+              }
+            },
+            "offences": {
+              "type": "nested",
+              "properties": {
+                "offenceId": {"type":  "keyword"},
+                "offenceCode": {"type":  "text"},
+                "offenceTitle": {"type":  "text"},
+                "offenceLegislation": {"type":  "text"},
+                "proceedingsConcluded": {"type":  "boolean"},
+                "arrestDate": {"type":  "date"},
+                "dateOfInformation": {"type":  "date"},
+                "endDate": {"type":  "date"},
+                "startDate": {"type": "date"},
+                "chargeDate": {"type": "date"},
+                "modeOfTrial": {"type": "text"},
+                "orderIndex": {"type":  "integer"},
+                "wording": {"type":  "text"},
+                "laaReference": {
+                  "properties": {
+                    "applicationReference": {
+                      "type": "keyword",
+                      "normalizer": "lowercase_normalizer"
+                    },
+                    "statusId": {"type":  "keyword"},
+                    "statusCode": {"type":  "text"},
+                    "statusDescription": {"type":  "text"}
+                  }
+                },
+                "courtOrders": {
+                  "type": "nested",
+                  "properties": {
+                    "id": {
+                      "type": "keyword"
+                    },
+                    "judicialResultTypeId": {
+                      "type": "keyword"
+                    },
+                    "label": {
+                      "type": "text"
+                    },
+                    "orderDate": {
+                      "type": "date"
+                    },
+                    "startDate": {
+                      "type": "date"
+                    },
+                    "endDate": {
+                      "type": "date"
+                    },
+                    "orderingHearingId": {
+                      "type": "keyword"
+                    },
+                    "isSJPOrder": {
+                      "type": "boolean"
+                    },
+                    "canBeSubjectOfBreachProceedings": {
+                      "type": "boolean"
+                    },
+                    "canBeSubjectOfVariationProceedings": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "pleas": {
+                  "type": "nested",
+                  "properties": {
+                    "originatingHearingId": {
+                      "type": "keyword"
+                    },
+                    "pleaValue": {
+                      "type": "text"
+                    },
+                    "pleaDate": {
+                      "type": "date"
+                    }
+                  }
+                },
+                "verdict": {
+                  "properties": {
+                    "originatingHearingId": {
+                      "type": "keyword"
+                    },
+                    "verdictDate": {
+                      "type": "keyword"
+                    },
+                    "verdictType": {
+                      "properties": {
+                        "verdictTypeId": {
+                          "type": "keyword"
+                        },
+                        "sequence": {
+                          "type": "integer"
+                        },
+                        "categoryType": {
+                          "type": "keyword"
+                        },
+                        "category": {
+                          "type": "keyword"
+                        },
+                        "description": {
+                          "type": "keyword"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "hearings": {
+          "type": "nested",
+          "properties": {
+            "hearingId": {
+              "type": "keyword"
+            },
+            "courtId": {
+              "type": "keyword"
+            },
+            "courtCentreName": {
+              "type": "keyword"
+            },
+            "courtCentreRoomId": {
+              "type": "keyword"
+            },
+            "courtCentreRoomName": {
+              "type": "text"
+            },
+            "courtCentreWelshName": {
+              "type": "text"
+            },
+            "courtCentreRoomWelshName": {
+              "type": "text"
+            },
+            "courtCentreCode": {
+              "type": "text"
+            },
+            "estimatedDuration": {
+              "type": "text"
+            },
+            "courtCentreAddress": {
+              "properties": {
+                "address1": {"type":  "text"},
+                "address2": {"type":  "text"},
+                "address3": {"type":  "text"},
+                "address4": {"type":  "text"},
+                "address5": {"type":  "text"},
+                "postCode": {"type":  "text"}
+              }
+            },
+            "hearingTypeId": {
+              "type": "keyword"
+            },
+            "hearingTypeLabel": {
+              "type": "keyword"
+            },
+            "hearingTypeCode": {
+              "type": "keyword"
+            },
+            "hearingDates": {
+              "type": "date",
+              "format": "yyyy-MM-dd"
+            },
+            "hearingDays": {
+              "properties": {
+                "courtCentreId": {"type": "keyword"},
+                "courtRoomId": {"type": "keyword"},
+                "sittingDay": {"type": "date"},
+                "listingSequence": {"type":  "integer"},
+                "listedDurationMinutes": {"type":  "integer"},
+                "hasSharedResults": {"type": "boolean"}
+              }
+            },
+            "defenceCounsels": {
+              "properties": {
+                "id": {
+                  "type": "keyword"
+                },
+                "title": {
+                  "type": "keyword"
+                },
+                "firstName": {
+                  "type": "text"
+                },
+                "middleName": {
+                  "type": "text"
+                },
+                "lastName": {
+                  "type": "text"
+                },
+                "status": {
+                  "type": "keyword"
+                },
+                "defendants": {
+                  "type": "keyword"
+                },
+                "attendanceDays": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "jurisdictionType": {
+              "type": "keyword"
+            },
+            "judiciaryTypes": {
+              "type": "keyword"
+            },
+            "isBoxHearing": {
+              "type": "boolean"
+            },
+            "isVirtualBoxHearing": {
+              "type": "boolean"
+            },
+            "defendantIds": {
+              "type": "keyword"
+            }
+          }
+        },
+        "applications": {
+          "type": "nested",
+          "properties": {
+            "applicationId": {
+              "type": "keyword"
+            },
+            "applicationReference": {
+              "type": "keyword",
+              "normalizer": "lowercase_normalizer"
+            },
+            "applicationType": {
+              "type": "keyword"
+            },
+            "applicationTypeCode": {
+              "type": "keyword"
+            },
+            "applicationStatus": {
+              "type": "keyword"
+            },
+            "applicationExternalCreatorType": {
+              "type": "keyword"
+            },
+            "receivedDate": {
+              "type": "date",
+              "format": "yyyy-MM-dd"
+            },
+            "decisionDate": {
+              "type": "date",
+              "format": "yyyy-MM-dd"
+            },
+            "dueDate": {
+              "type": "date",
+              "format": "yyyy-MM-dd"
+            },
+            "subjectSummary": {
+              "properties": {
+                "subjectId": {"type":  "text"},
+                "masterDefendantId": {"type":  "text"},
+                "organisationName": {"type":  "text"},
+                "firstName": {"type":  "text"},
+                "middleName": {"type":  "text"},
+                "lastName": {"type":  "text"},
+                "dateOfBirth": {"type":  "text"},
+                "address": {
+                  "properties": {
+                    "address1": {"type":  "text"},
+                    "address2": {"type":  "text"},
+                    "address3": {"type":  "text"},
+                    "address4": {"type":  "text"},
+                    "address5": {"type":  "text"},
+                    "postCode": {"type":  "text"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "sourceSystemReference": {
+          "type": "keyword",
+          "normalizer": "lowercase_normalizer"
+        }
+    },
+      "dynamic": "strict"
+  }
+}

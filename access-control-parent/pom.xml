@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.gov.moj.platform.libraries</groupId>
+        <artifactId>platform-libraries-parent-pom</artifactId>
+        <version>17.102.12-SNAPSHOT</version>
+    </parent>
+
+    <groupId>uk.gov.moj.cpp.access-control</groupId>
+    <artifactId>access-control-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <name>access-control-parent</name>
+
+    <modules>
+        <module>access-control-drools</module>
+        <module>access-control-providers</module>
+        <module>access-control-test-utils</module>
+    </modules>
+
+    <properties>
+        <cpp.framework-component>ACCESS_CONTROL</cpp.framework-component>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>uk.gov.justice.framework-generators</groupId>
+                    <artifactId>rest-client-generator-plugin</artifactId>
+                    <version>${framework.version}</version>
+                    <executions>
+                        <execution>
+                            <id>generate-rest-clients</id>
+                            <goals>
+                                <goal>generate-rest-client</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <generatorName>
+                                    uk.gov.justice.services.clients.rest.generator.RestClientGenerator
+                                </generatorName>
+                                <parserName>uk.gov.justice.maven.generator.io.files.parser.RamlFileParser</parserName>
+                                <outputDirectory>${project.build.directory}/generated-sources
+                                </outputDirectory>
+                                <basePackageName>uk.gov.justice.api.provider</basePackageName>
+                                <generatorProperties implementation="uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties">
+                                    <serviceComponent>${cpp.framework-component}</serviceComponent>
+                                </generatorProperties>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>uk.gov.justice.framework-generators</groupId>
+                            <artifactId>rest-client-generator</artifactId>
+                            <version>${framework.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

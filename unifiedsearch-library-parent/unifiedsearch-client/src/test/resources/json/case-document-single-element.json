@@ -1,0 +1,17 @@
+{
+  "caseDocuments" : [ {
+    "_case_type" : "case",
+    "hearings" : [ {
+      "hearingId" : "306c5060-5e83-4604-aaf0-341a05f29cf4",
+      "jurisdictionType" : "MAGISTRATES",
+      "courtId" : "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "courtCentreName" : "South Western (Lavender Hill)",
+      "hearingTypeId" : "2daefec3-2f76-8109-82d9-2e60544a6c02",
+      "hearingTypeLabel": "Appeal",
+      "hearingDates": ["2019-03-01"],
+      "hearingDays" : [{"courtCentreId": "2852e834-02c4-4043-ba5b-771541d05a1b","courtRoomId":"9ec8f27d-158e-4e9d-b3eb-74f92969ee4d","sittingDay": "2019-03-01T10:00:00Z", "listingSequence":  1, "listedDurationMinutes":  60}]
+    } ],
+    "caseId" : "41cef643-2233-4d4b-ae77-b747d99b03af",
+    "_is_magistrates" : true
+  } ]
+}
