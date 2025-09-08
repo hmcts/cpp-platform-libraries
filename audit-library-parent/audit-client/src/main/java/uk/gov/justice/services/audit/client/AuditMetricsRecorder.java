@@ -1,12 +1,12 @@
 package uk.gov.justice.services.audit.client;
 
-import uk.gov.justice.services.metrics.TimerRegistrar;
+import uk.gov.justice.services.metrics.micrometer.prometheus.TimerRegistrar;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 @Dependent
 public class AuditMetricsRecorder {
@@ -18,16 +18,16 @@ public class AuditMetricsRecorder {
     private static final String DATA_LAKE_SYNC_FAILURE_LATENCY_TIMER_NAME = "audit.datalake.sync.failure.latency";
     private static final String DATA_LAKE_THROUGHPUT_BYTES_COUNTER_NAME = "audit.datalake.throughput.bytes";
 
-    private final MeterRegistry meterRegistry;
+    private final PrometheusMeterRegistry prometheusMeterRegistry;
 
     @Inject
-    public AuditMetricsRecorder(final MeterRegistry meterRegistry, final TimerRegistrar timerRegistrar) {
-        this.meterRegistry = meterRegistry;
+    public AuditMetricsRecorder(final PrometheusMeterRegistry prometheusMeterRegistry, final TimerRegistrar timerRegistrar) {
+        this.prometheusMeterRegistry = prometheusMeterRegistry;
         registerTimers(timerRegistrar);
     }
 
     public Timer.Sample startTimer() {
-        return Timer.start(meterRegistry);
+        return Timer.start(prometheusMeterRegistry);
     }
 
     public void recordArtemisSuccessLatency(Timer.Sample timer) {
@@ -51,11 +51,11 @@ public class AuditMetricsRecorder {
     }
 
     public void recordDataLakeThroughput(final long fileSizeInBytes) {
-        meterRegistry.counter(DATA_LAKE_THROUGHPUT_BYTES_COUNTER_NAME).increment(fileSizeInBytes);
+        prometheusMeterRegistry.counter(DATA_LAKE_THROUGHPUT_BYTES_COUNTER_NAME).increment(fileSizeInBytes);
     }
 
     private void recordMetrics(final Timer.Sample timer, final String timerName) {
-        timer.stop(meterRegistry.timer(timerName));
+        timer.stop(prometheusMeterRegistry.timer(timerName));
     }
 
     private void registerTimers(final TimerRegistrar timerRegistrar) {
