@@ -5,7 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.103.3] - 2025-09-11
+### Changed
+- Update event-store to 17.103.2
+
 # [17.103.2] - 2025-08-28
+### Changed
 - CCT-1530 changes
 
 # [17.103.1] - 2025-08-18
