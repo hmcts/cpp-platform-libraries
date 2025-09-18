@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+# [17.104.0-M1] - 2025-09-18
+### Changed
+- Update event-store to 17.104.0-M2 for the new event publishing mechanism
 ### Added
 - New REST endpoint that will serve json showing the various framework project versions on the path `/internal/framework/versions`
 ### Security
