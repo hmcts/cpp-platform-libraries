@@ -62,6 +62,7 @@ public class ApplicationDocumentMother {
         builder.withApplicationId(randomUUID().toString())
                 .withApplicationReference(type.getApplicationCode())
                 .withApplicationType(type.getApplicationType())
+                .withApplicationTypeCode(type.getApplicationCode())
                 .withReceivedDate(DATE_UTILS.toElasticsearchDateString(receivedDate))
                 .withDecisionDate(
                         DATE_UTILS.toElasticsearchDateString(

@@ -6,6 +6,7 @@ public class ApplicationDocument {
     private String applicationId;
     private String applicationReference;
     private String applicationType;
+    private String applicationTypeCode;
     private String receivedDate;
     private String decisionDate;
     private String dueDate;
@@ -16,7 +17,7 @@ public class ApplicationDocument {
     private ApplicationDocument() {
     }
 
-    public ApplicationDocument(String applicationId, String applicationReference, String applicationType, String receivedDate, String decisionDate, String dueDate, String applicationStatus, String applicationExternalCreatorType, SubjectDocument subjectSummary) {
+    public ApplicationDocument(String applicationId, String applicationReference, String applicationType, String receivedDate, String decisionDate, String dueDate, String applicationStatus, String applicationExternalCreatorType, SubjectDocument subjectSummary, String applicationTypeCode) {
         this.applicationId = applicationId;
         this.applicationReference = applicationReference;
         this.applicationType = applicationType;
@@ -26,6 +27,7 @@ public class ApplicationDocument {
         this.applicationStatus = applicationStatus;
         this.applicationExternalCreatorType = applicationExternalCreatorType;
         this.subjectSummary = subjectSummary;
+        this.applicationTypeCode = applicationTypeCode;
 
     }
 
@@ -43,6 +45,10 @@ public class ApplicationDocument {
 
     public String getApplicationType() {
         return applicationType;
+    }
+
+    public String getApplicationTypeCode() {
+        return applicationTypeCode;
     }
 
     public String getReceivedDate() {
@@ -70,6 +76,7 @@ public class ApplicationDocument {
         private String applicationId;
         private String applicationReference;
         private String applicationType;
+        private String applicationTypeCode;
         private String receivedDate;
         private String decisionDate;
         private String dueDate;
@@ -94,6 +101,11 @@ public class ApplicationDocument {
 
         public Builder withApplicationType(String applicationType) {
             this.applicationType = applicationType;
+            return this;
+        }
+
+        public Builder withApplicationTypeCode(String applicationTypeCode) {
+            this.applicationTypeCode = applicationTypeCode;
             return this;
         }
 
@@ -123,8 +135,7 @@ public class ApplicationDocument {
         }
 
         public ApplicationDocument build() {
-            return new ApplicationDocument(applicationId, applicationReference, applicationType, receivedDate, decisionDate, dueDate, applicationStatus, applicationExternalCreatorType, subjectSummary);
+            return new ApplicationDocument(applicationId, applicationReference, applicationType, receivedDate, decisionDate, dueDate, applicationStatus, applicationExternalCreatorType, subjectSummary, applicationTypeCode);
         }
-
     }
 }

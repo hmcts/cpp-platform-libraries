@@ -47,6 +47,25 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
   - Update xmlunit to **2.10.0** to fix **security vulnerability CVE-2024-31573**
     Detail: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-31573
 
+# [17.103.3] - 2025-09-11
+### Changed
+- Update event-store to 17.103.2
+
+# [17.103.2] - 2025-08-28
+### Changed
+- CCT-1530 changes
+
+# [17.103.1] - 2025-08-18
+- Update event-store 17.103.1 for:
+  - Refactoring of error handling to make database access more efficient. These include:
+    - Delete of stream errors sql no longer cascades to delete any orphaned hashes. Instead, orphaned hashes are found and deleted if necessary
+    - Locking of stream_status table when publishing events, no longer calls error tables updates on locking errors
+    - Streams no longer marked as fixed by default and will only mark as fixed if stream previously broken
+    - We now check that any new error not a repeat of a previous error before updating stream_error tables.
+      - If the error is different, we now lock stream_status and updates error details.
+      - If the error is same, `markSameErrorHappened(...)` only updates stream_status.updated_at.
+    - We now execute the lock of steam_status table before calculating stream statistics
+
 # [17.103.0] - 2025-07-16
 ### Added
 - Add micrometer metrics
