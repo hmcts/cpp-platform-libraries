@@ -324,6 +324,7 @@
         },
         "applicationReference": { "type": "string"},
         "applicationType": { "type": "string" },
+        "applicationTypeCode": { "type": "string" },
         "receivedDate": {
           "$ref": "#/definitions/datePattern"
         },

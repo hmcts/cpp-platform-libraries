@@ -7,6 +7,7 @@ public class Application {
     private String applicationId;
     private String applicationReference;
     private String applicationType;
+    private String applicationTypeCode;
     private String receivedDate;
     private String decisionDate;
     private String dueDate;
@@ -33,9 +34,16 @@ public class Application {
     public String getApplicationType() {
         return applicationType;
     }
+    public String getApplicationTypeCode() {
+        return applicationTypeCode;
+    }
 
     public void setApplicationType(final String applicationType) {
         this.applicationType = applicationType;
+    }
+
+    public void setApplicationTypeCode(final String applicationTypeCode) {
+        this.applicationTypeCode = applicationTypeCode;
     }
 
     public String getReceivedDate() {

@@ -549,6 +549,9 @@
             "applicationType": {
               "type": "keyword"
             },
+            "applicationTypeCode": {
+              "type": "keyword"
+            },
             "applicationStatus": {
               "type": "keyword"
             },
