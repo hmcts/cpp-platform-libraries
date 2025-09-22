@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common.library.utils</groupId>
         <artifactId>cpp-platform-data-utils</artifactId>
-        <version>17.104.0-M2</version>
+        <version>17.104.0-M3-SNAPSHOT</version>
     </parent>
 
     <artifactId>cpp-platform-data-utils-test-utils</artifactId>
