@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.104.0-M2] - 2025-10-02
+### Changed
+- Update event-store to 17.104.0-M4 for refactor of event publishing
+
 # [17.104.0-M2] - 2025-09-22
 ### Changed
 - Update event-store to 17.104.0-M3 for: 
