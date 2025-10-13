@@ -1,12 +1,5 @@
 package uk.gov.moj.cpp.accesscontrol.progression.providers;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonString;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
@@ -14,11 +7,19 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.json.JsonString;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 import static javax.json.JsonValue.ValueType.NULL;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 import static uk.gov.moj.cpp.accesscontrol.progression.providers.ProsecutingAuthority.isCPSProsecutedCase;
 
@@ -83,7 +84,7 @@ public class ProgressionProvider {
     private JsonEnvelope buildMaterialRequestEnvelope(Action action, String actionName) {
         return envelopeFrom(
                 metadataBuilder().withId(UUID.randomUUID()).withName(actionName),
-                Json.createObjectBuilder().add("q", this.materialIdFrom(action).toString()).build()
+                jsonBuilderFactory.createObjectBuilder().add("q", this.materialIdFrom(action).toString()).build()
         );
     }
 

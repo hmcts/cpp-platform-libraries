@@ -1,19 +1,17 @@
 package uk.gov.justice.services.unifiedsearch.client.index;
 
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.fail;
-
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
-
-import java.util.UUID;
 
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 public class UnifiedSearchIndexerHelperTest {
 
@@ -24,7 +22,7 @@ public class UnifiedSearchIndexerHelperTest {
 
         final UUID caseId = randomUUID();
 
-        final JsonObject index = createObjectBuilder()
+        final JsonObject index = jsonBuilderFactory.createObjectBuilder()
                 .add("caseId", caseId.toString())
                 .build();
 
@@ -34,7 +32,7 @@ public class UnifiedSearchIndexerHelperTest {
     @Test
     public void shouldFailIfNoCaseIdFound() {
         try {
-            final JsonObjectBuilder jsonObjectBuilder = createObjectBuilder();
+            final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
             jsonObjectBuilder.add("unknownAttribute", "123455");
 
             unifiedSearchIndexerHelper.getCaseId(jsonObjectBuilder.build());

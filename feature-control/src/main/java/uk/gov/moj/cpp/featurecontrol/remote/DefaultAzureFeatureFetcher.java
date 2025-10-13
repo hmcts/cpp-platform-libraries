@@ -1,20 +1,11 @@
 package uk.gov.moj.cpp.featurecontrol.remote;
 
 
-import static java.lang.String.format;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createReader;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import uk.gov.justice.services.common.configuration.GlobalValue;
 import uk.gov.justice.services.core.featurecontrol.FeatureFetcher;
 import uk.gov.justice.services.core.featurecontrol.domain.Feature;
-
-import java.io.StringReader;
-import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
@@ -22,9 +13,16 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
+import static java.lang.String.format;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 @Alternative
 @Priority(1)
@@ -98,7 +96,7 @@ public class DefaultAzureFeatureFetcher implements FeatureFetcher {
     }
 
     private boolean convertToBoolean(final String value) {
-        try (JsonReader reader = createReader(new StringReader(value))) {
+        try (JsonReader reader = jsonReaderFactory.createReader(new StringReader(value))) {
             return reader.readObject().getBoolean("enabled");
         }
     }

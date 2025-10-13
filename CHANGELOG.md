@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Used JsonFactory instead of Json.create methods
+
 # [17.103.7] - 2025-11-17
 ### Changed
 - Removing milestone releases to keep 17.103.x release branch clean

@@ -1,17 +1,16 @@
 package uk.gov.moj.cpp.featurecontrol.remote.utils;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.StringReader;
-import java.nio.charset.Charset;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
 import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.StringReader;
+import java.nio.charset.Charset;
+
+import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 public class StubFileReader {
 
@@ -37,7 +36,7 @@ public class StubFileReader {
     }
 
     public JsonObject getJsonObject(final String json) {
-        try (final JsonReader reader = Json.createReader(new StringReader(json))) {
+        try (final JsonReader reader = jsonReaderFactory.createReader(new StringReader(json))) {
             return reader.readObject();
         }
     }

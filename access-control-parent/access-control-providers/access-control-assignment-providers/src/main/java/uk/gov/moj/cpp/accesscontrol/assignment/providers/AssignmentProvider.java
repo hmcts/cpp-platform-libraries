@@ -1,12 +1,6 @@
 package uk.gov.moj.cpp.accesscontrol.assignment.providers;
 
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.ValueType.NULL;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
-
-import java.util.UUID;
+import org.slf4j.Logger;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
@@ -14,15 +8,19 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
-import java.io.StringReader;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import java.io.StringReader;
+import java.util.UUID;
 
-import org.slf4j.Logger;
+import static javax.json.JsonValue.ValueType.NULL;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
 @ApplicationScoped
@@ -57,7 +55,7 @@ public class AssignmentProvider {
     private boolean verifyUserAssignedToReview(final Action action, final String reviewId) {
         final String userId = action.userId().get();
 
-        final JsonObject requestPayload = createObjectBuilder()
+        final JsonObject requestPayload = jsonBuilderFactory.createObjectBuilder()
                 .add(DOMAIN_OBJECT_ID_KEY, reviewId)
                 .build();
 
@@ -77,7 +75,7 @@ public class AssignmentProvider {
     }
 
     private static JsonObject jsonFromString(String jsonObjectStr) {
-        JsonReader jsonReader = Json.createReader(new StringReader(jsonObjectStr));
+        JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(jsonObjectStr));
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         return object;

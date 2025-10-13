@@ -1,25 +1,5 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
-import static java.lang.String.format;
-import static javax.json.Json.createObjectBuilder;
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
-import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.CPS_READ_USER;
-import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.READ_USER;
-
-import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
-import uk.gov.justice.services.unifiedsearch.client.restclient.UnifiedSearchHighLevelRestClientProducer;
-import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
-import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
-
-import java.io.IOException;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -27,6 +7,24 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
+import uk.gov.justice.services.unifiedsearch.client.restclient.UnifiedSearchHighLevelRestClientProducer;
+import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
+import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import java.io.IOException;
+
+import static java.lang.String.format;
+import static org.elasticsearch.client.RequestOptions.DEFAULT;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.CPS_READ_USER;
+import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.READ_USER;
 
 @ApplicationScoped
 public class DefaultUnifiedSearchService implements UnifiedSearchService {
@@ -83,7 +81,7 @@ public class DefaultUnifiedSearchService implements UnifiedSearchService {
             final RestHighLevelClient restHighLevelClient = restHighLevelClient(indexName);
             final SearchResponse response = restHighLevelClient.search(searchRequest, DEFAULT);
             final JsonArray hitsAsJsonArray = searchResultConverter.toJsonArray(response.getHits(), resultHitType);
-            final JsonObjectBuilder jsonObjectBuilder = createObjectBuilder()
+            final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder()
                     .add(TOTAL_RESULTS_NODE_NAME, response.getHits().getTotalHits().value)
                     .add(resultHitNodeName, hitsAsJsonArray);
             if (null != innerResultHightNodeName) {

@@ -1,34 +1,29 @@
 package uk.gov.moj.cpp.systemidmapper.client;
 
 
-import static com.jayway.jsonpath.Configuration.defaultConfiguration;
-import static java.lang.String.format;
-import static java.util.Optional.empty;
-import static javax.json.Json.createObjectBuilder;
-import static javax.ws.rs.client.ClientBuilder.newClient;
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.Response.Status.fromStatusCode;
-import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
+import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
+import static com.jayway.jsonpath.Configuration.defaultConfiguration;
+import static java.lang.String.format;
+import static java.util.Optional.empty;
+import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.Response.Status.fromStatusCode;
+import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
 
@@ -180,7 +175,7 @@ public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
     @Override
     public Optional<SystemIdMapping> remap(final String newSourceId, final UUID mappingId, final UUID userId) {
 
-        final String jsonString = createObjectBuilder()
+        final String jsonString = jsonBuilderFactory.createObjectBuilder()
                 .add(NEW_SOURCE_ID, newSourceId)
                 .add(MAPPING_ID, mappingId.toString())
                 .build()
