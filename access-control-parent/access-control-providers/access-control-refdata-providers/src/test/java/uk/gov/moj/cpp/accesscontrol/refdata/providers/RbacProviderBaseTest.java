@@ -1,32 +1,5 @@
 package uk.gov.moj.cpp.accesscontrol.refdata.providers;
 
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
-import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithDefaults;
-import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
-import static uk.gov.moj.cpp.accesscontrol.refdata.providers.RbacProvider.REFERENCEDATA_QUERY_DOCUMENT_TYPE_ACCESS;
-
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.core.requester.Requester;
-import uk.gov.justice.services.messaging.Envelope;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory;
-import uk.gov.moj.cpp.accesscontrol.drools.Action;
-
-import java.io.StringReader;
-import java.nio.charset.Charset;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
-
 import com.google.common.io.Resources;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.json.JsonProviderImpl;
@@ -36,6 +9,32 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.core.requester.Requester;
+import uk.gov.justice.services.messaging.Envelope;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory;
+import uk.gov.moj.cpp.accesscontrol.drools.Action;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
+import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+
+import static java.util.UUID.randomUUID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithDefaults;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
+import static uk.gov.moj.cpp.accesscontrol.refdata.providers.RbacProvider.REFERENCEDATA_QUERY_DOCUMENT_TYPE_ACCESS;
 
 public class RbacProviderBaseTest {
 
@@ -67,14 +66,14 @@ public class RbacProviderBaseTest {
     protected static JsonObject buildCourtDocumentObject() {
 
         final JsonObject courtDocument =
-                createObjectBuilder().add("courtDocument",
-                        createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder().add("courtDocument",
+                                jsonBuilderFactory.createObjectBuilder()
                                 .add("courtDocumentId", "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27")
                                 .add("name", "SJP Notice")
                                 .add("documentTypeId", documentTypeId.toString())
                                 .add("documentTypeDescription", "SJP Notice")
                                 .add("mimeType", "pdf")
-                                .add("materials", createObjectBuilder().add("id", "5e1cc18c-76dc-47dd-99c1-d6f87385edf1"))
+                                .add("materials", jsonBuilderFactory.createObjectBuilder().add("id", "5e1cc18c-76dc-47dd-99c1-d6f87385edf1"))
                                 .add("containsFinancialMeans", false))
                         .build();
 
@@ -138,8 +137,9 @@ public class RbacProviderBaseTest {
             replaceKeyValue.entrySet().stream().forEach(e -> {
                 builder.replaceAll(e.getKey(), e.getValue());
             });
-            final JsonReader jsonReader = Json.createReader(new StringReader(builder.build()));
-            return jsonReader.readObject();
+            try (JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(builder.build()))) {
+                return jsonReader.readObject();
+            }
         } catch (final Exception e) {
             return null;
         }

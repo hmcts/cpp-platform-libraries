@@ -1,23 +1,21 @@
 package uk.gov.moj.cpp.platform.data.utils.testutils.jms;
 
 
-import static org.awaitility.Awaitility.await;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-
+import org.awaitility.Durations;
 import uk.gov.justice.services.test.utils.common.host.TestHostProvider;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
-import java.io.StringReader;
-import java.time.Duration;
-
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonReader;
 import javax.ws.rs.core.Response;
+import java.io.StringReader;
+import java.time.Duration;
 
-import org.awaitility.Durations;
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 public class TopicChecker {
     private static final int SUBSCRIPTION_NAME_INDEX = 2;
@@ -57,7 +55,7 @@ public class TopicChecker {
         assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
 
         final String bodyAsString = response.readEntity(String.class);
-        try (final JsonReader jsonReader = Json.createReader(new StringReader(bodyAsString))) {
+        try (final JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(bodyAsString))) {
             return jsonReader.readObject().getJsonArray("value");
         }
     }

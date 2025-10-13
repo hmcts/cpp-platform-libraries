@@ -1,23 +1,21 @@
 package uk.gov.justice.services.unifiedsearch.client.index;
 
-import static javax.json.Json.createArrayBuilder;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchIndexerTest {
@@ -37,7 +35,7 @@ public class SearchIndexerTest {
         final JsonObject caseDocument_3 = mock(JsonObject.class);
         final String indexName = "testIndex";
 
-        final JsonArray caseDocuments = createArrayBuilder()
+        final JsonArray caseDocuments = jsonBuilderFactory.createArrayBuilder()
                 .add(caseDocument_1)
                 .add(caseDocument_2)
                 .add(caseDocument_3)

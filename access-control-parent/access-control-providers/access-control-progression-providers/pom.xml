@@ -41,6 +41,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>uk.gov.justice.utils</groupId>
+            <artifactId>utilities-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-core</artifactId>
             <scope>provided</scope>

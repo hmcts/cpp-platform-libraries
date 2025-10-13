@@ -1,7 +1,5 @@
 package uk.gov.justice.services.audit.client;
 
-import static javax.json.Json.createObjectBuilder;
-
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.util.Clock;
@@ -16,6 +14,8 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 @ApplicationScoped
 public class AuditEntryContentCreator {
@@ -35,7 +35,7 @@ public class AuditEntryContentCreator {
 
     //To minimize the changes on RemoteAuditClient existing functionality, this code is duplicated. RemoveAuditClient is marked as deprecated and will be removed in future.
     public JsonObject create(final JsonEnvelope envelope, final String component) {
-        return createObjectBuilder()
+        return jsonBuilderFactory.createObjectBuilder()
                 .add(CONTENT, createContentFrom(envelope))
                 .add(ORIGIN, serviceContextNameProvider.getServiceContextName())
                 .add(COMPONENT, component)

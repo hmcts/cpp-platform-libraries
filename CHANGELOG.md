@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.104.0-M4] - 2025-10-13
+### Changed
+- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
+
 # [17.104.0-M3] - 2025-10-02
 ### Changed
 - Update event-store to 17.104.0-M4 for refactor of event publishing

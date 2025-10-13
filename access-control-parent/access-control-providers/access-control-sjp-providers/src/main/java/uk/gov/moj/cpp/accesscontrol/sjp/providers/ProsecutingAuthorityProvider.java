@@ -1,8 +1,6 @@
 package uk.gov.moj.cpp.accesscontrol.sjp.providers;
 
-import static java.lang.Boolean.valueOf;
-import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
-
+import org.slf4j.Logger;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
@@ -11,12 +9,13 @@ import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
-import org.slf4j.Logger;
+import static java.lang.Boolean.valueOf;
+import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
+import static uk.gov.moj.cpp.accesscontrol.sjp.providers.SjpProvider.jsonBuilderFactory;
 
 @Provider
 @ApplicationScoped
@@ -67,7 +66,7 @@ public class ProsecutingAuthorityProvider {
     }
 
     private JsonValue buildRequestPayload(final JsonEnvelope envelope) {
-        final JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+        final JsonObjectBuilder objectBuilder = jsonBuilderFactory.createObjectBuilder();
 
         if (envelope.metadata().userId().isPresent()) {
             objectBuilder.add("userId", envelope.metadata().userId().get());

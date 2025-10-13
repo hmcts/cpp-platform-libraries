@@ -1,7 +1,25 @@
 package uk.gov.moj.cpp.platform.data.utils.rest.service;
 
+import com.google.common.collect.ImmutableMap;
+import org.apache.http.HttpStatus;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.json.JsonObject;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.Response;
+import java.util.Map;
+
 import static com.google.common.net.MediaType.JSON_UTF_8;
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.HttpMethod.DELETE;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_DISPOSITION;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
@@ -13,28 +31,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Map;
-
-import javax.json.JsonObject;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.Response;
-
-import com.google.common.collect.ImmutableMap;
-import org.apache.http.HttpStatus;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class RestClientServiceTest {
@@ -194,7 +191,7 @@ public class RestClientServiceTest {
 
     @Test
     public void shouldReturnsResponseWithExpectedMediaType() {
-        final JsonObject entity = createObjectBuilder().add("k1", "value").build();
+        final JsonObject entity = jsonBuilderFactory.createObjectBuilder().add("k1", "value").build();
         when(response.readEntity(JsonObject.class)).thenReturn(entity);
         when(response.getStatusInfo()).thenReturn(NOT_FOUND);
         when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
