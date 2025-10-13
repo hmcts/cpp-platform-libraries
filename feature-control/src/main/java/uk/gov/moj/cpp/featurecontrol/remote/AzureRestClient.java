@@ -9,6 +9,7 @@ import org.apache.http.util.EntityUtils;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -36,7 +37,9 @@ public class AzureRestClient {
             if (isEmpty(result)) {
                 return jsonBuilderFactory.createObjectBuilder().build();
             } else {
-                return jsonReaderFactory.createReader(new StringReader(result)).readObject();
+                try (JsonReader reader = jsonReaderFactory.createReader(new StringReader(result))) {
+                    return reader.readObject();
+                }
             }
         } catch (IOException e) {
             throw new AzureRequestException(format("Failed to getting feature from azure; url %s", url), e);
