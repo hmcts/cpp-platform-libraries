@@ -1,25 +1,23 @@
 package uk.gov.moj.cpp.system.documentgenerator.client;
 
-import static java.lang.String.format;
-import static javax.json.Json.createObjectBuilder;
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.Response.Status.OK;
-import static javax.ws.rs.core.Response.Status.fromStatusCode;
-import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
-
+import org.apache.commons.io.IOUtils;
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.UUID;
 
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
+import static java.lang.String.format;
+import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.fromStatusCode;
+import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 @SuppressWarnings("WeakerAccess")
 public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
@@ -121,7 +119,7 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
 
     private Response callPDFService(final Client client, final JsonObject jsonData,
                                     final String templateIdentifier, final UUID userId) {
-        final JsonObject payload = createObjectBuilder()
+        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
                 .add(KEY_TEMPLATE_NAME, templateIdentifier)
                 .add(KEY_TEMPLATE_PAYLOAD, jsonData)
                 .add(KEY_CONVERSION_FORMAT, DOCUMENT_CONVERSION_FORMAT_PDF)
@@ -138,7 +136,7 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
                                           final String templateIdentifier) {
 
 
-        final JsonObject payload = createObjectBuilder()
+        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
                 .add(KEY_TEMPLATE_NAME, templateIdentifier)
                 .add(KEY_TEMPLATE_PAYLOAD, jsonData)
                 .build();
@@ -152,7 +150,7 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
 
     private Response callWordService(final Client client, final JsonObject jsonData,
                                      final String templateIdentifier, final UUID userId) {
-        final JsonObject payload = createObjectBuilder()
+        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
                 .add(KEY_TEMPLATE_NAME, templateIdentifier)
                 .add(KEY_TEMPLATE_PAYLOAD, jsonData)
                 .add(KEY_CONVERSION_FORMAT, DOCUMENT_CONVERSION_FORMAT_DOCX)

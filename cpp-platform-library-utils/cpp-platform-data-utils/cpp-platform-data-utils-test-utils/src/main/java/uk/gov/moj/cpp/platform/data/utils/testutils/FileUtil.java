@@ -1,18 +1,17 @@
 package uk.gov.moj.cpp.platform.data.utils.testutils;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import com.google.common.io.Resources;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
-import com.google.common.io.Resources;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 /**
  * Utility class for reading json response from a file.
@@ -25,7 +24,7 @@ public class FileUtil {
 
     public static JsonObject toJsonObject(final String jsonContent) {
         try (final StringReader stringReader = new StringReader(jsonContent);
-             final JsonReader jsonReader = Json.createReader(stringReader)) {
+             final JsonReader jsonReader = jsonReaderFactory.createReader(stringReader)) {
             return jsonReader.readObject();
         }
     }

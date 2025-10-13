@@ -1,7 +1,17 @@
 package uk.gov.justice.services.unifiedsearch.client.validation;
 
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import org.everit.json.schema.NullSchema;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.json.JsonObject;
+import java.io.IOException;
+
 import static org.codehaus.groovy.runtime.InvokerHelper.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,23 +20,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.unifiedsearch.client.validation.JsonUtils.jsonObjectFromFile;
-
-import java.io.IOException;
-
-import javax.json.JsonObject;
-
-import javax.ws.rs.BadRequestException;
-import org.everit.json.schema.NullSchema;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class JsonDocumentValidatorTest {
@@ -71,7 +66,7 @@ public class JsonDocumentValidatorTest {
 
     @Test
     public void shouldFailValidationFoEmptyCaseDocumentsArray() {
-        final JsonObject invalidJson = createObjectBuilder().add("caseDocuments", createArrayBuilder()).build();
+        final JsonObject invalidJson = jsonBuilderFactory.createObjectBuilder().add("caseDocuments", jsonBuilderFactory.createArrayBuilder()).build();
         assertThrows(TransformationException.class, () -> validator.validate(invalidJson, "/json/schema/crime-case-index-schema.json"));
     }
 

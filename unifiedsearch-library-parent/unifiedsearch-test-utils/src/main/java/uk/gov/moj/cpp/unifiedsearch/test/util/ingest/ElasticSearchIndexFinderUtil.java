@@ -1,25 +1,22 @@
 package uk.gov.moj.cpp.unifiedsearch.test.util.ingest;
 
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
-
-import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
-
-import java.io.IOException;
-
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
+
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import java.io.IOException;
+
+import static org.elasticsearch.client.RequestOptions.DEFAULT;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 public class ElasticSearchIndexFinderUtil {
 
@@ -45,7 +42,7 @@ public class ElasticSearchIndexFinderUtil {
         try {
             final SearchResponse result = restClient.search(searchRequest, DEFAULT);
             final JsonArray jsonArray = toJsonArray(result.getHits());
-            return createObjectBuilder()
+            return jsonBuilderFactory.createObjectBuilder()
                     .add("index", jsonArray)
                     .add("totalResults", jsonArray.size())
                     .build();
@@ -61,7 +58,7 @@ public class ElasticSearchIndexFinderUtil {
     }
 
     private JsonArray toJsonArray(final SearchHits searchHits) {
-        final JsonArrayBuilder results = createArrayBuilder();
+        final JsonArrayBuilder results = jsonBuilderFactory.createArrayBuilder();
         searchHits.forEach(searchHit -> results.add(searchHit.getSourceAsString()));
         return results.build();
     }
