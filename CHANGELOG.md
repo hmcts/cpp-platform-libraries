@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-# [17.104.0-M45] - 2025-10-15
+# [17.104.0-M5] - 2025-10-15
 - Update event-store to 17.104.0-M5 to add event publishing compatibility mode
 
 # [17.104.0-M4] - 2025-10-13
