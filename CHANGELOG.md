@@ -5,6 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.104.0-M86] - 2025-10-24
+### Changed
+- Update event-store to 17.104.0-M8 for:
+  - Catchup now calculates previousEventNumber for each event from the previous row in
+  - Catchup can now be run with the id of the event you wish to run catchup from. Catchup
+    the event_log table rather than the previous_event_number column.
+
 # [17.104.0-M5] - 2025-10-15
 - Update event-store to 17.104.0-M5 to add event publishing compatibility mode
 
