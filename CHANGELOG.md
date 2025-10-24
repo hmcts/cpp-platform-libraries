@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-# [17.104.0-M86] - 2025-10-24
+# [17.104.0-M6] - 2025-10-24
 ### Changed
 - Update event-store to 17.104.0-M8 for:
   - Catchup now calculates previousEventNumber for each event from the previous row in
