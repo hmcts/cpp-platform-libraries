@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class CpsCaseDetailsJsonHelper {
 
@@ -17,7 +17,7 @@ public class CpsCaseDetailsJsonHelper {
                                                final String firstName,
                                                final String lastName) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
         jsonObjectBuilder.add("caseId", "123455fhfgh");
         jsonObjectBuilder.add("urn", "caseRef");
@@ -25,7 +25,7 @@ public class CpsCaseDetailsJsonHelper {
         jsonObjectBuilder.add("caseStatusCode", "testCaseStatus");
         jsonObjectBuilder.add("caseType", caseType);
 
-        final JsonArrayBuilder partiesBuilder = jsonBuilderFactory.createArrayBuilder();
+        final JsonArrayBuilder partiesBuilder = getJsonBuilderFactory().createArrayBuilder();
 
         jsonObjectBuilder.add("parties", partiesBuilder.add(buildDefendant(partyId, firstName, lastName, null, null)));
 
@@ -35,7 +35,7 @@ public class CpsCaseDetailsJsonHelper {
     public static JsonObject createCaseDetails(final String prosecutingAuthority,
                                                final String caseType) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
         jsonObjectBuilder.add("caseId", "123455fhfgh");
         jsonObjectBuilder.add("urn", "caseRef");
@@ -54,7 +54,7 @@ public class CpsCaseDetailsJsonHelper {
                                                final String cpsUnitCode,
                                                final String cjsAreaCode) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
         jsonObjectBuilder.add("caseId", "123455fhfgh");
         jsonObjectBuilder.add("urn", urn);
@@ -62,7 +62,7 @@ public class CpsCaseDetailsJsonHelper {
         jsonObjectBuilder.add("prosecutor", Prosecutor);
         jsonObjectBuilder.add("caseStatusCode", caseStatus);
         jsonObjectBuilder.add("cpsUnitCode", cpsUnitCode);
-        jsonObjectBuilder.add("cjsAreaCodes", jsonBuilderFactory.createArrayBuilder().
+        jsonObjectBuilder.add("cjsAreaCodes", getJsonBuilderFactory().createArrayBuilder().
                 add(cjsAreaCode).
                 build());
 
@@ -79,7 +79,7 @@ public class CpsCaseDetailsJsonHelper {
                                                final String hearingDateTime,
                                                final String courtRoom) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
         jsonObjectBuilder.add("caseId", "123455fhfgh");
         jsonObjectBuilder.add("urn", "caseRef");
@@ -87,8 +87,8 @@ public class CpsCaseDetailsJsonHelper {
         jsonObjectBuilder.add("caseStatusCode", "testCaseStatus");
         jsonObjectBuilder.add("caseType", caseType);
 
-        final JsonArrayBuilder partiesBuilder = jsonBuilderFactory.createArrayBuilder();
-        final JsonArrayBuilder hearingsBuilder = jsonBuilderFactory.createArrayBuilder();
+        final JsonArrayBuilder partiesBuilder = getJsonBuilderFactory().createArrayBuilder();
+        final JsonArrayBuilder hearingsBuilder = getJsonBuilderFactory().createArrayBuilder();
 
         jsonObjectBuilder.add("parties", partiesBuilder.add(buildDefendant(partyId, firstName, lastName, null, null)));
         jsonObjectBuilder.add("hearings", hearingsBuilder.add(buildHearing(hearingId, courtRoom, hearingDateTime)));
@@ -105,7 +105,7 @@ public class CpsCaseDetailsJsonHelper {
                                                final List<JsonObject> offences
     ) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
         jsonObjectBuilder.add("caseId", "123455fhfgh");
         jsonObjectBuilder.add("urn", "caseRef");
@@ -113,7 +113,7 @@ public class CpsCaseDetailsJsonHelper {
         jsonObjectBuilder.add("caseStatusCode", "testCaseStatus");
         jsonObjectBuilder.add("caseType", caseType);
 
-        final JsonArrayBuilder partiesBuilder = jsonBuilderFactory.createArrayBuilder();
+        final JsonArrayBuilder partiesBuilder = getJsonBuilderFactory().createArrayBuilder();
 
         jsonObjectBuilder.add("parties", partiesBuilder.add(
                 buildDefendant(partyId, firstName, lastName, aliases, offences)));
@@ -128,7 +128,7 @@ public class CpsCaseDetailsJsonHelper {
                                             final List<JsonObject> offences
     ) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
         jsonObjectBuilder.add("partyId", partyId);
         if (firstName != null && lastName != null) {
             jsonObjectBuilder.add("firstName", firstName);
@@ -139,16 +139,16 @@ public class CpsCaseDetailsJsonHelper {
             jsonObjectBuilder.add("oicShoulderNumber", "345");
         }
 
-        jsonObjectBuilder.add("_party_type", jsonBuilderFactory.createArrayBuilder().add("Defendant"));
+        jsonObjectBuilder.add("_party_type", getJsonBuilderFactory().createArrayBuilder().add("Defendant"));
 
         if (aliases != null) {
-            final JsonArrayBuilder aliasBuilder = jsonBuilderFactory.createArrayBuilder();
+            final JsonArrayBuilder aliasBuilder = getJsonBuilderFactory().createArrayBuilder();
             aliases.forEach(aliasBuilder::add);
             jsonObjectBuilder.add("aliases", aliasBuilder.build());
         }
 
         if (offences != null) {
-            final JsonArrayBuilder offenceBuilder = jsonBuilderFactory.createArrayBuilder();
+            final JsonArrayBuilder offenceBuilder = getJsonBuilderFactory().createArrayBuilder();
             offences.forEach(offenceBuilder::add);
             jsonObjectBuilder.add("offences", offenceBuilder.build());
         }
@@ -159,7 +159,7 @@ public class CpsCaseDetailsJsonHelper {
     public static JsonObject buildAlias(final String firstName,
                                         final String lastName) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
         Optional.ofNullable(firstName).map(name -> jsonObjectBuilder.add("firstName", name));
         Optional.ofNullable(lastName).map(name -> jsonObjectBuilder.add("lastName", name));
@@ -171,7 +171,7 @@ public class CpsCaseDetailsJsonHelper {
                                           final String courtRoom,
                                           final String hearingDateTime) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
         jsonObjectBuilder.add("hearingId", hearingId);
         jsonObjectBuilder.add("courtRoom", courtRoom);
         jsonObjectBuilder.add("hearingDateTime", hearingDateTime);
@@ -184,7 +184,7 @@ public class CpsCaseDetailsJsonHelper {
     public static JsonObject buildOffence(final String offenceId, final String offenceCode,
                                           final String custodyTimeLimit) {
 
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
         jsonObjectBuilder.add("offenceId", offenceId);
         jsonObjectBuilder.add("offenceCode", offenceCode);
         jsonObjectBuilder.add("custodyTimeLimit", custodyTimeLimit);

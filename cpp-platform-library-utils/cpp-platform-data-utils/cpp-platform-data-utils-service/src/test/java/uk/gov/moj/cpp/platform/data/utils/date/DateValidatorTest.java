@@ -2,8 +2,8 @@ package uk.gov.moj.cpp.platform.data.utils.date;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class DateValidatorTest {
 
     private static JsonObject getJsonObject(final String fromDate, final String toDate) {
-        return Json.createObjectBuilder().add("fromDate", fromDate).add("toDate", toDate).build();
+        return getJsonBuilderFactory().createObjectBuilder().add("fromDate", fromDate).add("toDate", toDate).build();
     }
 
     @Test

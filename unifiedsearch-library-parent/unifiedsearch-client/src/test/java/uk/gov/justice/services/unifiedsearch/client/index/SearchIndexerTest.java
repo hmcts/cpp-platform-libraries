@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchIndexerTest {
@@ -35,7 +35,7 @@ public class SearchIndexerTest {
         final JsonObject caseDocument_3 = mock(JsonObject.class);
         final String indexName = "testIndex";
 
-        final JsonArray caseDocuments = jsonBuilderFactory.createArrayBuilder()
+        final JsonArray caseDocuments = getJsonBuilderFactory().createArrayBuilder()
                 .add(caseDocument_1)
                 .add(caseDocument_2)
                 .add(caseDocument_3)

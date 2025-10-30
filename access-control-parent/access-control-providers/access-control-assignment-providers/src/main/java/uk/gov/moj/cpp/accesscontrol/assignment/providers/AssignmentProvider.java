@@ -18,8 +18,8 @@ import java.util.UUID;
 import static javax.json.JsonValue.ValueType.NULL;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
@@ -55,7 +55,7 @@ public class AssignmentProvider {
     private boolean verifyUserAssignedToReview(final Action action, final String reviewId) {
         final String userId = action.userId().get();
 
-        final JsonObject requestPayload = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject requestPayload = getJsonBuilderFactory().createObjectBuilder()
                 .add(DOMAIN_OBJECT_ID_KEY, reviewId)
                 .build();
 
@@ -75,7 +75,7 @@ public class AssignmentProvider {
     }
 
     private static JsonObject jsonFromString(String jsonObjectStr) {
-        JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(jsonObjectStr));
+        JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(jsonObjectStr));
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         return object;

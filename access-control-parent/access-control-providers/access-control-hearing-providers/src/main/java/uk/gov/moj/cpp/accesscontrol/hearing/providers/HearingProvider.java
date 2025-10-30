@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
@@ -64,7 +64,7 @@ public class HearingProvider {
 
     private JsonEnvelope buildMaterialRequestEnvelope(final Action action) {
         return enveloper.withMetadataFrom(action.envelope(), QUERY_SEARCH_BY_MATERIAL_ID)
-                .apply(jsonBuilderFactory.createObjectBuilder()
+                .apply(getJsonBuilderFactory().createObjectBuilder()
                         .add("q", materialIdFrom(action).toString())
                         .build());
     }
@@ -93,7 +93,7 @@ public class HearingProvider {
 
     private JsonEnvelope buildHearingRequestEnvelope(final Action action) {
         return enveloper.withMetadataFrom(action.envelope(), QUERY_SEARCH_BY_HEARING_ID)
-                .apply(jsonBuilderFactory.createObjectBuilder()
+                .apply(getJsonBuilderFactory().createObjectBuilder()
                         .add(HEARING_ID_KEY, hearingIdFrom(action).toString())
                         .build());
     }

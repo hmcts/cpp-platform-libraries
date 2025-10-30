@@ -11,7 +11,7 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 /**
  * Utility class for reading json response from a file.
@@ -24,7 +24,7 @@ public class FileUtil {
 
     public static JsonObject toJsonObject(final String jsonContent) {
         try (final StringReader stringReader = new StringReader(jsonContent);
-             final JsonReader jsonReader = jsonReaderFactory.createReader(stringReader)) {
+             final JsonReader jsonReader = getJsonReaderFactory().createReader(stringReader)) {
             return jsonReader.readObject();
         }
     }

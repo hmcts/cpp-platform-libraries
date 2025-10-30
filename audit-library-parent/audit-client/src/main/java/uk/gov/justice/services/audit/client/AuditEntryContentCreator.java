@@ -8,14 +8,13 @@ import uk.gov.justice.services.messaging.JsonObjects;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ApplicationScoped
 public class AuditEntryContentCreator {
@@ -35,7 +34,7 @@ public class AuditEntryContentCreator {
 
     //To minimize the changes on RemoteAuditClient existing functionality, this code is duplicated. RemoveAuditClient is marked as deprecated and will be removed in future.
     public JsonObject create(final JsonEnvelope envelope, final String component) {
-        return jsonBuilderFactory.createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                 .add(CONTENT, createContentFrom(envelope))
                 .add(ORIGIN, serviceContextNameProvider.getServiceContextName())
                 .add(COMPONENT, component)
@@ -45,13 +44,13 @@ public class AuditEntryContentCreator {
     }
 
     private JsonObjectBuilder createContentFrom(final JsonEnvelope envelope) {
-        JsonObjectBuilder contentBuilder = Json.createObjectBuilder();
+        JsonObjectBuilder contentBuilder = getJsonBuilderFactory().createObjectBuilder();
         final JsonValue payload = envelope.payload();
 
         if (payload != null) {
             switch (payload.getValueType()) {
                 case ARRAY:
-                    final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+                    final JsonArrayBuilder arrayBuilder = getJsonBuilderFactory().createArrayBuilder();
                     ((JsonArray) payload).forEach(arrayBuilder::add);
                     contentBuilder.add(PAYLOAD, arrayBuilder);
                     break;

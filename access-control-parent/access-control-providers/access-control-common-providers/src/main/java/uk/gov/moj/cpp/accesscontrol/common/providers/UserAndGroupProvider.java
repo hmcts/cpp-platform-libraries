@@ -31,7 +31,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
@@ -134,7 +134,7 @@ public class UserAndGroupProvider {
         final Optional<String> userId = action.userId();
 
         if (userId.isPresent()) {
-            final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+            final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                     .add(USER_ID, userId.get())
                     .add(GROUP_NAME, groupName)
                     .build();
@@ -168,7 +168,7 @@ public class UserAndGroupProvider {
         final Optional<String> userId = action.userId();
 
         if (userId.isPresent()) {
-            final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+            final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                     .add(USER_ID, userId.get())
                     .build();
 

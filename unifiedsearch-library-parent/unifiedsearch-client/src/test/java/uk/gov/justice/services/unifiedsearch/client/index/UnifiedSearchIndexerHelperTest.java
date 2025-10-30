@@ -11,7 +11,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class UnifiedSearchIndexerHelperTest {
 
@@ -22,7 +22,7 @@ public class UnifiedSearchIndexerHelperTest {
 
         final UUID caseId = randomUUID();
 
-        final JsonObject index = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject index = getJsonBuilderFactory().createObjectBuilder()
                 .add("caseId", caseId.toString())
                 .build();
 
@@ -32,7 +32,7 @@ public class UnifiedSearchIndexerHelperTest {
     @Test
     public void shouldFailIfNoCaseIdFound() {
         try {
-            final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+            final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
             jsonObjectBuilder.add("unknownAttribute", "123455");
 
             unifiedSearchIndexerHelper.getCaseId(jsonObjectBuilder.build());

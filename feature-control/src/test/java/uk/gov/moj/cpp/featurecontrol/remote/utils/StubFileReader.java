@@ -10,7 +10,7 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 public class StubFileReader {
 
@@ -36,7 +36,7 @@ public class StubFileReader {
     }
 
     public JsonObject getJsonObject(final String json) {
-        try (final JsonReader reader = jsonReaderFactory.createReader(new StringReader(json))) {
+        try (final JsonReader reader = getJsonReaderFactory().createReader(new StringReader(json))) {
             return reader.readObject();
         }
     }

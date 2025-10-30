@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class CommandApiDebugLoggingInterceptorTest {
@@ -48,7 +48,7 @@ public class CommandApiDebugLoggingInterceptorTest {
         final InterceptorChain interceptorChain = mock(InterceptorChain.class);
         final JsonEnvelope jsonEnvelope = envelopeFrom(
                 metadataBuilder().withId(randomUUID()).withName("test.command"),
-                jsonBuilderFactory.createObjectBuilder().build());
+                getJsonBuilderFactory().createObjectBuilder().build());
 
         when(interceptorChain.processNext(interceptorContext)).thenReturn(interceptorContext);
         when(interceptorContext.inputEnvelope()).thenReturn(jsonEnvelope);

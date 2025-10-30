@@ -31,7 +31,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class RestClientServiceTest {
@@ -191,7 +191,7 @@ public class RestClientServiceTest {
 
     @Test
     public void shouldReturnsResponseWithExpectedMediaType() {
-        final JsonObject entity = jsonBuilderFactory.createObjectBuilder().add("k1", "value").build();
+        final JsonObject entity = getJsonBuilderFactory().createObjectBuilder().add("k1", "value").build();
         when(response.readEntity(JsonObject.class)).thenReturn(entity);
         when(response.getStatusInfo()).thenReturn(NOT_FOUND);
         when(response.getStatus()).thenReturn(HttpStatus.SC_OK);

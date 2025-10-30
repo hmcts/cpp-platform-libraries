@@ -15,7 +15,7 @@ import java.time.Duration;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 public class TopicChecker {
     private static final int SUBSCRIPTION_NAME_INDEX = 2;
@@ -55,7 +55,7 @@ public class TopicChecker {
         assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
 
         final String bodyAsString = response.readEntity(String.class);
-        try (final JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(bodyAsString))) {
+        try (final JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(bodyAsString))) {
             return jsonReader.readObject().getJsonArray("value");
         }
     }

@@ -6,7 +6,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
 
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 public class IngesterUtil {
 
@@ -14,7 +14,7 @@ public class IngesterUtil {
 
     public static JsonObject jsonFromString(final String jsonObjectStr) {
         JsonObject object;
-        try (JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(jsonObjectStr))) {
+        try (JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(jsonObjectStr))) {
             object = jsonReader.readObject();
         }
 

@@ -16,7 +16,6 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
@@ -29,8 +28,8 @@ import java.util.function.Function;
 import static java.util.UUID.randomUUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithDefaults;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
@@ -66,14 +65,14 @@ public class RbacProviderBaseTest {
     protected static JsonObject buildCourtDocumentObject() {
 
         final JsonObject courtDocument =
-                jsonBuilderFactory.createObjectBuilder().add("courtDocument",
-                                jsonBuilderFactory.createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder().add("courtDocument",
+                                getJsonBuilderFactory().createObjectBuilder()
                                 .add("courtDocumentId", "2279b2c3-b0d3-4889-ae8e-1ecc20c39e27")
                                 .add("name", "SJP Notice")
                                 .add("documentTypeId", documentTypeId.toString())
                                 .add("documentTypeDescription", "SJP Notice")
                                 .add("mimeType", "pdf")
-                                .add("materials", jsonBuilderFactory.createObjectBuilder().add("id", "5e1cc18c-76dc-47dd-99c1-d6f87385edf1"))
+                                .add("materials", getJsonBuilderFactory().createObjectBuilder().add("id", "5e1cc18c-76dc-47dd-99c1-d6f87385edf1"))
                                 .add("containsFinancialMeans", false))
                         .build();
 
@@ -92,8 +91,8 @@ public class RbacProviderBaseTest {
     }
 
     protected static JsonObject buildGroups() {
-        return Json.createObjectBuilder()
-                .add("groups", Json.createArrayBuilder().add(Json
+        return getJsonBuilderFactory().createObjectBuilder()
+                .add("groups", getJsonBuilderFactory().createArrayBuilder().add(getJsonBuilderFactory()
                         .createObjectBuilder()
                         .add("groupId", UUID.randomUUID().toString())
                         .add("groupName", "Listing Officer")
@@ -137,7 +136,7 @@ public class RbacProviderBaseTest {
             replaceKeyValue.entrySet().stream().forEach(e -> {
                 builder.replaceAll(e.getKey(), e.getValue());
             });
-            try (JsonReader jsonReader = jsonReaderFactory.createReader(new StringReader(builder.build()))) {
+            try (JsonReader jsonReader = getJsonReaderFactory().createReader(new StringReader(builder.build()))) {
                 return jsonReader.readObject();
             }
         } catch (final Exception e) {
