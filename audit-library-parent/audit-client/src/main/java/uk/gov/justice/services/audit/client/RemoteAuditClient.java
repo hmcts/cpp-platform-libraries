@@ -15,14 +15,13 @@ import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 import java.util.function.Function;
 
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Sends audit events to the Audit topic, to be latest consumed by the Audit Context.
@@ -64,7 +63,7 @@ public class RemoteAuditClient implements AuditClient {
     }
 
     private JsonEnvelope createOutgoingEnvelopeFrom(final JsonEnvelope envelope, final String component) {
-        final JsonObjectBuilder objectBuilder = jsonBuilderFactory.createObjectBuilder()
+        final JsonObjectBuilder objectBuilder = getJsonBuilderFactory().createObjectBuilder()
                 .add(CONTENT, createContentFrom(envelope))
                 .add(ORIGIN, serviceContextNameProvider.getServiceContextName())
                 .add(COMPONENT, component)
@@ -76,13 +75,13 @@ public class RemoteAuditClient implements AuditClient {
     }
 
     private JsonObjectBuilder createContentFrom(final JsonEnvelope envelope) {
-        JsonObjectBuilder contentBuilder = Json.createObjectBuilder();
+        JsonObjectBuilder contentBuilder = getJsonBuilderFactory().createObjectBuilder();
         final JsonValue payload = envelope.payload();
 
         if (payload != null) {
             switch (payload.getValueType()) {
                 case ARRAY:
-                    final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+                    final JsonArrayBuilder arrayBuilder = getJsonBuilderFactory().createArrayBuilder();
                     ((JsonArray) payload).forEach(arrayBuilder::add);
                     contentBuilder.add(PAYLOAD, arrayBuilder);
                     break;

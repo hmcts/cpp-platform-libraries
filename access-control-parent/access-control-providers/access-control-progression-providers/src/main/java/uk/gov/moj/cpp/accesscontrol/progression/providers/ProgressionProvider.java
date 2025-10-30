@@ -19,7 +19,7 @@ import static java.util.Optional.ofNullable;
 import static javax.json.JsonValue.ValueType.NULL;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 import static uk.gov.moj.cpp.accesscontrol.progression.providers.ProsecutingAuthority.isCPSProsecutedCase;
 
@@ -84,7 +84,7 @@ public class ProgressionProvider {
     private JsonEnvelope buildMaterialRequestEnvelope(Action action, String actionName) {
         return envelopeFrom(
                 metadataBuilder().withId(UUID.randomUUID()).withName(actionName),
-                jsonBuilderFactory.createObjectBuilder().add("q", this.materialIdFrom(action).toString()).build()
+                getJsonBuilderFactory().createObjectBuilder().add("q", this.materialIdFrom(action).toString()).build()
         );
     }
 

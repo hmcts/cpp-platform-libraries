@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.unifiedsearch.client.validation.JsonUtils.jsonObjectFromFile;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,7 +66,7 @@ public class JsonDocumentValidatorTest {
 
     @Test
     public void shouldFailValidationFoEmptyCaseDocumentsArray() {
-        final JsonObject invalidJson = jsonBuilderFactory.createObjectBuilder().add("caseDocuments", jsonBuilderFactory.createArrayBuilder()).build();
+        final JsonObject invalidJson = getJsonBuilderFactory().createObjectBuilder().add("caseDocuments", getJsonBuilderFactory().createArrayBuilder()).build();
         assertThrows(TransformationException.class, () -> validator.validate(invalidJson, "/json/schema/crime-case-index-schema.json"));
     }
 

@@ -6,6 +6,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [Unreleased]
 ### Changed
 - Used JsonFactory instead of Json.create methods
+- Refactor JsonObject usages to more proper api
+- Fix HttpClient lifecycle.
 
 # [17.103.7] - 2025-11-17
 ### Changed

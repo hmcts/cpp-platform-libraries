@@ -10,7 +10,6 @@ import uk.gov.justice.services.core.featurecontrol.domain.Feature;
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
@@ -22,7 +21,8 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 @Alternative
 @Priority(1)
@@ -65,7 +65,7 @@ public class DefaultAzureFeatureFetcher implements FeatureFetcher {
                             getId(connectionDetails[1]),
                             getSecret(connectionDetails[2]))
                             .getJsonArray("items"))
-                    .orElse(Json.createArrayBuilder().build())
+                    .orElse(getJsonBuilderFactory().createArrayBuilder().build())
                     .getValuesAs(JsonObject.class)
                     .stream()
                     .filter(f -> StringUtils.isNotEmpty(f.getString("content_type")))
@@ -96,7 +96,7 @@ public class DefaultAzureFeatureFetcher implements FeatureFetcher {
     }
 
     private boolean convertToBoolean(final String value) {
-        try (JsonReader reader = jsonReaderFactory.createReader(new StringReader(value))) {
+        try (JsonReader reader = getJsonReaderFactory().createReader(new StringReader(value))) {
             return reader.readObject().getBoolean("enabled");
         }
     }

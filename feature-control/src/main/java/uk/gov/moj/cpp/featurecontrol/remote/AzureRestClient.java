@@ -15,8 +15,8 @@ import java.io.StringReader;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 public class AzureRestClient {
     private CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -30,14 +30,14 @@ public class AzureRestClient {
         try (final CloseableHttpResponse closeableHttpResponse = httpClient.execute(request)) {
 
             if (getStatusCode(closeableHttpResponse) != HttpStatus.SC_OK) {
-                return jsonBuilderFactory.createObjectBuilder().build();
+                return getJsonBuilderFactory().createObjectBuilder().build();
             }
 
             String result = EntityUtils.toString(closeableHttpResponse.getEntity());
             if (isEmpty(result)) {
-                return jsonBuilderFactory.createObjectBuilder().build();
+                return getJsonBuilderFactory().createObjectBuilder().build();
             } else {
-                try (JsonReader reader = jsonReaderFactory.createReader(new StringReader(result))) {
+                try (JsonReader reader = getJsonReaderFactory().createReader(new StringReader(result))) {
                     return reader.readObject();
                 }
             }

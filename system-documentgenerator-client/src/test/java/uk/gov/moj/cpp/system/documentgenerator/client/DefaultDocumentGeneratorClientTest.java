@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 
 @ExtendWith(MockitoExtension.class)
@@ -141,7 +141,7 @@ public class DefaultDocumentGeneratorClientTest {
     }
 
     private JsonObject prepareJsonDataForTemplate() {
-        return jsonBuilderFactory.createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                 .add("nowText", STRING.next())
                 .build();
     }

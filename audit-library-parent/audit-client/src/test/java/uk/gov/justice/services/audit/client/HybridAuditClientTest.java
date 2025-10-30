@@ -30,7 +30,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class HybridAuditClientTest {
@@ -71,7 +71,7 @@ public class HybridAuditClientTest {
             final Timer.Sample artemisTimer = mock(Timer.Sample.class);
             final Timer.Sample dataLakeTimer = mock(Timer.Sample.class);
             ReflectionUtil.setField(hybridAuditClient, "auditStorageEnabled", "true");
-            final JsonObject auditContentJson = jsonBuilderFactory.createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
+            final JsonObject auditContentJson = getJsonBuilderFactory().createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
             when(auditEntryContentCreator.create(envelope, component)).thenReturn(auditContentJson);
             when( auditMetricsRecorder.startTimer()).thenReturn(artemisTimer).thenReturn(dataLakeTimer);
 
@@ -93,7 +93,7 @@ public class HybridAuditClientTest {
             final Timer.Sample artemisTimer = mock(Timer.Sample.class);
             final Timer.Sample dataLakeTimer = mock(Timer.Sample.class);
             ReflectionUtil.setField(hybridAuditClient, "auditStorageEnabled", "true");
-            final JsonObject auditContentJson = jsonBuilderFactory.createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
+            final JsonObject auditContentJson = getJsonBuilderFactory().createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
             when(auditEntryContentCreator.create(envelope, component)).thenReturn(auditContentJson);
             when( auditMetricsRecorder.startTimer()).thenReturn(artemisTimer).thenReturn(dataLakeTimer);
             doThrow(new RuntimeException()).when(remoteAuditClient).auditEntry(envelope, component);
@@ -125,7 +125,7 @@ public class HybridAuditClientTest {
             final Timer.Sample artemisTimer = mock(Timer.Sample.class);
             final Timer.Sample dataLakeTimer = mock(Timer.Sample.class);
             ReflectionUtil.setField(hybridAuditClient, "auditStorageEnabled", "true");
-            final JsonObject auditContentJson = jsonBuilderFactory.createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
+            final JsonObject auditContentJson = getJsonBuilderFactory().createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
             when(auditEntryContentCreator.create(envelope, component)).thenReturn(auditContentJson);
             doThrow(new RuntimeException("Test exception")).when(azureDataLakeServiceClient).uploadToStorage(any(DataLakeFileObject.class));
             when( auditMetricsRecorder.startTimer()).thenReturn(artemisTimer).thenReturn(dataLakeTimer);

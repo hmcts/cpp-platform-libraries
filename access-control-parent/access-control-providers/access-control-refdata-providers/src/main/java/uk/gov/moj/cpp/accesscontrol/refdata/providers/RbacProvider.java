@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
@@ -93,7 +93,7 @@ public class RbacProvider {
 
         final String documentTypeId = envelope.payloadAsJsonObject().getJsonObject("courtDocument").getString("documentTypeId");
 
-        final Envelope<JsonObject> jsonObjectEnvelope = Enveloper.envelop(jsonBuilderFactory.createObjectBuilder().add(ID, documentTypeId).build())
+        final Envelope<JsonObject> jsonObjectEnvelope = Enveloper.envelop(getJsonBuilderFactory().createObjectBuilder().add(ID, documentTypeId).build())
                 .withName(REFERENCEDATA_QUERY_DOCUMENT_TYPE_ACCESS)
                 .withMetadataFrom(envelope);
 
@@ -177,7 +177,7 @@ public class RbacProvider {
         final String userId = action.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from the command."));
 
 
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                 .add(USER_ID, userId)
                 .build();
 

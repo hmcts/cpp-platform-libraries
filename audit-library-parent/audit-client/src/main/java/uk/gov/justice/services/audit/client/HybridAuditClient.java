@@ -94,14 +94,14 @@ public class HybridAuditClient implements AuditClient {
 
             if (isAuditStorageEnabled) {
                 if (isAuditStorageAsync) {
-                    logger.info("Audit entry via storage async");
+                    logger.debug("Audit entry via storage async");
                     uploadToStorageAsync(envelope, component);
                 } else {
-                    logger.info("Audit entry via storage sync");
+                    logger.debug("Audit entry via storage sync");
                     uploadToStorageSync(envelope, component);
                 }
             } else {
-                logger.info("Audit entry via storage disabled");
+                logger.debug("Audit entry via storage disabled");
             }
         } catch (Throwable t) {
             logger.error("Error while storing audit event via storage", t);
