@@ -41,12 +41,12 @@
 
         <!-- Github libraries versions -->
         <cpp.common-bom.version>17.104.0-M3</cpp.common-bom.version>
-        <file-service.version>17.104.0-M2</file-service.version>
+        <file-service.version>17.104.0-M3</file-service.version>
 
         <!-- Framework versions -->
-        <framework-libraries.version>17.104.0-M5</framework-libraries.version>
-        <framework.version>17.104.0-M3</framework.version>
-        <event-store.version>17.104.0-M8</event-store.version>
+        <framework-libraries.version>17.104.0-M6</framework-libraries.version>
+        <framework.version>17.104.0-M4</framework.version>
+        <event-store.version>17.104.0-M9</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 

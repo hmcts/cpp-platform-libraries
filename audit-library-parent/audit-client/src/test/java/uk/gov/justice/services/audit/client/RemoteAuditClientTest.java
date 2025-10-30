@@ -32,7 +32,7 @@ import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
@@ -119,7 +119,7 @@ public class RemoteAuditClientTest {
     @Test
     public void shouldVerifyJsonArrayPayloadAuditMessageSent() throws Exception {
         remoteAuditClient.auditEntry(envelopeFrom(metadataOf(UUID, ACTION_NAME),
-                        jsonBuilderFactory.createArrayBuilder()
+                        getJsonBuilderFactory().createArrayBuilder()
                         .add("Id")
                         .add("Name")
                         .build()),
@@ -147,7 +147,7 @@ public class RemoteAuditClientTest {
     @Test
     public void shouldVerifyJsonStringPayloadAuditMessageSent() throws Exception {
         remoteAuditClient.auditEntry(envelopeFrom(metadataOf(UUID, ACTION_NAME),
-                        jsonBuilderFactory.createObjectBuilder()
+                        getJsonBuilderFactory().createObjectBuilder()
                         .add("name", "value")
                         .build()
                         .getJsonString("name")),
@@ -174,7 +174,7 @@ public class RemoteAuditClientTest {
     @Test
     public void shouldVerifyJsonNumberPayloadAuditMessageSent() throws Exception {
         remoteAuditClient.auditEntry(envelopeFrom(metadataOf(UUID, ACTION_NAME),
-                        jsonBuilderFactory.createObjectBuilder()
+                        getJsonBuilderFactory().createObjectBuilder()
                         .add("count", 15)
                         .build()
                         .getJsonNumber("count")),

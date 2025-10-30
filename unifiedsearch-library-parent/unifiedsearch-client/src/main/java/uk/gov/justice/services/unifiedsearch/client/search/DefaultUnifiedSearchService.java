@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import static java.lang.String.format;
 import static org.elasticsearch.client.RequestOptions.DEFAULT;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.CPS_READ_USER;
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.READ_USER;
 
@@ -81,7 +81,7 @@ public class DefaultUnifiedSearchService implements UnifiedSearchService {
             final RestHighLevelClient restHighLevelClient = restHighLevelClient(indexName);
             final SearchResponse response = restHighLevelClient.search(searchRequest, DEFAULT);
             final JsonArray hitsAsJsonArray = searchResultConverter.toJsonArray(response.getHits(), resultHitType);
-            final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder()
+            final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder()
                     .add(TOTAL_RESULTS_NODE_NAME, response.getHits().getTotalHits().value)
                     .add(resultHitNodeName, hitsAsJsonArray);
             if (null != innerResultHightNodeName) {

@@ -17,7 +17,7 @@ import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.fromStatusCode;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @SuppressWarnings("WeakerAccess")
 public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
@@ -46,10 +46,9 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
 
     public byte[] generatePdfDocument(final JsonObject jsonData, final String templateIdentifier, final UUID userId) throws IOException {
         Response response = null;
-        Client client = null;
-        try {
-            client = httpClientFactory.getClient();
 
+        try {
+            Client client = httpClientFactory.getClient();
             response = callPDFService(client, jsonData, templateIdentifier, userId);
 
             final Status status = fromStatusCode(response.getStatus());
@@ -62,17 +61,13 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
             if (response != null) {
                 response.close();
             }
-            if (client != null) {
-                client.close();
-            }
         }
     }
 
     public byte[] generateThymeleafDocument(final JsonObject jsonData, final String templateIdentifier) throws IOException {
         Response response = null;
-        Client client = null;
         try {
-            client = httpClientFactory.getClient();
+            Client client = httpClientFactory.getClient();
 
             response = callThymeleafService(client, jsonData, templateIdentifier);
 
@@ -86,18 +81,14 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
             if (response != null) {
                 response.close();
             }
-            if (client != null) {
-                client.close();
-            }
         }
     }
 
     @Override
     public byte[] generateWordDocument(final JsonObject jsonData, final String templateIdentifier, final UUID userId) throws IOException {
         Response response = null;
-        Client client = null;
         try {
-            client = httpClientFactory.getClient();
+            Client client = httpClientFactory.getClient();
 
             response = callWordService(client, jsonData, templateIdentifier, userId);
 
@@ -111,15 +102,12 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
             if (response != null) {
                 response.close();
             }
-            if (client != null) {
-                client.close();
-            }
         }
     }
 
     private Response callPDFService(final Client client, final JsonObject jsonData,
                                     final String templateIdentifier, final UUID userId) {
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                 .add(KEY_TEMPLATE_NAME, templateIdentifier)
                 .add(KEY_TEMPLATE_PAYLOAD, jsonData)
                 .add(KEY_CONVERSION_FORMAT, DOCUMENT_CONVERSION_FORMAT_PDF)
@@ -136,7 +124,7 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
                                           final String templateIdentifier) {
 
 
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                 .add(KEY_TEMPLATE_NAME, templateIdentifier)
                 .add(KEY_TEMPLATE_PAYLOAD, jsonData)
                 .build();
@@ -150,7 +138,7 @@ public class DefaultDocumentGeneratorClient implements DocumentGeneratorClient {
 
     private Response callWordService(final Client client, final JsonObject jsonData,
                                      final String templateIdentifier, final UUID userId) {
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                 .add(KEY_TEMPLATE_NAME, templateIdentifier)
                 .add(KEY_TEMPLATE_PAYLOAD, jsonData)
                 .add(KEY_CONVERSION_FORMAT, DOCUMENT_CONVERSION_FORMAT_DOCX)

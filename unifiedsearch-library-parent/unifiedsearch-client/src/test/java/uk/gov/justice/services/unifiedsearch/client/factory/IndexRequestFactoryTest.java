@@ -5,18 +5,17 @@ import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy.NONE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.justice.services.unifiedsearch.client.index.UnifiedSearchIndexerHelper;
 
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.elasticsearch.action.index.IndexRequest;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,7 +36,7 @@ public class IndexRequestFactoryTest {
         final UUID caseId = randomUUID();
         final String index = "test";
 
-        final JsonObject document = Json.createObjectBuilder().add("document", "document")
+        final JsonObject document = getJsonBuilderFactory().createObjectBuilder().add("document", "document")
                 .add("caseId", caseId.toString()).build();
 
         final IndexRequest indexRequest = indexRequestFactory.indexRequest(index, document, 1l, 1l);

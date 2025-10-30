@@ -26,7 +26,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
@@ -109,10 +109,10 @@ public class HearingProviderTest {
 
     private JsonEnvelope buildUserIsAllowedToApproveAnResult(final String userId, final String hearingId) {
         final JsonObject response =
-                jsonBuilderFactory.createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add(APPROVAL_REQUESTED,
-                                jsonBuilderFactory.createArrayBuilder()
-                                        .add(jsonBuilderFactory.createObjectBuilder()
+                                getJsonBuilderFactory().createArrayBuilder()
+                                        .add(getJsonBuilderFactory().createObjectBuilder()
                                                 .add(USER_ID_KEY, userId)
                                                 .add(HEARING_ID_KEY, hearingId)
                                                 .build())

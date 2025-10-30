@@ -3,10 +3,11 @@ package uk.gov.moj.cpp.accesscontrol.test.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class GroupsJsonBuilder {
 
@@ -26,8 +27,8 @@ public class GroupsJsonBuilder {
     }
 
     public JsonObject build() {
-        final JsonObjectBuilder json = Json.createObjectBuilder();
-        final JsonArrayBuilder groupsArray = Json.createArrayBuilder();
+        final JsonObjectBuilder json = getJsonBuilderFactory().createObjectBuilder();
+        final JsonArrayBuilder groupsArray = getJsonBuilderFactory().createArrayBuilder();
 
         for (Group group : groups) {
             groupsArray.add(getGroupJson(group));
@@ -39,10 +40,10 @@ public class GroupsJsonBuilder {
 
     private JsonObjectBuilder getGroupJson(Group group) {
         return group.getGroupName() != null
-                ? Json.createObjectBuilder()
+                ? getJsonBuilderFactory().createObjectBuilder()
                 .add("groupId", group.getGroupId())
                 .add("groupName", group.getGroupName())
-                : Json.createObjectBuilder()
+                : getJsonBuilderFactory().createObjectBuilder()
                 .add("groupId", group.getGroupId());
     }
 }

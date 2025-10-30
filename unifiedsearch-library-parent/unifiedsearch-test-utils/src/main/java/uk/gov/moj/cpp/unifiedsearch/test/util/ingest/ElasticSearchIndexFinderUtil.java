@@ -16,7 +16,7 @@ import java.io.IOException;
 import static org.elasticsearch.client.RequestOptions.DEFAULT;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class ElasticSearchIndexFinderUtil {
 
@@ -42,7 +42,7 @@ public class ElasticSearchIndexFinderUtil {
         try {
             final SearchResponse result = restClient.search(searchRequest, DEFAULT);
             final JsonArray jsonArray = toJsonArray(result.getHits());
-            return jsonBuilderFactory.createObjectBuilder()
+            return getJsonBuilderFactory().createObjectBuilder()
                     .add("index", jsonArray)
                     .add("totalResults", jsonArray.size())
                     .build();
@@ -58,7 +58,7 @@ public class ElasticSearchIndexFinderUtil {
     }
 
     private JsonArray toJsonArray(final SearchHits searchHits) {
-        final JsonArrayBuilder results = jsonBuilderFactory.createArrayBuilder();
+        final JsonArrayBuilder results = getJsonBuilderFactory().createArrayBuilder();
         searchHits.forEach(searchHit -> results.add(searchHit.getSourceAsString()));
         return results.build();
     }

@@ -5,13 +5,13 @@ import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 public class FileUtil {
 
     public static JsonObject givenPayload(final String filePath) {
         try (final InputStream inputStream = FileUtil.class.getResourceAsStream(filePath)) {
-            final JsonReader jsonReader = jsonReaderFactory.createReader(inputStream);
+            final JsonReader jsonReader = getJsonReaderFactory().createReader(inputStream);
             return jsonReader.readObject();
         } catch (IOException e) {
             throw new RuntimeException(e);

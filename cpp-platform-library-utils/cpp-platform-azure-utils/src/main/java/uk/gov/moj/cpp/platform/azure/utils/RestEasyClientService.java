@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 
 import com.google.common.collect.ImmutableMap;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 @ApplicationScoped

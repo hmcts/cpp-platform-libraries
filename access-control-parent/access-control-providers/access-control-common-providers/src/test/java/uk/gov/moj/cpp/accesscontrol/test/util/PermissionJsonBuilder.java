@@ -1,11 +1,11 @@
 package uk.gov.moj.cpp.accesscontrol.test.util;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -28,8 +28,8 @@ public class PermissionJsonBuilder {
     }
 
     public JsonObject build() {
-        final JsonObjectBuilder json = Json.createObjectBuilder();
-        final JsonArrayBuilder permissionArray = Json.createArrayBuilder();
+        final JsonObjectBuilder json = getJsonBuilderFactory().createObjectBuilder();
+        final JsonArrayBuilder permissionArray = getJsonBuilderFactory().createArrayBuilder();
 
         for (Permission permission : permissionList) {
             permissionArray.add(getPermissionJson(permission));
@@ -40,7 +40,7 @@ public class PermissionJsonBuilder {
     }
 
     private JsonObjectBuilder getPermissionJson(Permission permission) {
-        final JsonObjectBuilder jsonObjectBuilder =  Json.createObjectBuilder()
+        final JsonObjectBuilder jsonObjectBuilder =  getJsonBuilderFactory().createObjectBuilder()
                 .add("object", permission.getObject())
                 .add("action", permission.getAction());
         if(isNotEmpty(permission.getSource())) {

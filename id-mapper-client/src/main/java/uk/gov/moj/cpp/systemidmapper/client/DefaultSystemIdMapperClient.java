@@ -23,7 +23,7 @@ import static java.util.Optional.empty;
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.Response.Status.fromStatusCode;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
 
@@ -52,16 +52,20 @@ public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
 
     @Override
     public AdditionResponse add(final SystemIdMap systemIdMap, final UUID userId) {
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try {
             final String jsonString = objectMapper.writeValueAsString(systemIdMap);
-            final Response restResponse = webTargetFactory.build()
+            final ResultCode resultCode;
+            final Object responseDocument;
+            try (Response restResponse = webTargetFactory.build()
                     .request()
                     .header(USER_ID, userId.toString())
-                    .post(entity(jsonString, ADD_REQUEST_MEDIA_TYPE));
+                    .post(entity(jsonString, ADD_REQUEST_MEDIA_TYPE))) {
 
-            final ResultCode resultCode = ResultCode.valueOf(restResponse.getStatus());
+                resultCode = ResultCode.valueOf(restResponse.getStatus());
 
-            final Object responseDocument = defaultConfiguration().jsonProvider().parse(restResponse.readEntity(String.class));
+                responseDocument = defaultConfiguration().jsonProvider().parse(restResponse.readEntity(String.class));
+            }
             final String id = JsonPath.read(responseDocument, "$.id");
 
 
@@ -73,16 +77,19 @@ public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
 
     @Override
     public AdditionResponses addMany(final SystemidMapList systemIdMapList, final UUID userId) {
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try {
             final String jsonString = objectMapper.writeValueAsString(systemIdMapList);
-            final Response restResponse = webTargetFactory.build()
+            final JsonObject jsonObjectPostResponse;
+            try (Response restResponse = webTargetFactory.build()
                     .request()
                     .header(USER_ID, userId.toString())
-                    .post(entity(jsonString, ADD_MANY_REQUEST_MEDIA_TYPE));
+                    .post(entity(jsonString, ADD_MANY_REQUEST_MEDIA_TYPE))) {
 
-            ResultCode.valueOf(restResponse.getStatus());
+                ResultCode.valueOf(restResponse.getStatus());
 
-            final JsonObject jsonObjectPostResponse = stringToJsonObjectConverter.convert(restResponse.readEntity(String.class));
+                jsonObjectPostResponse = stringToJsonObjectConverter.convert(restResponse.readEntity(String.class));
+            }
             SystemidMappingList systemidMappingList = jsonObjectConverter.convert(jsonObjectPostResponse, SystemidMappingList.class);
 
             return new AdditionResponses(systemidMappingList.getSystemIdMappings());
@@ -93,14 +100,13 @@ public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
 
     @Override
     public SystemIdMapping getMappingBy(final UUID mappingId, final UUID userId) {
-
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
-            final Response restResponse = webTargetFactory.build()
-                    .path(mappingId.toString())
-                    .request()
-                    .header(USER_ID, userId)
-                    .accept(QUERY_RESPONSE_MEDIA_TYPE)
-                    .get();
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try (Response restResponse = webTargetFactory.build()
+                .path(mappingId.toString())
+                .request()
+                .header(USER_ID, userId)
+                .accept(QUERY_RESPONSE_MEDIA_TYPE)
+                .get()) {
 
             final Status statusCode = fromStatusCode(restResponse.getStatus());
             switch (statusCode) {
@@ -116,18 +122,19 @@ public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
 
     @Override
     public Optional<SystemIdMapping> findBy(final UUID targetId, final String targetType, final UUID userId) {
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
-            final Response restResponse = webTargetFactory.build()
-                    .queryParam(TARGET_ID, targetId.toString())
-                    .queryParam(TARGET_TYPE, targetType)
-                    .request()
-                    .header(USER_ID, userId)
-                    .accept(QUERY_RESPONSE_MEDIA_TYPE)
-                    .get();
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try (Response restResponse = webTargetFactory.build()
+                .queryParam(TARGET_ID, targetId.toString())
+                .queryParam(TARGET_TYPE, targetType)
+                .request()
+                .header(USER_ID, userId)
+                .accept(QUERY_RESPONSE_MEDIA_TYPE)
+                .get()) {
 
 
             return systemMappingFrom(restResponse);
         }
+
     }
 
 
@@ -142,54 +149,57 @@ public class DefaultSystemIdMapperClient implements SystemIdMapperClient {
      */
     @Override
     public Optional<SystemIdMapping> findBy(final UUID userId, final String sourceId, final String... targetTypes) {
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
-            final Response restResponse = webTargetFactory.build()
-                    .queryParam(SOURCE_ID, sourceId)
-                    .queryParam(TARGET_TYPE, Arrays.asList(targetTypes).stream().collect(Collectors.joining(COMMA)))
-                    .request()
-                    .header(USER_ID, userId)
-                    .accept(QUERY_RESPONSE_MEDIA_TYPE)
-                    .get();
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try (Response restResponse = webTargetFactory.build()
+                .queryParam(SOURCE_ID, sourceId)
+                .queryParam(TARGET_TYPE, Arrays.asList(targetTypes).stream().collect(Collectors.joining(COMMA)))
+                .request()
+                .header(USER_ID, userId)
+                .accept(QUERY_RESPONSE_MEDIA_TYPE)
+                .get()) {
 
 
             return systemMappingFrom(restResponse);
         }
+
     }
 
     @Override
     public Optional<SystemIdMapping> findBy(final String sourceId, final String sourceType, final String targetType, final UUID userId) {
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
-            final Response restResponse = webTargetFactory.build()
-                    .queryParam(SOURCE_ID, sourceId)
-                    .queryParam(SOURCE_TYPE, sourceType)
-                    .queryParam(TARGET_TYPE, targetType)
-                    .request()
-                    .header(USER_ID, userId)
-                    .accept(QUERY_RESPONSE_MEDIA_TYPE)
-                    .get();
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try (Response restResponse = webTargetFactory.build()
+                .queryParam(SOURCE_ID, sourceId)
+                .queryParam(SOURCE_TYPE, sourceType)
+                .queryParam(TARGET_TYPE, targetType)
+                .request()
+                .header(USER_ID, userId)
+                .accept(QUERY_RESPONSE_MEDIA_TYPE)
+                .get()) {
 
             return systemMappingFrom(restResponse);
         }
+
     }
 
     @Override
     public Optional<SystemIdMapping> remap(final String newSourceId, final UUID mappingId, final UUID userId) {
 
-        final String jsonString = jsonBuilderFactory.createObjectBuilder()
+        final String jsonString = getJsonBuilderFactory().createObjectBuilder()
                 .add(NEW_SOURCE_ID, newSourceId)
                 .add(MAPPING_ID, mappingId.toString())
                 .build()
                 .toString();
 
-        try (final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH)) {
-            final Response restResponse = webTargetFactory.build()
-                    .request()
-                    .header(USER_ID, userId.toString())
-                    .post(entity(jsonString, REMAP_MEDIA_TYPE));
+        final WebTargetFactory webTargetFactory = new WebTargetFactory(baseUri, PATH);
+        try (Response restResponse = webTargetFactory.build()
+                .request()
+                .header(USER_ID, userId.toString())
+                .post(entity(jsonString, REMAP_MEDIA_TYPE))) {
 
             return systemMappingFrom(restResponse);
-
         }
+
+
     }
 
     private Optional<SystemIdMapping> systemMappingFrom(final Response restResponse) {

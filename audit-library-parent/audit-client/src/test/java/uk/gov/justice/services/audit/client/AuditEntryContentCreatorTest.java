@@ -20,7 +20,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class AuditEntryContentCreatorTest {
@@ -64,7 +64,7 @@ public class AuditEntryContentCreatorTest {
 
     @Test
     void shouldHandleArrayPayload() {
-        JsonArray arrayPayload = jsonBuilderFactory.createArrayBuilder().add("value1").add("value2").build();
+        JsonArray arrayPayload = getJsonBuilderFactory().createArrayBuilder().add("value1").add("value2").build();
         final MetadataBuilder metadataBuilder = new DefaultJsonEnvelopeProvider().metadataBuilder().withName("testEvent").withId(randomUUID());
         final JsonEnvelope envelope = new DefaultJsonEnvelopeProvider().envelopeFrom(metadataBuilder.build(), arrayPayload);
         when(serviceContextNameProvider.getServiceContextName()).thenReturn("testContext");

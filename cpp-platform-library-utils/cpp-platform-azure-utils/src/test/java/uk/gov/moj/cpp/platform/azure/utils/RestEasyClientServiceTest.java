@@ -4,15 +4,14 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.status;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
@@ -41,7 +40,7 @@ public class RestEasyClientServiceTest {
     }
 
     private JsonObject successJsonSummary() {
-        return Json.createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                 .add("Status", "SUCCESS")
                 .build();
     }
