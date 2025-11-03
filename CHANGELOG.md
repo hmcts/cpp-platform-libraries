@@ -5,6 +5,18 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.104.0-M8] - 2025-11-03
+### Changed
+- Update event-store to 17.104.0-M10 for:
+  - Added [framework E rollout and rollback SQLs document](event-sourcing/event-repository/event-repository-liquibase/docs/framework-E-sqls.md)
+  - Inserts of new events into event_log now explicitly set event_number and previous_event_number
+    to NULL, for rollback purposes
+  - Refactor JsonObject usages to more proper api
+  - Fix HttpClient lifecycle.
+  - published_events insertion moved to EventNumberLinker from LinkedEventPublisher
+ 
+
+
 # [17.104.0-M7] - 2025-10-30
 ### Changed
 - Update framework-libraries to 17.104.0-M6
