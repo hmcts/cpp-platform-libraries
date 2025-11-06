@@ -43,7 +43,7 @@
         <file-service.version>17.103.1</file-service.version>
         <framework-libraries.version>17.103.0</framework-libraries.version>
         <framework.version>17.103.0</framework.version>
-        <event-store.version>17.103.4</event-store.version>
+        <event-store.version>17.103.5</event-store.version>
         <cpp.common-bom.version>17.103.1</cpp.common-bom.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
