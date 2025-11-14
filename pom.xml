@@ -42,15 +42,15 @@
         <!-- Github libraries versions -->
         <file-service.version>17.103.1</file-service.version>
         <framework-libraries.version>17.103.0</framework-libraries.version>
-        <framework.version>17.103.0</framework.version>
-        <event-store.version>17.103.6-M1</event-store.version>
+        <framework.version>17.103.1-M1</framework.version>
+        <event-store.version>17.103.6-M2</event-store.version>
         <cpp.common-bom.version>17.103.1</cpp.common-bom.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.0.37</usersgroups.version>
-        <progression.version>17.0.198</progression.version>
+        <progression.version>17.0.206</progression.version>
         <hearing.version>17.0.117</hearing.version>
         <sjp.version>17.0.129</sjp.version>
         <referencedata.version>17.0.116</referencedata.version>
