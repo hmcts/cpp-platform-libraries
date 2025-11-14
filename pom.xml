@@ -52,9 +52,9 @@
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.0.37</usersgroups.version>
-        <progression.version>17.0.193</progression.version>
+        <progression.version>17.0.206</progression.version>
         <hearing.version>17.0.117</hearing.version>
-        <sjp.version>8.0.79</sjp.version>
+        <sjp.version>17.0.130</sjp.version>
         <referencedata.version>17.0.113</referencedata.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <azure-storage-version>8.4.0</azure-storage-version>
