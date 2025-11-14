@@ -11,7 +11,7 @@
     <groupId>uk.gov.moj.platform.libraries</groupId>
     <artifactId>platform-libraries-parent-pom</artifactId>
     <name>cpp.platform.libraries</name>
-    <version>17.103.7-M2-SNAPSHOT</version>
+    <version>17.103.7-M2</version>
     <packaging>pom</packaging>
 
     <modules>
