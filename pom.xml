@@ -45,8 +45,8 @@
 
         <!-- Framework versions -->
         <framework-libraries.version>17.104.0-M6</framework-libraries.version>
-        <framework.version>17.104.0-M4</framework.version>
-        <event-store.version>17.104.0-M10</event-store.version>
+        <framework.version>17.104.0-M6</framework.version>
+        <event-store.version>17.104.0-M12</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 

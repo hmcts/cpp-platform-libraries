@@ -5,6 +5,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.104.0-M9] - 2025-11-21
+### Changed
+- Update event-store to 17.104.0-M12 for:
+  - Catchup will now ignore events on inactive streams and events that are not marked as `HEALTHY`
+  - EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
+  - TransactionHandler will now roll back except if transaction is `STATUS_NO_TRANSACTION`
+  - The `is_published` flag in event_log table is now true by default.
+  - `is_published` flag in event_log now set to false when the event is first inserted. Will be set
+    to true once publishing has sent the event to the event topic
+
 # [17.104.0-M8] - 2025-11-03
 ### Changed
 - Update event-store to 17.104.0-M10 for:
