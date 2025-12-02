@@ -46,14 +46,14 @@
         <!-- Framework versions -->
         <framework-libraries.version>17.104.0-M6</framework-libraries.version>
         <framework.version>17.104.0-M6</framework.version>
-        <event-store.version>17.104.0-M12</event-store.version>
+        <event-store.version>17.104.0-M13</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.0.37</usersgroups.version>
-        <progression.version>17.0.206</progression.version>
-        <hearing.version>17.0.117</hearing.version>
+        <progression.version>17.0.215</progression.version>
+        <hearing.version>17.0.134</hearing.version>
         <sjp.version>17.0.130</sjp.version>
         <referencedata.version>17.0.113</referencedata.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>

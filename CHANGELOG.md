@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.104.0-M10] - 2025-12-02
+### Changed
+- Update event-store to 17.104.0-M13 with new Liquibase changesets.
+
 # [17.104.0-M9] - 2025-11-21
 ### Changed
 - Update event-store to 17.104.0-M12 for:
