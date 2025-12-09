@@ -33,10 +33,6 @@
             <artifactId>event-store-metric-meters</artifactId>
         </dependency>
         <dependency>
-            <groupId>uk.gov.justice.event-store</groupId>
-            <artifactId>framework-stream-rest-resources</artifactId>
-        </dependency>
-        <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>persistence-jdbc</artifactId>
         </dependency>
