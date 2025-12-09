@@ -1,22 +1,20 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
-import static javax.json.Json.createArrayBuilder;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
-
-import java.io.IOException;
-import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import java.io.IOException;
+import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ApplicationScoped
 class SearchResultConverter {
@@ -28,7 +26,7 @@ class SearchResultConverter {
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
     JsonArray toJsonArray(final SearchHits searchHits, final Class<?> resultHitType) {
-        final JsonArrayBuilder results = createArrayBuilder();
+        final JsonArrayBuilder results = getJsonBuilderFactory().createArrayBuilder();
         searchHits.forEach(searchHit -> results.add(toJsonObject(searchHit, resultHitType)));
         return results.build();
     }
@@ -36,7 +34,7 @@ class SearchResultConverter {
     JsonArray convertInnerHitsToJsonArray(final SearchHits searchHits,
                                          final Class<?> resultHitType,
                                          final String innerResultHightNodeName) {
-        final JsonArrayBuilder results = createArrayBuilder();
+        final JsonArrayBuilder results = getJsonBuilderFactory().createArrayBuilder();
         searchHits.forEach(searchHit -> toJsonObject(resultHitType, innerResultHightNodeName, results, searchHit));
         return results.build();
     }

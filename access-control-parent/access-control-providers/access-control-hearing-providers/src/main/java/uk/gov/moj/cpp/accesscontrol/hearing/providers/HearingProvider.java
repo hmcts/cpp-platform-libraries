@@ -1,10 +1,5 @@
 package uk.gov.moj.cpp.accesscontrol.hearing.providers;
 
-import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
-import static javax.json.Json.createObjectBuilder;
-import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
-
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
@@ -12,14 +7,18 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonString;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
 @ApplicationScoped
@@ -65,7 +64,7 @@ public class HearingProvider {
 
     private JsonEnvelope buildMaterialRequestEnvelope(final Action action) {
         return enveloper.withMetadataFrom(action.envelope(), QUERY_SEARCH_BY_MATERIAL_ID)
-                .apply(createObjectBuilder()
+                .apply(getJsonBuilderFactory().createObjectBuilder()
                         .add("q", materialIdFrom(action).toString())
                         .build());
     }
@@ -94,7 +93,7 @@ public class HearingProvider {
 
     private JsonEnvelope buildHearingRequestEnvelope(final Action action) {
         return enveloper.withMetadataFrom(action.envelope(), QUERY_SEARCH_BY_HEARING_ID)
-                .apply(createObjectBuilder()
+                .apply(getJsonBuilderFactory().createObjectBuilder()
                         .add(HEARING_ID_KEY, hearingIdFrom(action).toString())
                         .build());
     }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.access-control</groupId>
         <artifactId>access-control-providers</artifactId>
-        <version>17.103.7-SNAPSHOT</version>
+        <version>17.103.8-SNAPSHOT</version>
     </parent>
 
     <artifactId>access-control-refdata-providers</artifactId>
@@ -48,6 +48,12 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.gov.justice.utils</groupId>
+            <artifactId>utilities-core</artifactId>
             <scope>provided</scope>
         </dependency>
 

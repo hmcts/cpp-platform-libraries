@@ -1,7 +1,6 @@
 package uk.gov.justice.services.audit.client;
 
-import static javax.json.Json.createObjectBuilder;
-
+import org.slf4j.Logger;
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.util.Clock;
@@ -12,19 +11,17 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.JsonObjects;
 
-import java.util.function.Function;
-
 import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import java.util.function.Function;
 
-import org.slf4j.Logger;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Sends audit events to the Audit topic, to be latest consumed by the Audit Context.
@@ -66,7 +63,7 @@ public class RemoteAuditClient implements AuditClient {
     }
 
     private JsonEnvelope createOutgoingEnvelopeFrom(final JsonEnvelope envelope, final String component) {
-        final JsonObjectBuilder objectBuilder = createObjectBuilder()
+        final JsonObjectBuilder objectBuilder = getJsonBuilderFactory().createObjectBuilder()
                 .add(CONTENT, createContentFrom(envelope))
                 .add(ORIGIN, serviceContextNameProvider.getServiceContextName())
                 .add(COMPONENT, component)
@@ -78,13 +75,13 @@ public class RemoteAuditClient implements AuditClient {
     }
 
     private JsonObjectBuilder createContentFrom(final JsonEnvelope envelope) {
-        JsonObjectBuilder contentBuilder = Json.createObjectBuilder();
+        JsonObjectBuilder contentBuilder = getJsonBuilderFactory().createObjectBuilder();
         final JsonValue payload = envelope.payload();
 
         if (payload != null) {
             switch (payload.getValueType()) {
                 case ARRAY:
-                    final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+                    final JsonArrayBuilder arrayBuilder = getJsonBuilderFactory().createArrayBuilder();
                     ((JsonArray) payload).forEach(arrayBuilder::add);
                     contentBuilder.add(PAYLOAD, arrayBuilder);
                     break;

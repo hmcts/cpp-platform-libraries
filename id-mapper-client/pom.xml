@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.platform.libraries</groupId>
         <artifactId>platform-libraries-parent-pom</artifactId>
-        <version>17.103.7-SNAPSHOT</version>
+        <version>17.103.8-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.system.id-mapper</groupId>
@@ -22,6 +22,12 @@
         <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.gov.justice.framework-generators</groupId>
+            <artifactId>rest-client-core</artifactId>
             <scope>provided</scope>
         </dependency>
 

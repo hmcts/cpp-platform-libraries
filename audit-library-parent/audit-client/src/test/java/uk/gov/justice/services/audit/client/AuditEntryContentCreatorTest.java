@@ -1,11 +1,10 @@
 package uk.gov.justice.services.audit.client;
 
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.when;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.common.util.Clock;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -13,16 +12,15 @@ import uk.gov.justice.services.messaging.MetadataBuilder;
 import uk.gov.justice.services.messaging.spi.DefaultJsonEnvelopeProvider;
 import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
 
-import java.time.ZonedDateTime;
-
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import java.time.ZonedDateTime;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class AuditEntryContentCreatorTest {
@@ -66,7 +64,7 @@ public class AuditEntryContentCreatorTest {
 
     @Test
     void shouldHandleArrayPayload() {
-        JsonArray arrayPayload = createArrayBuilder().add("value1").add("value2").build();
+        JsonArray arrayPayload = getJsonBuilderFactory().createArrayBuilder().add("value1").add("value2").build();
         final MetadataBuilder metadataBuilder = new DefaultJsonEnvelopeProvider().metadataBuilder().withName("testEvent").withId(randomUUID());
         final JsonEnvelope envelope = new DefaultJsonEnvelopeProvider().envelopeFrom(metadataBuilder.build(), arrayPayload);
         when(serviceContextNameProvider.getServiceContextName()).thenReturn("testContext");

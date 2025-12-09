@@ -3,9 +3,10 @@ package uk.gov.moj.cpp.accesscontrol.progression.test.util;
 
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class ProgressionSearchCaseByMaterialIdJsonResponseBuilder {
 
@@ -27,7 +28,7 @@ public class ProgressionSearchCaseByMaterialIdJsonResponseBuilder {
     }
 
     public JsonObject build() {
-        final JsonObjectBuilder json = Json.createObjectBuilder();
+        final JsonObjectBuilder json = getJsonBuilderFactory().createObjectBuilder();
 
         json.add("caseId", caseId.toString());
         json.add("prosecutingAuthority", prosecutingAuthority);
