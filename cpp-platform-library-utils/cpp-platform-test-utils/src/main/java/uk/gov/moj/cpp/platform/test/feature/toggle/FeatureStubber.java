@@ -1,30 +1,27 @@
 package uk.gov.moj.cpp.platform.test.feature.toggle;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
-import static java.lang.String.format;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
-import static javax.ws.rs.core.Response.Status.OK;
-import static uk.gov.justice.services.jmx.api.mbean.CommandRunMode.FORCED;
-import static uk.gov.justice.services.jmx.system.command.client.connection.JmxParametersBuilder.jmxParameters;
-import static uk.gov.justice.services.management.suspension.commands.RefreshFeatureControlCacheCommand.REFRESH_FEATURE_CACHE;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.justice.services.jmx.api.mbean.CommandRunMode;
 import uk.gov.justice.services.jmx.system.command.client.SystemCommanderClient;
 import uk.gov.justice.services.jmx.system.command.client.TestSystemCommanderClientFactory;
 import uk.gov.justice.services.jmx.system.command.client.connection.JmxParameters;
 
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static java.lang.String.format;
+import static javax.ws.rs.core.Response.Status.OK;
+import static uk.gov.justice.services.jmx.api.mbean.CommandRunMode.FORCED;
+import static uk.gov.justice.services.jmx.system.command.client.connection.JmxParametersBuilder.jmxParameters;
+import static uk.gov.justice.services.management.suspension.commands.RefreshFeatureControlCacheCommand.REFRESH_FEATURE_CACHE;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class FeatureStubber {
 
@@ -47,7 +44,7 @@ public class FeatureStubber {
      *
      */
     public static void stubFeaturesFor(final String contextName, final Map<String, Boolean> features) {
-        final JsonObject featuresJson = createObjectBuilder()
+        final JsonObject featuresJson = getJsonBuilderFactory().createObjectBuilder()
                 .add("items", buildFeaturesAzurePayload(features))
                 .build();
 
@@ -84,10 +81,10 @@ public class FeatureStubber {
     }
 
     private static JsonArrayBuilder buildFeaturesAzurePayload(final Map<String, Boolean> features) {
-        final JsonArrayBuilder featuresArrayBuilder = createArrayBuilder();
+        final JsonArrayBuilder featuresArrayBuilder = getJsonBuilderFactory().createArrayBuilder();
 
         features.forEach((feature, isEnabled) ->
-                featuresArrayBuilder.add(createObjectBuilder()
+                featuresArrayBuilder.add(getJsonBuilderFactory().createObjectBuilder()
                         .add("etag", "p09XKJF7DC7F4CN3gPSsOGAeU5c")
                         .add("key", format(".appconfig.featureflag/%s", feature))
                         .add("label", "STE11")

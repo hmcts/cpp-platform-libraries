@@ -3,18 +3,18 @@ package uk.gov.moj.cpp.platform.data.utils.date;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.core.enveloper.EnvelopeFactory;
 
-import javax.json.Json;
 import javax.ws.rs.BadRequestException;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class ApiDatePreconditionTest {
     private static JsonEnvelope newEnvelope(final String fromDate, final String toDate) {
         return EnvelopeFactory.createEnvelope(
                 "commandName",
-                Json.createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("fromDate", fromDate)
                         .add("toDate", toDate)
                         .build());

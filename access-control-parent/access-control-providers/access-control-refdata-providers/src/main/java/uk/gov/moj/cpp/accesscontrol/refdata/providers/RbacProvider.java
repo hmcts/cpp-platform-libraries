@@ -1,11 +1,7 @@
 package uk.gov.moj.cpp.accesscontrol.refdata.providers;
 
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createObjectBuilder;
-import static org.apache.commons.lang3.StringUtils.isNoneBlank;
-import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
@@ -14,19 +10,21 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
 @ApplicationScoped
@@ -95,7 +93,7 @@ public class RbacProvider {
 
         final String documentTypeId = envelope.payloadAsJsonObject().getJsonObject("courtDocument").getString("documentTypeId");
 
-        final Envelope<JsonObject> jsonObjectEnvelope = Enveloper.envelop(createObjectBuilder().add(ID, documentTypeId).build())
+        final Envelope<JsonObject> jsonObjectEnvelope = Enveloper.envelop(getJsonBuilderFactory().createObjectBuilder().add(ID, documentTypeId).build())
                 .withName(REFERENCEDATA_QUERY_DOCUMENT_TYPE_ACCESS)
                 .withMetadataFrom(envelope);
 
@@ -179,7 +177,7 @@ public class RbacProvider {
         final String userId = action.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from the command."));
 
 
-        final JsonObject payload = createObjectBuilder()
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                 .add(USER_ID, userId)
                 .build();
 

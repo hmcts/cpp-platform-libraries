@@ -1,7 +1,23 @@
 package uk.gov.justice.services.audit.client;
 
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.MetadataBuilder;
+import uk.gov.justice.services.messaging.spi.DefaultJsonEnvelopeProvider;
+import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
+import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
+
+import javax.json.JsonObject;
+
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,24 +30,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.MetadataBuilder;
-import uk.gov.justice.services.messaging.spi.DefaultJsonEnvelopeProvider;
-import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
-import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
-
-import javax.json.JsonObject;
-
-import io.micrometer.core.instrument.Timer;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class HybridAuditClientTest {
@@ -72,7 +71,7 @@ public class HybridAuditClientTest {
             final Timer.Sample artemisTimer = mock(Timer.Sample.class);
             final Timer.Sample dataLakeTimer = mock(Timer.Sample.class);
             ReflectionUtil.setField(hybridAuditClient, "auditStorageEnabled", "true");
-            final JsonObject auditContentJson = createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
+            final JsonObject auditContentJson = getJsonBuilderFactory().createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
             when(auditEntryContentCreator.create(envelope, component)).thenReturn(auditContentJson);
             when( auditMetricsRecorder.startTimer()).thenReturn(artemisTimer).thenReturn(dataLakeTimer);
 
@@ -94,7 +93,7 @@ public class HybridAuditClientTest {
             final Timer.Sample artemisTimer = mock(Timer.Sample.class);
             final Timer.Sample dataLakeTimer = mock(Timer.Sample.class);
             ReflectionUtil.setField(hybridAuditClient, "auditStorageEnabled", "true");
-            final JsonObject auditContentJson = createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
+            final JsonObject auditContentJson = getJsonBuilderFactory().createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
             when(auditEntryContentCreator.create(envelope, component)).thenReturn(auditContentJson);
             when( auditMetricsRecorder.startTimer()).thenReturn(artemisTimer).thenReturn(dataLakeTimer);
             doThrow(new RuntimeException()).when(remoteAuditClient).auditEntry(envelope, component);
@@ -126,7 +125,7 @@ public class HybridAuditClientTest {
             final Timer.Sample artemisTimer = mock(Timer.Sample.class);
             final Timer.Sample dataLakeTimer = mock(Timer.Sample.class);
             ReflectionUtil.setField(hybridAuditClient, "auditStorageEnabled", "true");
-            final JsonObject auditContentJson = createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
+            final JsonObject auditContentJson = getJsonBuilderFactory().createObjectBuilder().add("timestamp", "2024-09-10T01:01:29.238Z").build();
             when(auditEntryContentCreator.create(envelope, component)).thenReturn(auditContentJson);
             doThrow(new RuntimeException("Test exception")).when(azureDataLakeServiceClient).uploadToStorage(any(DataLakeFileObject.class));
             when( auditMetricsRecorder.startTimer()).thenReturn(artemisTimer).thenReturn(dataLakeTimer);

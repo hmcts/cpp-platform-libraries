@@ -4,6 +4,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+# [17.103.8] - 2025-12-09
+### Changed
+- Used JsonFactory instead of Json.create methods
+- Refactor JsonObject usages to more proper api
+- Fix HttpClient lifecycle.
+
 # [17.103.7] - 2025-11-17
 ### Changed
 - Removing milestone releases to keep 17.103.x release branch clean

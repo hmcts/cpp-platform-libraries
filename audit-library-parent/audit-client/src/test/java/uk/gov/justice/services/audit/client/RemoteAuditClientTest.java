@@ -1,37 +1,5 @@
 package uk.gov.justice.services.audit.client;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static java.time.ZoneOffset.UTC;
-import static java.time.ZonedDateTime.now;
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.NULL;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
-import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
-
-import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.core.sender.Sender;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.test.utils.common.helper.StoppedClock;
-import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
-
-import java.util.UUID;
-
-import javax.json.JsonValue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +9,35 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
+import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.core.sender.Sender;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.test.utils.common.helper.StoppedClock;
+import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
+
+import javax.json.JsonValue;
+import java.util.UUID;
+
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.time.ZoneOffset.UTC;
+import static java.time.ZonedDateTime.now;
+import static java.util.UUID.randomUUID;
+import static javax.json.JsonValue.NULL;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 
 @ExtendWith(MockitoExtension.class)
 public class RemoteAuditClientTest {
@@ -122,7 +119,7 @@ public class RemoteAuditClientTest {
     @Test
     public void shouldVerifyJsonArrayPayloadAuditMessageSent() throws Exception {
         remoteAuditClient.auditEntry(envelopeFrom(metadataOf(UUID, ACTION_NAME),
-                createArrayBuilder()
+                        getJsonBuilderFactory().createArrayBuilder()
                         .add("Id")
                         .add("Name")
                         .build()),
@@ -150,7 +147,7 @@ public class RemoteAuditClientTest {
     @Test
     public void shouldVerifyJsonStringPayloadAuditMessageSent() throws Exception {
         remoteAuditClient.auditEntry(envelopeFrom(metadataOf(UUID, ACTION_NAME),
-                createObjectBuilder()
+                        getJsonBuilderFactory().createObjectBuilder()
                         .add("name", "value")
                         .build()
                         .getJsonString("name")),
@@ -177,7 +174,7 @@ public class RemoteAuditClientTest {
     @Test
     public void shouldVerifyJsonNumberPayloadAuditMessageSent() throws Exception {
         remoteAuditClient.auditEntry(envelopeFrom(metadataOf(UUID, ACTION_NAME),
-                createObjectBuilder()
+                        getJsonBuilderFactory().createObjectBuilder()
                         .add("count", 15)
                         .build()
                         .getJsonNumber("count")),

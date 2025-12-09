@@ -1,17 +1,6 @@
 package uk.gov.moj.cpp.accesscontrol.common.providers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -24,13 +13,25 @@ import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.drools.ExpectedPermission;
 import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 
 @Provider
@@ -133,7 +134,7 @@ public class UserAndGroupProvider {
         final Optional<String> userId = action.userId();
 
         if (userId.isPresent()) {
-            final JsonObject payload = createObjectBuilder()
+            final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                     .add(USER_ID, userId.get())
                     .add(GROUP_NAME, groupName)
                     .build();
@@ -167,7 +168,7 @@ public class UserAndGroupProvider {
         final Optional<String> userId = action.userId();
 
         if (userId.isPresent()) {
-            final JsonObject payload = createObjectBuilder()
+            final JsonObject payload = getJsonBuilderFactory().createObjectBuilder()
                     .add(USER_ID, userId.get())
                     .build();
 

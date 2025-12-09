@@ -13,7 +13,7 @@ public class HttpClientFactoryTest {
     private HttpClientFactory underTest = new HttpClientFactory();
 
     @Test
-    public void shouldGetNewObjectOnEveryRequest() {
+    public void shouldGetSameObjectOnEveryRequest() {
 
         Client client_1 = null;
         Client client_2 = null;
@@ -21,7 +21,7 @@ public class HttpClientFactoryTest {
             client_1 = underTest.getClient();
             client_2 = underTest.getClient();
 
-            assertThat(client_1, is(not(client_2)));
+            assertThat(client_1, is(client_2));
         } finally {
             closeQuietly(client_1);
             closeQuietly(client_2);

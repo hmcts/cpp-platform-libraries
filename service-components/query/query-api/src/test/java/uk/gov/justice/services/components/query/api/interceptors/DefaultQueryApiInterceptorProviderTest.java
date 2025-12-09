@@ -1,19 +1,14 @@
 package uk.gov.justice.services.components.query.api.interceptors;
 
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import uk.gov.justice.services.components.configuration.ServiceComponentJndiConfig;
 import uk.gov.justice.services.core.accesscontrol.LocalAccessControlInterceptor;
 import uk.gov.justice.services.core.audit.LocalAuditInterceptor;
@@ -29,15 +24,18 @@ import uk.gov.justice.services.metrics.interceptor.TotalActionMetricsInterceptor
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class DefaultQueryApiInterceptorProviderTest {
 
@@ -66,7 +64,7 @@ public class DefaultQueryApiInterceptorProviderTest {
             final InterceptorChain interceptorChain = mock(InterceptorChain.class);
             final JsonEnvelope jsonEnvelope = envelopeFrom(
                     metadataBuilder().withId(randomUUID()).withName("test.query"),
-                    createObjectBuilder().build());
+                    getJsonBuilderFactory().createObjectBuilder().build());
 
             when(interceptorChain.processNext(interceptorContext)).thenReturn(interceptorContext);
             when(interceptorContext.inputEnvelope()).thenReturn(jsonEnvelope);
