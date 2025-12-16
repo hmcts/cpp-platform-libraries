@@ -3,7 +3,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common.library.utils</groupId>
         <artifactId>cpp-platform-library-utils</artifactId>
-        <version>17.104.0-M11-SNAPSHOT</version>
+        <version>17.104.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>cpp-platform-data-utils</artifactId>
