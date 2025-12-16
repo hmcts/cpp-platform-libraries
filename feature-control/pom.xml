@@ -3,7 +3,7 @@
     <parent>
         <artifactId>platform-libraries-parent-pom</artifactId>
         <groupId>uk.gov.moj.platform.libraries</groupId>
-        <version>17.104.0-SNAPSHOT</version>
+        <version>17.104.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
