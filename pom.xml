@@ -11,7 +11,7 @@
     <groupId>uk.gov.moj.platform.libraries</groupId>
     <artifactId>platform-libraries-parent-pom</artifactId>
     <name>cpp.platform.libraries</name>
-    <version>17.103.9-SNAPSHOT</version>
+    <version>17.103.9-M1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -37,13 +37,13 @@
             2. While release through ADO pipeline, for white listed release branches (main/release-8.x.x) it's done through git hook (legacy solution) via azure pipeline code
             3. While release through ADO pipeline, for branches other than white listed release branches, it's done through versions:set command via azure pipeline code
          -->
-        <cpp.platform-libraries.version>17.103.9-SNAPSHOT</cpp.platform-libraries.version>
+        <cpp.platform-libraries.version>17.103.9-M1-SNAPSHOT</cpp.platform-libraries.version>
 
         <!-- Github libraries versions -->
         <file-service.version>17.103.2</file-service.version>
         <framework-libraries.version>17.103.1</framework-libraries.version>
         <framework.version>17.103.2</framework.version>
-        <event-store.version>17.103.7</event-store.version>
+        <event-store.version>17.103.8-M1</event-store.version>
         <cpp.common-bom.version>17.103.1</cpp.common-bom.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
