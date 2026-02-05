@@ -11,7 +11,7 @@
     <groupId>uk.gov.moj.platform.libraries</groupId>
     <artifactId>platform-libraries-parent-pom</artifactId>
     <name>cpp.platform.libraries</name>
-    <version>17.104.1-SNAPSHOT</version>
+    <version>17.105.0-M1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -37,7 +37,7 @@
             2. While release through ADO pipeline, for white listed release branches (main/release-8.x.x) it's done through git hook (legacy solution) via azure pipeline code
             3. While release through ADO pipeline, for branches other than white listed release branches, it's done through versions:set command via azure pipeline code
          -->
-        <cpp.platform-libraries.version>17.104.1-SNAPSHOT</cpp.platform-libraries.version>
+        <cpp.platform-libraries.version>17.105.0-M1-SNAPSHOT</cpp.platform-libraries.version>
 
         <!-- Github libraries versions -->
         <cpp.common-bom.version>17.104.0</cpp.common-bom.version>
@@ -45,15 +45,15 @@
 
         <!-- Framework versions -->
         <framework-libraries.version>17.104.0</framework-libraries.version>
-        <framework.version>17.104.0</framework.version>
-        <event-store.version>17.104.0</event-store.version>
+        <framework.version>17.105.0-M3</framework.version>
+        <event-store.version>17.105.0-M6</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.0.37</usersgroups.version>
         <progression.version>17.0.219</progression.version>
-        <hearing.version>17.0.136</hearing.version>
+        <hearing.version>17.0.142</hearing.version>
         <sjp.version>17.0.129</sjp.version>
         <referencedata.version>17.0.120</referencedata.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
