@@ -5,12 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-# [17.104.0-M10] - 2025-12-02
+# [17.104.0] - 2025-12-16
+
+### Added
+- New REST endpoint that will serve json showing the various framework project versions on the path `/internal/framework/versions`
+
 ### Changed
 - Update event-store to 17.104.0-M13 with new Liquibase changesets.
-
-# [17.104.0-M9] - 2025-11-21
-### Changed
 - Update event-store to 17.104.0-M12 for:
   - Catchup will now ignore events on inactive streams and events that are not marked as `HEALTHY`
   - EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
@@ -18,9 +19,6 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
   - The `is_published` flag in event_log table is now true by default.
   - `is_published` flag in event_log now set to false when the event is first inserted. Will be set
     to true once publishing has sent the event to the event topic
-
-# [17.104.0-M8] - 2025-11-03
-### Changed
 - Update event-store to 17.104.0-M10 for:
   - Added [framework E rollout and rollback SQLs document](event-sourcing/event-repository/event-repository-liquibase/docs/framework-E-sqls.md)
   - Inserts of new events into event_log now explicitly set event_number and previous_event_number
@@ -28,46 +26,22 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
   - Refactor JsonObject usages to more proper api
   - Fix HttpClient lifecycle.
   - published_events insertion moved to EventNumberLinker from LinkedEventPublisher
- 
-
-
-# [17.104.0-M7] - 2025-10-30
-### Changed
 - Update framework-libraries to 17.104.0-M6
 - Update microservice-framework to 17.104.0-M4
 - Update event-store to 17.104.0-M9
 - Refactor JsonObject usages to more proper api
 - Fix HttpClient lifecycle.
-
-# [17.104.0-M6] - 2025-10-24
-### Changed
 - Update event-store to 17.104.0-M8 for:
   - Catchup now calculates previousEventNumber for each event from the previous row in
   - Catchup can now be run with the id of the event you wish to run catchup from. Catchup
     the event_log table rather than the previous_event_number column.
-
-# [17.104.0-M5] - 2025-10-15
 - Update event-store to 17.104.0-M5 to add event publishing compatibility mode
-
-# [17.104.0-M4] - 2025-10-13
-### Changed
 - Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
-
-# [17.104.0-M3] - 2025-10-02
-### Changed
 - Update event-store to 17.104.0-M4 for refactor of event publishing
-
-# [17.104.0-M2] - 2025-09-22
-### Changed
 - Update event-store to 17.104.0-M3 for: 
   - Removed `SKIP LOCKED` when querying for earliest unlinked event in event_log table
   - Removed `pre_publish_queue` table from event_store database
-
-# [17.104.0-M1] - 2025-09-18
-### Changed
 - Update event-store to 17.104.0-M2 for the new event publishing mechanism
-### Added
-- New REST endpoint that will serve json showing the various framework project versions on the path `/internal/framework/versions`
 ### Security
 - Updated to latest common-bom for latest third party security fixes:
   - Update commons.beanutils version to **1.11.0** to fix **security vulnerability CVE-2025-48734**
