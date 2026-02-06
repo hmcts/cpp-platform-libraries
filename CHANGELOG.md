@@ -4,6 +4,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+# [17.105.0-M2] - 2026-02-06
+### Changed
+- Update event-store to 17.105.0-M7 for:
+  - Introduce concurrency to stream processing through JNDI value 'stream.processing.max.workers'
+  - Continue processing next stream on error of current stream processing
+  - Removed test-utils-core.jar from the main classpath
 
 # [17.105.0-M1] - 2026-02-05
 ### Changed
