@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import java.io.StringReader;
 import java.util.List;
@@ -73,9 +74,13 @@ class SearchResultConverter {
 
             String json = objectMapper.writeValueAsString(pojo);
 
-            return javax.json.Json.createReader(
+            try(final JsonReader reader = javax.json.Json.createReader(
                     new StringReader(json)
-            ).readObject();
+            )){
+                return reader.readObject();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
         } catch (Exception e) {
             throw new UnifiedSearchClientException(
