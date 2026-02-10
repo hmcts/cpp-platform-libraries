@@ -45,6 +45,9 @@
         <framework.version>17.103.2</framework.version>
         <event-store.version>17.103.7</event-store.version>
         <cpp.common-bom.version>17.103.1</cpp.common-bom.version>
+        <!-- remove this one before relase -->
+        <elasticsearch.version>9.2.2</elasticsearch.version>
+        <!-- -->
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 

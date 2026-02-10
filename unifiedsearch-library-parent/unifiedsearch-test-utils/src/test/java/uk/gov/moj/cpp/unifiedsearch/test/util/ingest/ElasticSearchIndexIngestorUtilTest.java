@@ -11,6 +11,11 @@ import static org.mockito.Mockito.when;
 import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CPS_CASE;
 import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CRIME_CASE;
 
+import co.elastic.clients.elasticsearch._types.ErrorCause;
+import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.elasticsearch.core.BulkResponse;
+import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
+import co.elastic.clients.elasticsearch.core.bulk.OperationType;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.moj.cpp.unifiedsearch.test.util.ingest.document.CaseDocument;
 import uk.gov.moj.cpp.unifiedsearch.test.util.ingest.mothers.ApplicationDocumentMother;
@@ -18,12 +23,10 @@ import uk.gov.moj.cpp.unifiedsearch.test.util.ingest.mothers.HearingDocumentMoth
 import uk.gov.moj.cpp.unifiedsearch.test.util.ingest.mothers.PartyDocumentMother;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.client.RequestOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,12 +51,11 @@ public class ElasticSearchIndexIngestorUtilTest {
 
         final BulkResponse bulkResponse = mock(BulkResponse.class);
 
-        when(elasticSearchClient.restClient(CRIME_CASE).bulk(any(BulkRequest.class), any(RequestOptions.class))).thenReturn(bulkResponse);
-        when(bulkResponse.hasFailures()).thenReturn(false);
-        when(objectMapper.writeValueAsString(caseDocument)).thenReturn("test");
+        when(elasticSearchClient.restClient(CRIME_CASE).bulk(any(BulkRequest.class))).thenReturn(bulkResponse);
+        when(bulkResponse.errors()).thenReturn(false);
 
         elasticSearchIndexIngestorUtil.ingestCaseData(asList(caseDocument));
-        assertThat(bulkResponse.hasFailures(), is(false));
+        assertThat(bulkResponse.errors(), is(false));
     }
 
     @Test
@@ -63,13 +65,13 @@ public class ElasticSearchIndexIngestorUtilTest {
         final CaseDocument caseDocument = getCrimeCaseDocument();
         final BulkResponse bulkResponse = mock(BulkResponse.class);
 
-        when(elasticSearchClient.restClient(CRIME_CASE).bulk(any(BulkRequest.class), any(RequestOptions.class))).thenReturn(bulkResponse);
-        when(bulkResponse.hasFailures()).thenReturn(true);
-        when(bulkResponse.buildFailureMessage()).thenReturn(exceptionMessage);
-        when(objectMapper.writeValueAsString(caseDocument)).thenReturn("test");
+        when(elasticSearchClient.restClient(CRIME_CASE).bulk(any(BulkRequest.class))).thenReturn(bulkResponse);
+        when(bulkResponse.errors()).thenReturn(true);
+        when(bulkResponse.items()).thenReturn(Collections.singletonList(BulkResponseItem.of(t -> t.error(ErrorCause.of( e -> e.reason(exceptionMessage)))
+                .operationType(OperationType.Create).index("index").status(1))));
 
         var e = assertThrows(RuntimeException.class, () -> elasticSearchIndexIngestorUtil.ingestCaseData(asList(caseDocument)));
-        assertThat(e.getMessage(), is("BulkRequest failed: " + exceptionMessage));
+        assertThat(e.getMessage(), is("BulkRequest failed: ErrorCause: {\"reason\":\"Some really bad exception\"}"));
     }
 
     @Test
@@ -77,12 +79,11 @@ public class ElasticSearchIndexIngestorUtilTest {
         final uk.gov.moj.cpp.unifiedsearch.test.util.ingest.document.cps.CaseDocument caseDocument = getCpsCaseDocument();
         final BulkResponse bulkResponse = mock(BulkResponse.class);
 
-        when(elasticSearchClient.restClient(CPS_CASE).bulk(any(BulkRequest.class), any(RequestOptions.class))).thenReturn(bulkResponse);
-        when(bulkResponse.hasFailures()).thenReturn(false);
-        when(objectMapper.writeValueAsString(caseDocument)).thenReturn("test");
+        when(elasticSearchClient.restClient(CPS_CASE).bulk(any(BulkRequest.class))).thenReturn(bulkResponse);
+        when(bulkResponse.errors()).thenReturn(false);
 
         elasticSearchIndexIngestorUtil.ingestCaseData(asList(caseDocument));
-        assertThat(bulkResponse.hasFailures(), is(false));
+        assertThat(bulkResponse.errors(), is(false));
     }
 
     @Test
@@ -93,13 +94,13 @@ public class ElasticSearchIndexIngestorUtilTest {
         final uk.gov.moj.cpp.unifiedsearch.test.util.ingest.document.cps.CaseDocument caseDocument = getCpsCaseDocument();
         final BulkResponse bulkResponse = mock(BulkResponse.class);
 
-        when(elasticSearchClient.restClient(CPS_CASE).bulk(any(BulkRequest.class), any(RequestOptions.class))).thenReturn(bulkResponse);
-        when(bulkResponse.hasFailures()).thenReturn(true);
-        when(bulkResponse.buildFailureMessage()).thenReturn(exceptionMessage);
-        when(objectMapper.writeValueAsString(caseDocument)).thenReturn("test");
+        when(elasticSearchClient.restClient(CPS_CASE).bulk(any(BulkRequest.class))).thenReturn(bulkResponse);
+        when(bulkResponse.errors()).thenReturn(true);
+        when(bulkResponse.items()).thenReturn(Collections.singletonList(BulkResponseItem.of(t -> t.error(ErrorCause.of( e -> e.reason(exceptionMessage)))
+                .operationType(OperationType.Create).index("index").status(1))));
 
         var e = assertThrows(RuntimeException.class, () -> elasticSearchIndexIngestorUtil.ingestCaseData(asList(caseDocument)));
-        assertThat(e.getMessage(), is("BulkRequest failed: " + exceptionMessage));
+        assertThat(e.getMessage(), is("BulkRequest failed: ErrorCause: {\"reason\":\"Some really bad exception\"}"));
     }
 
     private CaseDocument getCrimeCaseDocument() {

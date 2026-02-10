@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.get.GetResponse;
+import co.elastic.clients.elasticsearch.core.GetResponse;
 
 @ApplicationScoped
 public class CpsCaseDetailsTransformer {
@@ -26,7 +26,7 @@ public class CpsCaseDetailsTransformer {
     public CaseDetails transform(final JsonObject index, final GetResponse getResponse) {
         try {
             final CaseDetails incomingIndexData = mapper.readValue(index.toString(), CaseDetails.class);
-            final CaseDetails unifiedSearchIndexData = mapper.readValue(getResponse.getSourceAsString(), CaseDetails.class);
+            final CaseDetails unifiedSearchIndexData = mapper.readValue(getResponse.source().toString(), CaseDetails.class);
 
             if (incomingIndexData.getUrn() != null) {
                 unifiedSearchIndexData.setUrn(incomingIndexData.getUrn());

@@ -44,6 +44,25 @@ public class CaseDocument implements BaseCaseDocument {
         this.sourceSystemReference = sourceSystemReference;
     }
 
+    @Override
+    public String toString() {
+        return "CaseDocument{" +
+                "caseId='" + caseId + '\'' +
+                ", caseReference='" + caseReference + '\'' +
+                ", prosecutingAuthority='" + prosecutingAuthority + '\'' +
+                ", caseStatus='" + caseStatus + '\'' +
+                ", _case_type='" + _case_type + '\'' +
+                ", _is_sjp=" + _is_sjp +
+                ", _is_magistrates=" + _is_magistrates +
+                ", _is_crown=" + _is_crown +
+                ", _is_charging=" + _is_charging +
+                ", sjpNoticeServed='" + sjpNoticeServed + '\'' +
+                ", sourceSystemReference='" + sourceSystemReference + '\'' +
+                ", parties=" + parties +
+                ", hearings=" + hearings +
+                ", applications=" + applications +
+                '}';
+    }
 
     public String getCaseId() {
         return caseId;

@@ -11,7 +11,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 @ApplicationScoped
 public class UnifiedSearchHighLevelRestClientProducer {
@@ -21,31 +21,31 @@ public class UnifiedSearchHighLevelRestClientProducer {
 
     @Produces
     @Named(WRITE_USER)
-    public RestHighLevelClient getWriteHighLevelClient() {
+    public ElasticsearchClient getWriteHighLevelClient() {
         return highLevelRestClientProvider.newHighLevelClientFor(WRITE_USER);
     }
 
     @Produces
     @Named(READ_USER)
-    public RestHighLevelClient getReadHighLevelClient() {
+    public ElasticsearchClient getReadHighLevelClient() {
         return highLevelRestClientProvider.newHighLevelClientFor(READ_USER);
     }
 
     @Produces
     @Named(MONITOR_USER)
-    public RestHighLevelClient getMonitorHighLevelClient() {
+    public ElasticsearchClient getMonitorHighLevelClient() {
         return highLevelRestClientProvider.newHighLevelClientFor(MONITOR_USER);
     }
 
     @Produces
     @Named(CPS_WRITE_USER)
-    public RestHighLevelClient getCpsWriteHighLevelClient() {
+    public ElasticsearchClient getCpsWriteHighLevelClient() {
         return highLevelRestClientProvider.newHighLevelClientFor(CPS_WRITE_USER);
     }
 
     @Produces
     @Named(CPS_READ_USER)
-    public RestHighLevelClient getCpsReadHighLevelClient() {
+    public ElasticsearchClient getCpsReadHighLevelClient() {
         return highLevelRestClientProvider.newHighLevelClientFor(CPS_READ_USER);
     }
 }

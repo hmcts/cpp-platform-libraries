@@ -118,6 +118,30 @@ public class CaseDocument implements BaseCaseDocument {
         return linkedCases;
     }
 
+    @Override
+    public String toString() {
+        return "CaseDocument{" +
+                "caseId='" + caseId + '\'' +
+                ", urn='" + urn + '\'' +
+                ", cpsUnitCode='" + cpsUnitCode + '\'' +
+                ", cjsAreaCodes=" + cjsAreaCodes +
+                ", cpsAreaCode='" + cpsAreaCode + '\'' +
+                ", caseType='" + caseType + '\'' +
+                ", caseStatusCode='" + caseStatusCode + '\'' +
+                ", operationName='" + operationName + '\'' +
+                ", paralegalOfficer='" + paralegalOfficer + '\'' +
+                ", crownAdvocate='" + crownAdvocate + '\'' +
+                ", prosecutor='" + prosecutor + '\'' +
+                ", witnessCareUnitCode='" + witnessCareUnitCode + '\'' +
+                ", witnessCareOfficer='" + witnessCareOfficer + '\'' +
+                ", unit='" + unit + '\'' +
+                ", unitGroup='" + unitGroup + '\'' +
+                ", parties=" + parties +
+                ", hearings=" + hearings +
+                ", linkedCases=" + linkedCases +
+                '}';
+    }
+
     public static class Builder {
 
         private String caseId;

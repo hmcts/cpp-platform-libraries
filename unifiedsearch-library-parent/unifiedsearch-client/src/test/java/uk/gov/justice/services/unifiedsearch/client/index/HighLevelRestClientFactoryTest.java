@@ -6,9 +6,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import org.apache.http.client.CredentialsProvider;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
+
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,12 +29,12 @@ public class HighLevelRestClientFactoryTest {
 
         final CredentialsProvider credentialsProvider = mock(CredentialsProvider.class);
 
-        final RestHighLevelClient restHighLevelClient = highLevelRestClientFactory.createNew(
+        final ElasticsearchClient elasticsearchClient = highLevelRestClientFactory.createNew(
                 elasticsearchBaseUri,
                 credentialsProvider,
                 elasticsearchTimeout,
                 threadCount);
 
-        assertThat(restHighLevelClient, is(notNullValue()));
+        assertThat(elasticsearchClient, is(notNullValue()));
     }
 }

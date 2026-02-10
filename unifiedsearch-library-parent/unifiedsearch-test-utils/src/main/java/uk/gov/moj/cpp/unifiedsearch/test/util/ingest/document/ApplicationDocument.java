@@ -137,6 +137,5 @@ public class ApplicationDocument {
         public ApplicationDocument build() {
             return new ApplicationDocument(applicationId, applicationReference, applicationType, receivedDate, decisionDate, dueDate, applicationStatus, applicationExternalCreatorType, subjectSummary, applicationTypeCode);
         }
-
     }
 }

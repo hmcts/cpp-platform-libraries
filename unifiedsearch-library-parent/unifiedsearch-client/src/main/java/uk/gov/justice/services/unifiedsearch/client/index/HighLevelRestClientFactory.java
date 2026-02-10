@@ -6,14 +6,22 @@ import static org.elasticsearch.client.RestClient.builder;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.client.CredentialsProvider;
 import org.elasticsearch.client.RestClientBuilder;
-import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.RestClient;
+
 
 @ApplicationScoped
 public class HighLevelRestClientFactory {
 
-    public RestHighLevelClient createNew(
+    public ElasticsearchClient createNew(
             final String elasticsearchBaseUri,
             final CredentialsProvider credentialsProvider,
             final int elasticsearchTimeout,
@@ -32,6 +40,16 @@ public class HighLevelRestClientFactory {
                                 .setSocketTimeout(elasticsearchTimeout)
                                 .setConnectionRequestTimeout(elasticsearchTimeout));
 
-        return new RestHighLevelClient(restClientBuilder);
+        RestClient restClient = restClientBuilder.build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        JacksonJsonpMapper jsonpMapper = new JacksonJsonpMapper(objectMapper);
+
+        RestClientTransport transport = new RestClientTransport(restClient, jsonpMapper);
+
+        return new ElasticsearchClient(transport);
     }
 }

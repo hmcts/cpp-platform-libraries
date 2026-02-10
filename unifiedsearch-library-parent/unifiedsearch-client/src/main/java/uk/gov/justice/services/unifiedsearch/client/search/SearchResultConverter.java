@@ -1,17 +1,24 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.core.search.InnerHitsResult;
+import co.elastic.clients.json.JsonData;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
+
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import java.io.IOException;
+
+import java.io.StringReader;
+import java.util.List;
 import java.util.Map;
 
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
@@ -25,13 +32,23 @@ class SearchResultConverter {
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
-    JsonArray toJsonArray(final SearchHits searchHits, final Class<?> resultHitType) {
+    private JacksonJsonpMapper jsonpMapper;
+
+    @PostConstruct
+    public void setup(){
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        jsonpMapper = new JacksonJsonpMapper(objectMapper);
+    }
+
+
+    JsonArray toJsonArray(final List<Hit<JsonData>> searchHits, final Class<?> resultHitType) {
         final JsonArrayBuilder results = getJsonBuilderFactory().createArrayBuilder();
         searchHits.forEach(searchHit -> results.add(toJsonObject(searchHit, resultHitType)));
         return results.build();
     }
 
-    JsonArray convertInnerHitsToJsonArray(final SearchHits searchHits,
+    JsonArray convertInnerHitsToJsonArray(final List<Hit<?>> searchHits,
                                          final Class<?> resultHitType,
                                          final String innerResultHightNodeName) {
         final JsonArrayBuilder results = getJsonBuilderFactory().createArrayBuilder();
@@ -39,29 +56,30 @@ class SearchResultConverter {
         return results.build();
     }
 
-    private void toJsonObject(Class<?> resultHitType, String innerResultHightNodeName, JsonArrayBuilder results, SearchHit searchHit) {
-        try {
-            final Map<String, SearchHits> innerHits = searchHit.getInnerHits();
-            final SearchHits resultsHits =  innerHits.get(innerResultHightNodeName);
-            for (final SearchHit result : resultsHits) {
-                final Object innerHitValue = objectMapper.readValue(result.getSourceAsString(), resultHitType);
-                results.add(objectToJsonObjectConverter.convert(innerHitValue));
-            }
-        } catch (final IOException e) {
-            throw new UnifiedSearchClientException("Failed to deserialize search response", e);
+    private void toJsonObject(Class<?> resultHitType, String innerResultHightNodeName, JsonArrayBuilder results, Hit<?> searchHit) {
+
+        final Map<String, InnerHitsResult> innerHits = searchHit.innerHits();
+        final InnerHitsResult resultsHits =  innerHits.get(innerResultHightNodeName);
+        for (final Hit<JsonData> result : resultsHits.hits().hits()) {
+            results.add(toJsonObject(result, resultHitType));
         }
+
     }
 
-    private JsonObject toJsonObject(final SearchHit searchHit, Class<?> resultHitType) {
+    private JsonObject toJsonObject(final Hit<JsonData> searchHit, Class<?> resultHitType) {
         try {
-            /*Using objectMapper so that we selectively map only properties/hierarchy
-            defined in resultHitType are populated*/
-            final Object hitValue = objectMapper.readValue(searchHit.getSourceAsString(), resultHitType);
+            Object pojo = searchHit.source()
+                    .to(resultHitType, jsonpMapper);
 
-            return objectToJsonObjectConverter.convert(hitValue);
+            String json = objectMapper.writeValueAsString(pojo);
 
-        } catch (final IOException e) {
-            throw new UnifiedSearchClientException("Failed to deserialize search response", e);
+            return javax.json.Json.createReader(
+                    new StringReader(json)
+            ).readObject();
+
+        } catch (Exception e) {
+            throw new UnifiedSearchClientException(
+                    "Failed to deserialize search response", e);
         }
     }
 }
