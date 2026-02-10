@@ -74,17 +74,19 @@ class SearchResultConverter {
 
             String json = objectMapper.writeValueAsString(pojo);
 
-            try(final JsonReader reader = javax.json.Json.createReader(
-                    new StringReader(json)
-            )){
-                return reader.readObject();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            return getJsonObject(json);
 
         } catch (Exception e) {
             throw new UnifiedSearchClientException(
                     "Failed to deserialize search response", e);
+        }
+    }
+
+    private static JsonObject getJsonObject(final String json) {
+        try(final JsonReader reader = javax.json.Json.createReader(
+                new StringReader(json)
+        )){
+            return reader.readObject();
         }
     }
 }
