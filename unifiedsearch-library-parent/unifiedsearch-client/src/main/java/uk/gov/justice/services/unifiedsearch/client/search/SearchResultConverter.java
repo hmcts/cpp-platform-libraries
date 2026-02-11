@@ -7,7 +7,6 @@ import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
 import javax.annotation.PostConstruct;
@@ -30,16 +29,13 @@ class SearchResultConverter {
     @Inject
     private ObjectMapper objectMapper;
 
-    @Inject
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
-
     private JacksonJsonpMapper jsonpMapper;
 
     @PostConstruct
     public void setup(){
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        final ObjectMapper updatedObjectMapper = objectMapper.copy().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        jsonpMapper = new JacksonJsonpMapper(objectMapper);
+        jsonpMapper = new JacksonJsonpMapper(updatedObjectMapper);
     }
 
 

@@ -28,6 +28,7 @@ public class HighLevelRestClientFactoryTest {
         final int threadCount = 100;
 
         final CredentialsProvider credentialsProvider = mock(CredentialsProvider.class);
+        highLevelRestClientFactory.setUp();
 
         final ElasticsearchClient elasticsearchClient = highLevelRestClientFactory.createNew(
                 elasticsearchBaseUri,

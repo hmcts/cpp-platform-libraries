@@ -4,6 +4,7 @@ import static org.apache.http.HttpHost.create;
 import static org.apache.http.impl.nio.reactor.IOReactorConfig.custom;
 import static org.elasticsearch.client.RestClient.builder;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -20,6 +21,16 @@ import org.elasticsearch.client.RestClient;
 
 @ApplicationScoped
 public class HighLevelRestClientFactory {
+
+    private ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void setUp(){
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     public ElasticsearchClient createNew(
             final String elasticsearchBaseUri,
@@ -42,10 +53,6 @@ public class HighLevelRestClientFactory {
 
         RestClient restClient = restClientBuilder.build();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JacksonJsonpMapper jsonpMapper = new JacksonJsonpMapper(objectMapper);
 
         RestClientTransport transport = new RestClientTransport(restClient, jsonpMapper);
