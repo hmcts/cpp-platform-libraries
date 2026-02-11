@@ -5,12 +5,14 @@ import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CPS_CASE
 import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CRIME_CASE;
 
 import java.util.stream.Stream;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
-import org.elasticsearch.client.RestHighLevelClient;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,8 +36,8 @@ public class ElasticSearchClientTest {
 
     @Test
     public void shouldReturnHighLevelRestClient() {
-        final RestHighLevelClient restHighLevelClient1 = elasticSearchClient.restClient();
-        final RestHighLevelClient restHighLevelClient2 = elasticSearchClient.adminRestClient();
+        final ElasticsearchClient restHighLevelClient1 = elasticSearchClient.restClient();
+        final ElasticsearchClient restHighLevelClient2 = elasticSearchClient.adminRestClient();
 
         assertNotNull(restHighLevelClient1);
         assertNotNull(restHighLevelClient2);
@@ -45,8 +47,8 @@ public class ElasticSearchClientTest {
     @MethodSource("provideCaseIndex")
     public void shouldReturnHighLevelRestClientForCaseIndexes(final IndexInfo indexInfo) {
 
-        final RestHighLevelClient restHighLevelClient1 = elasticSearchClient.restClient(indexInfo);
-        final RestHighLevelClient restHighLevelClient2 = elasticSearchClient.adminRestClient(indexInfo);
+        final ElasticsearchClient restHighLevelClient1 = elasticSearchClient.restClient(indexInfo);
+        final ElasticsearchClient restHighLevelClient2 = elasticSearchClient.adminRestClient(indexInfo);
 
         assertNotNull(restHighLevelClient1);
         assertNotNull(restHighLevelClient2);

@@ -1,12 +1,14 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
-import org.elasticsearch.action.get.GetRequest;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
+import co.elastic.clients.elasticsearch.core.GetRequest;
+import co.elastic.clients.elasticsearch.core.GetResponse;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.json.JsonData;
+
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.unifiedsearch.client.restclient.UnifiedSearchHighLevelRestClientProducer;
 import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
@@ -21,7 +23,7 @@ import javax.json.JsonObjectBuilder;
 import java.io.IOException;
 
 import static java.lang.String.format;
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
+
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.CPS_READ_USER;
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.READ_USER;
@@ -33,11 +35,11 @@ public class DefaultUnifiedSearchService implements UnifiedSearchService {
 
     @Inject
     @Named(CPS_READ_USER)
-    private RestHighLevelClient cpsCaseHighLevelClient;
+    private ElasticsearchClient cpsCaseElasticsearchClient;
 
     @Inject
     @Named(READ_USER)
-    private RestHighLevelClient crimeCaseHighLevelClient;
+    private ElasticsearchClient crimeCaseElasticsearchClient;
 
     @Inject
     private StringToJsonObjectConverter stringToJsonObjectConverter;
@@ -53,39 +55,39 @@ public class DefaultUnifiedSearchService implements UnifiedSearchService {
 
     public JsonObject search(final String documentId, final String indexName) {
         try {
-            final GetRequest getRequest = new GetRequest(indexName).id(documentId);
-            final RestHighLevelClient restHighLevelClient = restHighLevelClient(indexName);
-            final GetResponse getResponse = restHighLevelClient.get(getRequest, DEFAULT);
+            final GetRequest getRequest = GetRequest.of(r -> r.index(indexName).id(documentId));
+            final ElasticsearchClient elasticsearchClient = restHighLevelClient(indexName);
+            final GetResponse getResponse = elasticsearchClient.get(getRequest);
 
-            return stringToJsonObjectConverter.convert(getResponse.getSourceAsString());
+            return stringToJsonObjectConverter.convert(getResponse.source().toString());
         } catch (final IOException ioe) {
             throw new UnifiedSearchClientException(format("Unable to perform search for documentId %s on index %s", documentId, indexName), ioe);
         }
     }
 
     @Override
-    public JsonObject search(final QueryBuilder queryBuilder, final String indexName, final Class<?> resultHitType,
+    public JsonObject search(final Query.Builder queryBuilder, final String indexName, final Class<?> resultHitType,
                              final String resultHitNodeName, final int pageSize, final int startFrom,
-                             final FieldSortBuilder fieldSortBuilder) {
-        return search(queryBuilder, indexName, resultHitType, resultHitNodeName, pageSize, startFrom, fieldSortBuilder, null, null);
+                             final SortOptions sortOptions) {
+        return search(queryBuilder, indexName, resultHitType, resultHitNodeName, pageSize, startFrom, sortOptions, null, null);
     }
 
     @Override
-    public JsonObject search(final QueryBuilder queryBuilder, final String indexName, final Class<?> resultHitType,
+    public JsonObject search(final Query.Builder queryBuilder, final String indexName, final Class<?> resultHitType,
                              final String resultHitNodeName, final int pageSize, final int startFrom,
-                             final FieldSortBuilder fieldSortBuilder, final Class<?> innerHitResultType,
+                             final SortOptions sortOptions, final Class<?> innerHitResultType,
                              final String innerResultHightNodeName) {
         try {
 
-            final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(queryBuilder, indexName, pageSize, startFrom, fieldSortBuilder);
-            final RestHighLevelClient restHighLevelClient = restHighLevelClient(indexName);
-            final SearchResponse response = restHighLevelClient.search(searchRequest, DEFAULT);
-            final JsonArray hitsAsJsonArray = searchResultConverter.toJsonArray(response.getHits(), resultHitType);
+            final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(queryBuilder, indexName, pageSize, startFrom, sortOptions);
+            final ElasticsearchClient elasticsearchClient = restHighLevelClient(indexName);
+            final SearchResponse response = elasticsearchClient.search(searchRequest, JsonData.class);
+            final JsonArray hitsAsJsonArray = searchResultConverter.toJsonArray(response.hits().hits(), resultHitType);
             final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder()
-                    .add(TOTAL_RESULTS_NODE_NAME, response.getHits().getTotalHits().value)
+                    .add(TOTAL_RESULTS_NODE_NAME, response.hits().total().value())
                     .add(resultHitNodeName, hitsAsJsonArray);
             if (null != innerResultHightNodeName) {
-                final JsonArray innerHitsAsJsonArray = searchResultConverter.convertInnerHitsToJsonArray(response.getHits(),
+                final JsonArray innerHitsAsJsonArray = searchResultConverter.convertInnerHitsToJsonArray(response.hits().hits(),
                         innerHitResultType, innerResultHightNodeName);
                 jsonObjectBuilder.add(innerResultHightNodeName, innerHitsAsJsonArray);
             }
@@ -96,7 +98,7 @@ public class DefaultUnifiedSearchService implements UnifiedSearchService {
         }
     }
 
-    private RestHighLevelClient restHighLevelClient(final String indexName) {
-        return indexName.equals(IndexInfo.CPS_CASE.getIndexName()) ? cpsCaseHighLevelClient : crimeCaseHighLevelClient;
+    private ElasticsearchClient restHighLevelClient(final String indexName) {
+        return indexName.equals(IndexInfo.CPS_CASE.getIndexName()) ? cpsCaseElasticsearchClient : crimeCaseElasticsearchClient;
     }
 }

@@ -1,11 +1,9 @@
 package uk.gov.moj.cpp.unifiedsearch.test.util.ingest;
 
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
@@ -15,6 +13,12 @@ import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CPS_CASE
 import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CRIME_CASE;
 
 import java.util.stream.Stream;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
+import co.elastic.clients.elasticsearch.indices.ElasticsearchIndicesClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,11 +26,6 @@ import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
 import java.io.IOException;
 
-import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.support.master.AcknowledgedResponse;
-import org.elasticsearch.client.IndicesClient;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -44,13 +43,13 @@ public class ElasticSearchIndexRemoverUtilTest {
     private ElasticSearchIndexCreatorUtil elasticSearchIndexCreatorUtil;
 
     @Mock
-    private IndicesClient indicesClient;
+    private ElasticsearchIndicesClient indicesClient;
 
     @Mock
-    private AcknowledgedResponse acknowledgedResponse;
+    private DeleteIndexResponse acknowledgedResponse;
 
     @Mock
-    private RestHighLevelClient restHighLevelClient;
+    private ElasticsearchClient restHighLevelClient;
 
     @InjectMocks
     private ElasticSearchIndexRemoverUtil elasticSearchIndexRemoverUtil;
@@ -144,8 +143,8 @@ public class ElasticSearchIndexRemoverUtilTest {
 
         when(elasticSearchClient.adminRestClient(any(IndexInfo.class))).thenReturn(restHighLevelClient);
         when(restHighLevelClient.indices()).thenReturn(indicesClient);
-        when(indicesClient.delete(any(DeleteIndexRequest.class), eq(DEFAULT))).thenReturn(acknowledgedResponse);
-        when(acknowledgedResponse.isAcknowledged()).thenReturn(true);
+        when(indicesClient.delete(any(DeleteIndexRequest.class))).thenReturn(acknowledgedResponse);
+        when(acknowledgedResponse.acknowledged()).thenReturn(true);
 
         final boolean result = elasticSearchIndexRemoverUtil.deleteIndex(indexInfo.getIndexName());
 

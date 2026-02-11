@@ -22,6 +22,29 @@ public class OffenceDocument {
     private List<PleaDocument> pleas;
     private VerdictDocument verdict;
 
+    @Override
+    public String toString() {
+        return "OffenceDocument{" +
+                "offenceId='" + offenceId + '\'' +
+                ", offenceCode='" + offenceCode + '\'' +
+                ", offenceTitle='" + offenceTitle + '\'' +
+                ", offenceLegislation='" + offenceLegislation + '\'' +
+                ", proceedingsConcluded=" + proceedingsConcluded +
+                ", arrestDate='" + arrestDate + '\'' +
+                ", dateOfInformation='" + dateOfInformation + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", chargeDate='" + chargeDate + '\'' +
+                ", modeOfTrial='" + modeOfTrial + '\'' +
+                ", orderIndex=" + orderIndex +
+                ", wording='" + wording + '\'' +
+                ", laaReference=" + laaReference +
+                ", courtOrders=" + courtOrders +
+                ", pleas=" + pleas +
+                ", verdict=" + verdict +
+                '}';
+    }
+
     public OffenceDocument(final String offenceId, final String offenceCode, final String offenceTitle, final String offenceLegislation, final boolean proceedingsConcluded,
                            final String arrestDate, final String dateOfInformation, final String endDate, final String startDate, final String chargeDate, final String modeOfTrial,
                            final int orderIndex, final String wording, final LaaReferenceDocument laaReference, final List<CourtOrderDocument> courtOrders, final List<PleaDocument> pleas,

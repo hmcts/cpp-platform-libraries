@@ -1,17 +1,14 @@
 package uk.gov.moj.cpp.unifiedsearch.test.util.ingest;
 
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
-import static org.elasticsearch.xcontent.XContentType.JSON;
-
 import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
 import java.io.IOException;
+import java.io.StringReader;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
+import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import org.apache.commons.io.IOUtils;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.CreateIndexRequest;
-import org.elasticsearch.client.indices.CreateIndexResponse;
-import org.elasticsearch.core.TimeValue;
 
 public class ElasticSearchIndexCreatorUtil {
 
@@ -32,14 +29,17 @@ public class ElasticSearchIndexCreatorUtil {
     }
 
     private boolean createIndex(final String indexName, final String sourceConfig) throws IOException {
-        final CreateIndexRequest request = new CreateIndexRequest(indexName);
-        request.setTimeout(TimeValue.timeValueMinutes(2));
-        request.source(sourceConfig, JSON);
-        final RestHighLevelClient adminRestClient = elasticSearchClient.adminRestClient(IndexInfo.findByIndexName(indexName));
-        try {
-            final CreateIndexResponse response = adminRestClient.indices().create(request, DEFAULT);
+        CreateIndexRequest request = CreateIndexRequest.of(c -> c
+                .index(indexName)
+                .withJson(new StringReader(sourceConfig))
+                .timeout(t -> t.time("2m"))
+        );
 
-            return response.isAcknowledged();
+        final ElasticsearchClient adminRestClient = elasticSearchClient.adminRestClient(IndexInfo.findByIndexName(indexName));
+        try {
+            final CreateIndexResponse response = adminRestClient.indices().create(request);
+
+            return response.acknowledged();
         } finally {
             adminRestClient.close();
         }
