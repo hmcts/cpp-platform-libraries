@@ -46,16 +46,16 @@
         <!-- Framework versions -->
         <framework-libraries.version>17.104.0</framework-libraries.version>
         <framework.version>17.105.0-M3</framework.version>
-        <event-store.version>17.105.0-M7</event-store.version>
+        <event-store.version>17.105.0-M8</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.0.37</usersgroups.version>
         <progression.version>17.0.219</progression.version>
-        <hearing.version>17.0.142</hearing.version>
+        <hearing.version>17.0.144</hearing.version>
         <sjp.version>17.0.129</sjp.version>
-        <referencedata.version>17.0.120</referencedata.version>
+        <referencedata.version>17.103.124</referencedata.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <azure-storage-version>8.4.0</azure-storage-version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>
