@@ -5,9 +5,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.moj.cpp.accesscontrol.sjp.providers.ProsecutingAuthorityAccess.ALL_PROSECUTING_AUTHORITIES;
 import static uk.gov.moj.cpp.accesscontrol.sjp.providers.ProsecutingAuthorityProvider.ACCESS_CONTROL_DISABLED_PROPERTY;
@@ -23,6 +26,14 @@ import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -129,6 +140,17 @@ public class ProsecutingAuthorityProviderTest {
     }
 
     @Test
+    public void shouldReturnTrueIfUserHasSingleProsecutingAuthorityAccessForOtherButAgentHasAccess() {
+
+        givenUserHasAgentProsecutingAuthorityAccess("ANOTHER_TEST");
+
+        assertThat(prosecutingAuthorityProvider.userHasProsecutingAuthorityAccess(
+                callingEnvelope, PROSECUTING_AUTHORITY), is(true));
+
+        assertLogStatement();
+    }
+
+    @Test
     public void shouldReturnFalseIfUserHasNoProsecutingAuthorityAccess() {
 
         givenUserHasNoProsecutingAuthorityAccess();
@@ -175,6 +197,31 @@ public class ProsecutingAuthorityProviderTest {
 
     private JsonEnvelope userDetailsResponse(final String prosecutingAuthorityAccess) {
         return envelope().withPayloadOf(prosecutingAuthorityAccess, "prosecutingAuthorityAccess").build();
+    }
+
+    private void givenUserHasAgentProsecutingAuthorityAccess(final String prosecutingAuthorityAccess) {
+        doReturn(userDetailsResponse(prosecutingAuthorityAccess, List.of(PROSECUTING_AUTHORITY)))
+                .when(requester)
+                .requestAsAdmin(any());
+    }
+
+    private JsonEnvelope userDetailsResponse(final String prosecutingAuthorityAccess, final List<String> agentProsecutorAuthorityAccess) {
+        final JsonObjectBuilder userObjectBuilder = createObjectBuilder();
+        Optional.of(prosecutingAuthorityAccess).ifPresent(s -> userObjectBuilder.add("prosecutingAuthorityAccess", s));
+
+        final JsonArrayBuilder arrayBuilder = createArrayBuilder();
+
+        agentProsecutorAuthorityAccess.forEach(a -> arrayBuilder
+                .add(createObjectBuilder()
+                        .add("prosecutingAuthority", a)
+                        .build())
+        );
+
+        userObjectBuilder.add("agentProsecutorAuthorityAccess", arrayBuilder);
+
+        final JsonObject jsonObject = userObjectBuilder.build();
+
+        return envelope().withPayloadFrom(jsonObject).build();
     }
 
     private void assertLogStatement() {
