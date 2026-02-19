@@ -40,6 +40,10 @@ public class ProsecutingAuthorityAccess {
         return prosecutingAuthority;
     }
 
+    public List<String> getAgentProsecutorAuthorityAccess() {
+        return agentProsecutorAuthorityAccess;
+    }
+
     public boolean hasAccess(final String prosecutingAuthority) {
         return ALL.getProsecutingAuthority().equals(this.getProsecutingAuthority()) ||
                 (this.getProsecutingAuthority() != null &&
