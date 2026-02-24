@@ -1,6 +1,8 @@
 package uk.gov.moj.cpp.accesscontrol.sjp.providers;
 
 import static java.util.UUID.randomUUID;
+import static javax.json.Json.createArrayBuilder;
+import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -9,8 +11,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.moj.cpp.accesscontrol.sjp.providers.ProsecutingAuthorityAccess.ALL_PROSECUTING_AUTHORITIES;
 import static uk.gov.moj.cpp.accesscontrol.sjp.providers.ProsecutingAuthorityProvider.ACCESS_CONTROL_DISABLED_PROPERTY;
@@ -25,7 +25,6 @@ import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 import java.util.Optional;
