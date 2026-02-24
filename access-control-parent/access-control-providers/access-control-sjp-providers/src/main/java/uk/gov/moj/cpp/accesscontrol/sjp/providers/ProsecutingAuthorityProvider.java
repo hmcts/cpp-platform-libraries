@@ -9,14 +9,11 @@ import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 import static java.lang.Boolean.valueOf;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 import static uk.gov.moj.cpp.accesscontrol.sjp.providers.SjpProvider.jsonBuilderFactory;
 

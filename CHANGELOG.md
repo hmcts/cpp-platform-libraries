@@ -4,100 +4,22 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-# [17.105.0-M3] - 2026-02-18
+
+# [17.103.8] - 2025-12-09
 ### Changed
-- Update event-store to 17.105.0-M8
-
-# [17.105.0-M2] - 2026-02-06
-### Changed
-- Update event-store to 17.105.0-M7 for:
-  - Introduce concurrency to stream processing through JNDI value 'stream.processing.max.workers'
-  - Continue processing next stream on error of current stream processing
-  - Removed test-utils-core.jar from the main classpath
-
-# [17.105.0-M1] - 2026-02-05
-### Changed
-- Bumped version to 17.105.0-M1 for new framework F version
-- Framework updated to version 17.105.0-M3
-- Event-store updated to version 17.105.0-M6
-
-# [17.104.0] - 2025-12-16
-
-### Added
-- New REST endpoint that will serve json showing the various framework project versions on the path `/internal/framework/versions`
-
-### Changed
-- Update event-store to 17.104.0-M13 with new Liquibase changesets.
-- Update event-store to 17.104.0-M12 for:
-  - Catchup will now ignore events on inactive streams and events that are not marked as `HEALTHY`
-  - EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
-  - TransactionHandler will now roll back except if transaction is `STATUS_NO_TRANSACTION`
-  - The `is_published` flag in event_log table is now true by default.
-  - `is_published` flag in event_log now set to false when the event is first inserted. Will be set
-    to true once publishing has sent the event to the event topic
-- Update event-store to 17.104.0-M10 for:
-  - Added [framework E rollout and rollback SQLs document](event-sourcing/event-repository/event-repository-liquibase/docs/framework-E-sqls.md)
-  - Inserts of new events into event_log now explicitly set event_number and previous_event_number
-    to NULL, for rollback purposes
-  - Refactor JsonObject usages to more proper api
-  - Fix HttpClient lifecycle.
-  - published_events insertion moved to EventNumberLinker from LinkedEventPublisher
-- Update framework-libraries to 17.104.0-M6
-- Update microservice-framework to 17.104.0-M4
-- Update event-store to 17.104.0-M9
+- Used JsonFactory instead of Json.create methods
 - Refactor JsonObject usages to more proper api
 - Fix HttpClient lifecycle.
-- Update event-store to 17.104.0-M8 for:
-  - Catchup now calculates previousEventNumber for each event from the previous row in
-  - Catchup can now be run with the id of the event you wish to run catchup from. Catchup
-    the event_log table rather than the previous_event_number column.
-- Update event-store to 17.104.0-M5 to add event publishing compatibility mode
-- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
-- Update event-store to 17.104.0-M4 for refactor of event publishing
-- Update event-store to 17.104.0-M3 for: 
-  - Removed `SKIP LOCKED` when querying for earliest unlinked event in event_log table
-  - Removed `pre_publish_queue` table from event_store database
-- Update event-store to 17.104.0-M2 for the new event publishing mechanism
-### Security
-- Updated to latest common-bom for latest third party security fixes:
-  - Update commons.beanutils version to **1.11.0** to fix **security vulnerability CVE-2025-48734**
-    Detail: https://cwe.mitre.org/data/definitions/284.html
-  - Update resteasy version to **3.15.5.Final** to fix **security vulnerability CVE-2023-0482**
-    Detail: https://cwe.mitre.org/data/definitions/378.html
-  - Update classgraph version to **4.8.112** to fix **security vulnerability CVE-2021-47621**
-    Detail: https://cwe.mitre.org/data/definitions/611.html
-  - Update commons-lang version to **3.18.0** to fix **security vulnerability CVE-2025-48924**
-    Detail: https://cwe.mitre.org/data/definitions/674.html
-  - Update Commons Fileupload version to **1.6.0** to fix **security vulnerability CVE-2025-48976**
-    Detail: https://cwe.mitre.org/data/definitions/770.html
-  - Update activemq-client version to **5.16.7** to fix **security vulnerability CVE-2023-46604**
-    Detail: https://cwe.mitre.org/data/definitions/502.html
-  - Update org.hsqldb version to **2.7.1** to fix **security vulnerability CVE-2022-41853**
-    Detail: https://cwe.mitre.org/data/definitions/470.html
-  - Update Quartz-Scheduler version to **2.3.2** to fix **security vulnerability CVE-2019-13990**
-    Detail: https://cwe.mitre.org/data/definitions/611.html
-  - Update ActiveMQ-Client version to **5.16.8** to fix **security vulnerability CVE-2025-27533**
-    Detail: https://cwe.mitre.org/data/definitions/789.html
-  - Update elasticsearch version to **7.17.23** to fix **security vulnerability CVE-2024-23444**
-    Detail: https://cwe.mitre.org/data/definitions/311.html
-  - Update elasticsearch version to **7.17.21** to fix **security vulnerability CVE-2024-43709**
-    Detail: https://cwe.mitre.org/data/definitions/770.html
-  - Update json-smart version to **2.4.9** to fix **security vulnerability CVE-2023-1370**
-    Detail: https://cwe.mitre.org/data/definitions/674.html
-  - Update gson to **2.8.9** to fix **security vulnerability CVE-2022-25647**
-    Detail: https://cwe.mitre.org/data/definitions/502.html
-  - Update jberet-core to **2.2.1.Final** to fix **security vulnerability CVE-2024-1102**
-    Detail: https://cwe.mitre.org/data/definitions/532
-  - Update commons.compress to **1.26.0** to fix **security vulnerability CVE-2024-26308**
-    Detail: https://cwe.mitre.org/data/definitions/770.html
-  - Update drools-core to **7.69.0.Final** to fix **security vulnerability CVE-2022-1415**
-    Detail: https://cwe.mitre.org/data/definitions/502.html
-  - Update commons-net to **3.9.0** to fix **security vulnerability CVE-2021-37533**
-    Detail: https://cwe.mitre.org/data/definitions/20.html
-  - Update jetbrains.kotlin to **1.6.0** to fix **security vulnerability CVE-2022-24329**
-    Detail: https://cwe.mitre.org/data/definitions/667.html
-  - Update xmlunit to **2.10.0** to fix **security vulnerability CVE-2024-31573**
-    Detail: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-31573
+
+# [17.103.7] - 2025-11-17
+### Changed
+- Removing milestone releases to keep 17.103.x release branch clean
+
+# [17.103.5] - 2025-11-06
+### Changed
+- Update event-store to 17.103.3-M1 for:
+  - ReplaySingleEvent JMX commands can now take an optional commandRuntimeString of the event source name
+    to work with MI contexts
 
 # [17.103.3] - 2025-09-11
 ### Changed
