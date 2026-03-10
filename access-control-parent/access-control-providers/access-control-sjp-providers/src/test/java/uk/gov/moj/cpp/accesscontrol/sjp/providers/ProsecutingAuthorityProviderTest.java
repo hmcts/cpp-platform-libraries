@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.justice.services.messaging.spi.DefaultJsonMetadata;
 import uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory;
 import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
@@ -210,11 +211,7 @@ public class ProsecutingAuthorityProviderTest {
 
         final JsonArrayBuilder arrayBuilder = createArrayBuilder();
 
-        agentProsecutorAuthorityAccess.forEach(a -> arrayBuilder
-                .add(createObjectBuilder()
-                        .add("prosecutingAuthority", a)
-                        .build())
-        );
+        agentProsecutorAuthorityAccess.forEach(arrayBuilder::add);
 
         userObjectBuilder.add("agentProsecutorAuthorityAccess", arrayBuilder);
 

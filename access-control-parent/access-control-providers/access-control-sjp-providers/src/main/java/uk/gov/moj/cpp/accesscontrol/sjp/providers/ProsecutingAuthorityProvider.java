@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 
 import static java.lang.Boolean.valueOf;
@@ -69,9 +70,9 @@ public class ProsecutingAuthorityProvider {
 
         List<String> agentProsecutors = Optional
                 .ofNullable(responsePayload.getJsonArray("agentProsecutorAuthorityAccess"))
-                .map(arr -> arr.getValuesAs(JsonObject.class)
+                .map(arr -> arr.getValuesAs(JsonString.class)
                         .stream()
-                        .map(o -> o.getString("prosecutingAuthority"))
+                        .map(JsonString::getString)
                         .collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
 
