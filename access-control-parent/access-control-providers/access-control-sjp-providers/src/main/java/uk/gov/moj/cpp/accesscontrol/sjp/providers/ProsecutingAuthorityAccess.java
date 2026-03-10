@@ -8,7 +8,7 @@ public class ProsecutingAuthorityAccess {
 
     public static final String ALL_PROSECUTING_AUTHORITIES = "ALL";
 
-    public final static ProsecutingAuthorityAccess NONE = new ProsecutingAuthorityAccess(null);
+    public final static ProsecutingAuthorityAccess NONE = new ProsecutingAuthorityAccess(null, null);
     public final static ProsecutingAuthorityAccess ALL = new ProsecutingAuthorityAccess(ALL_PROSECUTING_AUTHORITIES);
 
     private String prosecutingAuthority;
@@ -25,11 +25,9 @@ public class ProsecutingAuthorityAccess {
     }
 
     public static ProsecutingAuthorityAccess of(final String prosecutingAuthority, final List<String> agentProsecutorAuthorityAccess) {
-        if (StringUtils.isEmpty(prosecutingAuthority)) {
-            NONE.agentProsecutorAuthorityAccess = agentProsecutorAuthorityAccess;
+        if (StringUtils.isEmpty(prosecutingAuthority) && (agentProsecutorAuthorityAccess == null || agentProsecutorAuthorityAccess.isEmpty())) {
             return NONE;
         } else if (prosecutingAuthority.equals(ALL.getProsecutingAuthority())) {
-            ALL.agentProsecutorAuthorityAccess = agentProsecutorAuthorityAccess;
             return ALL;
         }
 
