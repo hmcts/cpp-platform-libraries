@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+# [17.105.0-M5] - 2026-03-11
+- Update microservice-framework to 17.105.0-M5 for various bug fixes and improvements
+- Update event-store to 17.105.0-M13 for various bug fixes and improvements
+
 # [17.105.0-M4] - 2026-03-05
 - Update event-store to 17.105.0-M11 for:
   - Demand-driven worker scaling: StreamProcessingCoordinator spawns workers based on stream_status demand
