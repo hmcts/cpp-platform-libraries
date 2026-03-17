@@ -5,8 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-# [17.104.0] - 2025-12-16
+### [17.104.1-M1]  - 2026-03-17
+### Changed
+- Batch event linking: `EventNumberLinker` now links N events per JTA transaction using JDBC `executeBatch()`,
+  configurable via JNDI `event.linking.worker.batch.size` (default 10)
 
+# [17.104.0] - 2025-12-16
 ### Added
 - New REST endpoint that will serve json showing the various framework project versions on the path `/internal/framework/versions`
 
