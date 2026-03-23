@@ -55,7 +55,7 @@
         <progression.version>17.0.240</progression.version>
         <hearing.version>17.0.146</hearing.version>
         <sjp.version>17.0.129</sjp.version>
-        <referencedata.version>17.103.128</referencedata.version>
+        <referencedata.version>17.103.129</referencedata.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <azure-storage-version>8.4.0</azure-storage-version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>
