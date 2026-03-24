@@ -4,6 +4,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+# [17.105.0-M8] - 2026-03-24
+### Changed
+- Update event-store to 17.105.0-M16 for:
+  - Notification-based event linking and publishing via CDI events, enabled via JNDI:
+    - event.linking.worker.notified (linking)
+    - event.publishing.worker.notified (publishing)
+    - event.discovery.notified (discovery)
+    - stream.processing.discovery.notified (processing)
+
 # [17.105.0-M7] - 2026-03-18
 ### Changed
 - Update event-store to 17.105.0-M15 for:
