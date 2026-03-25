@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-# [17.103.8-M2] - 2026-03-24
+# [17.103.9] - 2026-03-24
 ## Changed
 - event-store bumped to 17.103.8-M2 to 
   - Notification-based event linking and publishing via CDI events, enabled via JNDI:
