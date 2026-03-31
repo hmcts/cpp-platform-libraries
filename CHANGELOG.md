@@ -4,7 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
+# [17.103.10] - 2026-03-31
+## Changed
+- framework-stream-rest-resources dependency is added to expose `/internal` endpoints
+ 
 # [17.103.9] - 2026-03-24
 ## Changed
 - event-store bumped to 17.103.8-M2 to 
