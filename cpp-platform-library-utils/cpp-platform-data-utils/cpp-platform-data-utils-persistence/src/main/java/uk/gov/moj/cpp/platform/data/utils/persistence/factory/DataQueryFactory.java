@@ -9,9 +9,9 @@ import uk.gov.moj.cpp.platform.data.utils.persistence.transformer.ResultSetTrans
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 public class DataQueryFactory {
     private static final String ALL_COLUMNS = "*";

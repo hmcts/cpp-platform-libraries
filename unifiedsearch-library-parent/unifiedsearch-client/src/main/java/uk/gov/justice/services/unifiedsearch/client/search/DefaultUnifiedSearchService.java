@@ -12,12 +12,12 @@ import uk.gov.justice.services.unifiedsearch.client.restclient.UnifiedSearchHigh
 import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import java.io.IOException;
 
 import static java.lang.String.format;

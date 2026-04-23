@@ -12,7 +12,7 @@ import uk.gov.justice.services.unifiedsearch.client.index.UnifiedSearchIndexerHe
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.elasticsearch.action.index.IndexRequest;
 import org.junit.jupiter.api.Test;

@@ -5,9 +5,9 @@ import static org.elasticsearch.xcontent.XContentType.JSON;
 
 import uk.gov.justice.services.unifiedsearch.client.index.UnifiedSearchIndexerHelper;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 
 import org.elasticsearch.action.index.IndexRequest;
 

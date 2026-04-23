@@ -7,11 +7,11 @@ import uk.gov.justice.services.common.configuration.GlobalValue;
 import uk.gov.justice.services.core.featurecontrol.FeatureFetcher;
 import uk.gov.justice.services.core.featurecontrol.domain.Feature;
 
-import javax.annotation.Priority;
-import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;

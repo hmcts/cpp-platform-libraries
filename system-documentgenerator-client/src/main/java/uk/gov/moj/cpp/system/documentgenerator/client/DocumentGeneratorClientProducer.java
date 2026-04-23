@@ -5,9 +5,9 @@ import static java.lang.String.format;
 import uk.gov.justice.services.common.rest.ServerPortProvider;
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Produces;
 
 @SuppressWarnings("CdiInjectionPointsInspection")
 @ApplicationScoped

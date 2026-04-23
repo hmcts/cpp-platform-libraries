@@ -14,12 +14,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static javax.ws.rs.core.HttpHeaders.ACCEPT;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.CONFLICT;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.OK;
-import static javax.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
+import static jakarta.ws.rs.core.HttpHeaders.ACCEPT;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.CONFLICT;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
 import static org.apache.openejb.util.NetworkUtil.getNextAvailablePort;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -36,7 +36,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.Test;
@@ -151,7 +151,7 @@ public class DefaultSystemIdMapperClientTest {
         assertThat(systemIdMap.getSourceType(), is(sourceType));
         assertThat(systemIdMap.getTargetId(), is(targetId));
         assertThat(systemIdMap.getTargetType(), is(targetType));
-        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2016, 9, 7, 14, 30, 53, 0, ZoneId.of("UTC"))));
+        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2016, 9, 7, 14, 30, 53, 0, java.time.ZoneOffset.UTC)));
     }
 
     @Test
@@ -256,7 +256,7 @@ public class DefaultSystemIdMapperClientTest {
         assertThat(systemIdMap.getSourceType(), is(sourceType));
         assertThat(systemIdMap.getTargetId(), is(targetId));
         assertThat(systemIdMap.getTargetType(), is(targetType));
-        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2016, 10, 8, 15, 31, 54, 0, ZoneId.of("UTC"))));
+        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2016, 10, 8, 15, 31, 54, 0, java.time.ZoneOffset.UTC)));
 
     }
 
@@ -322,7 +322,7 @@ public class DefaultSystemIdMapperClientTest {
         assertThat(systemIdMap.getSourceType(), is(sourceType));
         assertThat(systemIdMap.getTargetId(), is(targetId));
         assertThat(systemIdMap.getTargetType(), is(targetType));
-        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2015, 9, 7, 14, 30, 53, 0, ZoneId.of("UTC"))));
+        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2015, 9, 7, 14, 30, 53, 0, java.time.ZoneOffset.UTC)));
 
     }
 
@@ -393,7 +393,7 @@ public class DefaultSystemIdMapperClientTest {
         assertThat(systemIdMap.getSourceType(), is(sourceType));
         assertThat(systemIdMap.getTargetId(), is(targetId));
         assertThat(systemIdMap.getTargetType(), is("CASE-ID"));
-        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2019, 10, 7, 14, 30, 53, 0, ZoneId.of("UTC"))));
+        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2019, 10, 7, 14, 30, 53, 0, java.time.ZoneOffset.UTC)));
     }
 
 
@@ -426,7 +426,7 @@ public class DefaultSystemIdMapperClientTest {
         assertThat(systemIdMap.getSourceType(), is(sourceType));
         assertThat(systemIdMap.getTargetId(), is(targetId));
         assertThat(systemIdMap.getTargetType(), is("CASE-ID"));
-        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2019, 10, 7, 14, 30, 53, 0, ZoneId.of("UTC"))));
+        assertThat(systemIdMap.getCreatedAt(), is(ZonedDateTime.of(2019, 10, 7, 14, 30, 53, 0, java.time.ZoneOffset.UTC)));
     }
 
     @Test

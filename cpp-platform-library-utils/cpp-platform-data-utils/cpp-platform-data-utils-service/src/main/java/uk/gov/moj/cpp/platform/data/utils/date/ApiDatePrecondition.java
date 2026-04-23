@@ -11,8 +11,8 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-import javax.json.JsonObject;
-import javax.ws.rs.BadRequestException;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.BadRequestException;
 
 public final class ApiDatePrecondition {
 

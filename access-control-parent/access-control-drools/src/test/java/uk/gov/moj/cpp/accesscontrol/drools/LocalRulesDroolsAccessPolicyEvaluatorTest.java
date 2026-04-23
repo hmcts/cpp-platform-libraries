@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.drools.core.command.runtime.BatchExecutionCommandImpl;
-import org.drools.core.command.runtime.rule.InsertObjectCommand;
+import org.drools.commands.runtime.BatchExecutionCommandImpl;
+import org.drools.commands.runtime.rule.InsertObjectCommand;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -10,14 +10,13 @@ import static org.mockito.Mockito.verify;
 
 import java.util.HashSet;
 
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.event.Event;
+import jakarta.enterprise.inject.spi.AfterDeploymentValidation;
+import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -36,10 +35,13 @@ public class ProviderAnnotationScannerTest {
     private BeanManager beanManager;
 
     @Mock
+    private Event<Object> mockEvent;
+
+    @Mock
     private Bean<Object> bean;
 
     @Captor
-    private ArgumentCaptor<ProviderFoundEvent> captor;
+    private ArgumentCaptor<Object> captor;
 
     private ProviderAnnotationScanner annotationScanner;
 
@@ -51,25 +53,24 @@ public class ProviderAnnotationScannerTest {
     @Test
     public void shouldFireProviderFoundEvent() throws Exception {
         doReturn(TestProvider.class).when(bean).getBeanClass();
-
         mockBeanManagerGetBeansWith(bean);
+        doReturn(mockEvent).when(beanManager).getEvent();
 
         annotationScanner.afterDeploymentValidation(afterDeploymentValidation, beanManager);
 
-        verify(beanManager).fireEvent(captor.capture());
+        verify(mockEvent).fire(captor.capture());
         assertThat(captor.getValue(), instanceOf(ProviderFoundEvent.class));
-        assertThat(captor.getValue().getBean(), equalTo(bean));
+        assertThat(((ProviderFoundEvent) captor.getValue()).getBean(), equalTo(bean));
     }
 
     @Test
     public void shouldNotFireAnyEventForNonProviderEvents() throws Exception {
         doReturn(Object.class).when(bean).getBeanClass();
-
         mockBeanManagerGetBeansWith(bean);
 
         annotationScanner.afterDeploymentValidation(afterDeploymentValidation, beanManager);
 
-        verify(beanManager, never()).fireEvent(any());
+        verify(beanManager, never()).getEvent();
     }
 
     @SuppressWarnings("serial")

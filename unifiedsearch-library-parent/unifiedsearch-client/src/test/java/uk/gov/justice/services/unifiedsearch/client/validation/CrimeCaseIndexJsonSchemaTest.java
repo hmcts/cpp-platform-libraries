@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.justice.services.unifiedsearch.client.validation.JsonUtils.jsonObjectFromFile;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

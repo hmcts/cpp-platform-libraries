@@ -14,8 +14,8 @@ import uk.gov.justice.services.metrics.interceptor.TotalActionMetricsInterceptor
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 public class CommandHandlerInterceptorChainProvider implements InterceptorChainEntryProvider {
 
