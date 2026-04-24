@@ -3,7 +3,7 @@
     <parent>
         <artifactId>event</artifactId>
         <groupId>uk.gov.moj.cpp.common</groupId>
-        <version>17.104.3-SNAPSHOT</version>
+        <version>17.103.9-M5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -31,10 +31,6 @@
         <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-event-listener-interceptors</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.event-store</groupId>
-            <artifactId>framework-stream-rest-resources</artifactId>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.event-store</groupId>
