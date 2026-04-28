@@ -5,10 +5,10 @@ import org.awaitility.Durations;
 import uk.gov.justice.services.test.utils.common.host.TestHostProvider;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
-import javax.json.JsonArray;
-import javax.json.JsonNumber;
-import javax.json.JsonReader;
-import javax.ws.rs.core.Response;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonReader;
+import jakarta.ws.rs.core.Response;
 import java.io.StringReader;
 import java.time.Duration;
 

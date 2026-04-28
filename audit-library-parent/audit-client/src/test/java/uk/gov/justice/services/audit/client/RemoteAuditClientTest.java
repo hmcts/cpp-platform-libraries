@@ -16,14 +16,14 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.common.helper.StoppedClock;
 import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
 
-import javax.json.JsonValue;
+import jakarta.json.JsonValue;
 import java.util.UUID;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
-import static javax.json.JsonValue.NULL;
+import static jakarta.json.JsonValue.NULL;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;

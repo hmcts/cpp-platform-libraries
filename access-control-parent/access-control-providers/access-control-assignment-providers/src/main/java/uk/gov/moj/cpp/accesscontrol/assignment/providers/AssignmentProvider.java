@@ -8,14 +8,14 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.providers.Provider;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import java.io.StringReader;
 import java.util.UUID;
 
-import static javax.json.JsonValue.ValueType.NULL;
+import static jakarta.json.JsonValue.ValueType.NULL;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;

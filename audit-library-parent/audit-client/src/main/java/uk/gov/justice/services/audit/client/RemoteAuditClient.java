@@ -11,14 +11,14 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.JsonObjects;
 
-import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 import java.util.function.Function;
 
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;

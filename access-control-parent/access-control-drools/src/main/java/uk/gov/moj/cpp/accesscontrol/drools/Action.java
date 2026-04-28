@@ -5,7 +5,7 @@ import uk.gov.justice.services.messaging.Metadata;
 
 import java.util.Optional;
 
-import javax.json.JsonValue;
+import jakarta.json.JsonValue;
 
 /**
  * Representation of an action for convenience use with drools integration.

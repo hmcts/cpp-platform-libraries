@@ -3,8 +3,8 @@ package uk.gov.justice.services.unifiedsearch.client.index;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.unifiedsearch.client.validation.JsonDocumentValidator;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 
 public abstract class AbstractSearchIndexer {
 

@@ -15,7 +15,7 @@ import uk.gov.justice.services.messaging.spi.DefaultJsonEnvelopeProvider;
 import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
 import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;

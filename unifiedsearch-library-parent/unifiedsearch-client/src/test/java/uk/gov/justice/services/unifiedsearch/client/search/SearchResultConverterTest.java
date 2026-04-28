@@ -17,8 +17,8 @@ import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientExc
 
 import java.io.IOException;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;

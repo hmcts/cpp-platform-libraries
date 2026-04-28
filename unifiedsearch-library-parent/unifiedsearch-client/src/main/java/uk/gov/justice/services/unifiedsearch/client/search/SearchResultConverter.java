@@ -6,11 +6,11 @@ import org.elasticsearch.search.SearchHits;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import java.io.IOException;
 import java.util.Map;
 

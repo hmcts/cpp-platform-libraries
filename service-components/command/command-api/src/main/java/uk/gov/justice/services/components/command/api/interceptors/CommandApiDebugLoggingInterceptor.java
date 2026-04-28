@@ -7,7 +7,7 @@ import uk.gov.justice.services.core.interceptor.InterceptorChain;
 import uk.gov.justice.services.core.interceptor.InterceptorContext;
 import uk.gov.justice.services.messaging.logging.DebugLogger;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 

@@ -12,8 +12,8 @@ import uk.gov.justice.services.messaging.MetadataBuilder;
 import uk.gov.justice.services.messaging.spi.DefaultJsonEnvelopeProvider;
 import uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import java.time.ZonedDateTime;
 
 import static java.util.UUID.randomUUID;

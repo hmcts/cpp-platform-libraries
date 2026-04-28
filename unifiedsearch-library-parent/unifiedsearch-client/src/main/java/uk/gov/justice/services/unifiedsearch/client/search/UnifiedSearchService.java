@@ -1,6 +1,6 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;

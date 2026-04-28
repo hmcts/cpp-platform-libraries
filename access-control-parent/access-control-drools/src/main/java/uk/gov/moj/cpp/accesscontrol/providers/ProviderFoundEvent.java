@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.accesscontrol.providers;
 
-import javax.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.Bean;
 
 /**
  * Event representing the occurrence of a class with an annotation having been

@@ -7,9 +7,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import java.io.IOException;
 import java.io.StringReader;
 

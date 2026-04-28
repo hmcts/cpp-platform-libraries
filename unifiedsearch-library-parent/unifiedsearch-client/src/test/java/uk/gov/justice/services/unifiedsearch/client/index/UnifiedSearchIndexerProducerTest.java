@@ -12,7 +12,7 @@ import uk.gov.justice.services.unifiedsearch.UnifiedSearchName;
 import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;

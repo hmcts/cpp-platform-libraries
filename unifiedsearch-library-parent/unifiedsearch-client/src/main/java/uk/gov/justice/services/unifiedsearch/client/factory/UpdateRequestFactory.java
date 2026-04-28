@@ -3,7 +3,7 @@ package uk.gov.justice.services.unifiedsearch.client.factory;
 import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy.NONE;
 import static org.elasticsearch.xcontent.XContentType.JSON;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;

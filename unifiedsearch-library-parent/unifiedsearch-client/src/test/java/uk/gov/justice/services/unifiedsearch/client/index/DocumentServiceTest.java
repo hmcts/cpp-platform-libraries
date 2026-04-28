@@ -26,7 +26,7 @@ import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.get.GetRequest;

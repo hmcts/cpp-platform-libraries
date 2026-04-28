@@ -12,8 +12,8 @@ import uk.gov.justice.services.healthcheck.api.HealthcheckResult;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.client.RestHighLevelClient;

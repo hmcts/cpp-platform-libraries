@@ -7,8 +7,8 @@ import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientExc
 
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.json.JsonObject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.JsonObject;
 
 @ApplicationScoped
 public class UnifiedSearchIndexerHelper {

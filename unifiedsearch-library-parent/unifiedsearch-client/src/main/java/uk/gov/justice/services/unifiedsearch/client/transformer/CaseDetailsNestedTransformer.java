@@ -3,8 +3,8 @@ package uk.gov.justice.services.unifiedsearch.client.transformer;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 
 import uk.gov.justice.services.unifiedsearch.client.domain.Address;

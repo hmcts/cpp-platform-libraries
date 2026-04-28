@@ -6,9 +6,9 @@ import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactor
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 public class PermissionJsonBuilder {
 

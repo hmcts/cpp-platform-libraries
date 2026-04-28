@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.inject.Typed;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;

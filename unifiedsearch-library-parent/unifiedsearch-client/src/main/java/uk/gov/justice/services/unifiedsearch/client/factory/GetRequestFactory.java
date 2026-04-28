@@ -2,7 +2,7 @@ package uk.gov.justice.services.unifiedsearch.client.factory;
 
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.elasticsearch.action.get.GetRequest;
 

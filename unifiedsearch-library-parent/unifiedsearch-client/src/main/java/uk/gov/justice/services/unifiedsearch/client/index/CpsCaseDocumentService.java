@@ -7,10 +7,10 @@ import uk.gov.justice.services.unifiedsearch.client.transformer.cps.CpsCaseDetai
 
 import java.io.IOException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.json.JsonObject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.json.JsonObject;
 
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.RestHighLevelClient;

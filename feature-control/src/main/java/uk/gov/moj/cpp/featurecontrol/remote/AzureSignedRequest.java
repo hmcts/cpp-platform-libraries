@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.methods.HttpGet;
