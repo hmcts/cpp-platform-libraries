@@ -6,12 +6,9 @@ import uk.gov.moj.cpp.activiti.spring.CustomProcessEngineConfiguration;
 
 import java.io.IOException;
 
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
 
-import org.activiti.cdi.CdiExpressionManager;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -29,7 +26,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.jta.JtaTransactionManager;
 
 @Configuration
 public class ActivitiEngineConfiguration {
@@ -61,9 +57,12 @@ public class ActivitiEngineConfiguration {
     }
 
     @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager() throws NamingException {
-        final TransactionManager transactionManager = InitialContext.doLookup("java:jboss/TransactionManager");
-        return new JtaTransactionManager(transactionManager);
+    public PlatformTransactionManager transactionManager() {
+        // Activiti is configured with transactionsExternallyManaged=true, so WildFly's JTA
+        // container controls transactions — the PlatformTransactionManager is wired by Spring
+        // but never called for commit/rollback. A no-op avoids the javax.transaction dependency
+        // which is absent from WildFly 32 / Jakarta EE 10.
+        return new NoOpPlatformTransactionManager();
     }
 
     @Bean(name="processEngineFactoryBean")
@@ -99,11 +98,11 @@ public class ActivitiEngineConfiguration {
             processEngineConfiguration.setAsyncExecutorEnabled(asyncExecutorEnabled);
             processEngineConfiguration.setAsyncExecutorActivate(asyncExecutorActivate);
             processEngineConfiguration.setHistoryLevel(AUDIT);
-            processEngineConfiguration.setExpressionManager(new CdiExpressionManager());
             processEngineConfiguration.setDeploymentName(appName);
             processEngineConfiguration.setDeploymentResources(resources);
             processEngineConfiguration.setDeploymentMode("custom");
             processEngineConfiguration.setCreateDiagramOnDeploy(createDiagramOnDeploy);
+            processEngineConfiguration.setExpressionManager(new CdiAwareExpressionManager());
             return processEngineConfiguration;
         } catch (IOException|NamingException e ) {
             throw new ActivitiEngineConfigException("Problems while configuring Activiti Engine", e);

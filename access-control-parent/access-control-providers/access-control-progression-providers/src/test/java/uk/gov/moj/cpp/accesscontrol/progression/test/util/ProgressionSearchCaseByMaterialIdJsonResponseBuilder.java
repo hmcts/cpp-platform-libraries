@@ -3,8 +3,8 @@ package uk.gov.moj.cpp.accesscontrol.progression.test.util;
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 

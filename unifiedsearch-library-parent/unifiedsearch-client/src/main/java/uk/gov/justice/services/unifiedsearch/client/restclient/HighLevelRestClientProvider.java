@@ -2,8 +2,8 @@ package uk.gov.justice.services.unifiedsearch.client.restclient;
 
 import uk.gov.justice.services.unifiedsearch.client.index.HighLevelRestClientFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.http.client.CredentialsProvider;
 import org.elasticsearch.client.RestHighLevelClient;

@@ -5,6 +5,73 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [21.0.0-SNAPSHOT] - 2026-04-14
+### Changed
+- Bumped version to `21.0.0-SNAPSHOT` for Java 21 / WildFly 34 migration
+- Updated parent and all 50 child module POMs to `21.0.0-SNAPSHOT`
+- Updated `cpp.common-bom.version`, `framework-libraries.version`, `framework.version`, and `event-store.version` to `21.0.0-SNAPSHOT`
+- Updated `referencedata.version`: `17.103.129` → `17.103.131`
+- Migrated all Java source files (158 files) from `javax.*` to `jakarta.*` EE imports for compatibility with Jakarta EE 10
+- Replaced `javax:javaee-api` with `jakarta.platform:jakarta.jakartaee-api` in all 30 child module POMs that declared it as a dependency
+- Replaced `org.glassfish:javax.json` with `org.glassfish:jakarta.json` in 8 test POMs to align with Jakarta JSON-P 2.x
+- Fixed `ProviderAnnotationScanner`: replaced removed `BeanManager.fireEvent()` (CDI 4.0) with `BeanManager.getEvent().fire(event)`
+- Updated `ProviderAnnotationScannerTest` to use the CDI 4.0 `BeanManager.getEvent()` API
+- Reverted `activiti-embedded-rest` to use `javax.servlet.*` and `javax.transaction.*` imports (Activiti 5.22.0 depends on Spring 4.x which is bound to the `javax.*` namespace); added `javax:javaee-api:8.0.1` as a provided compilation dependency for that module
+- Fixed `DefaultSystemIdMapperClientTest`: updated `ZonedDateTime` assertions from `ZoneId.of("UTC")` to `ZoneOffset.UTC` to match Jackson 2.21.x deserialisation of the `"Z"` timezone token
+
+# [17.105.0-M10] - 2026-04-02
+### Changed
+- Update microservice-framework to 17.105.0-M6 and event-store to 17.105.0-M19 for:
+  - Stream selection queries now pick up errored streams that have no `stream_error_retry` entry instead of leaving them permanently stuck
+
+# [17.105.0-M8] - 2026-03-24
+### Changed
+- Update event-store to 17.105.0-M16 for:
+  - Notification-based event linking and publishing via CDI events, enabled via JNDI:
+    - event.linking.worker.notified (linking)
+    - event.publishing.worker.notified (publishing)
+    - event.discovery.notified (discovery)
+    - stream.processing.discovery.notified (processing)
+
+# [17.105.0-M7] - 2026-03-18
+### Changed
+- Update event-store to 17.105.0-M15 for:
+  - Batch event linking: `EventNumberLinker` now links N events per JTA transaction using JDBC `executeBatch()`,
+    configurable via JNDI `event.linking.worker.batch.size` (default 10)
+
+# [17.105.0-M6] - 2026-03-013
+### Changed
+- Update framework and event-store for:
+  - The JMX commands `CATCHUP`, `INDEXER_CATCHUP`, `REPLAY_EVENT_TO_EVENT_INDEXER`,
+    `REPLAY_EVENT_TO_EVENT_LISTENER` and `VERIFY_CATCHUP` are now disabled if
+    the pull mechanism is enabled. Calling them will result in a command not found
+
+# [17.105.0-M5] - 2026-03-11
+- Update microservice-framework to 17.105.0-M5 for various bug fixes and improvements
+- Update event-store to 17.105.0-M13 for various bug fixes and improvements
+
+# [17.105.0-M4] - 2026-03-05
+- Update event-store to 17.105.0-M11 for:
+  - Demand-driven worker scaling: StreamProcessingCoordinator spawns workers based on stream_status demand
+  - Extract session-level advisory lock handling into StreamSessionLockManager, see [stream-processing-advisory-locks-summary](doc/stream-processing-advisory-locks-summary.md) for more details
+
+# [17.105.0-M3] - 2026-02-18
+### Changed
+- Update event-store to 17.105.0-M8
+
+# [17.105.0-M2] - 2026-02-06
+### Changed
+- Update event-store to 17.105.0-M7 for:
+  - Introduce concurrency to stream processing through JNDI value 'stream.processing.max.workers'
+  - Continue processing next stream on error of current stream processing
+  - Removed test-utils-core.jar from the main classpath
+
+# [17.105.0-M1] - 2026-02-05
+### Changed
+- Bumped version to 17.105.0-M1 for new framework F version
+- Framework updated to version 17.105.0-M3
+- Event-store updated to version 17.105.0-M6
+
 # [17.104.0] - 2025-12-16
 
 ### Added

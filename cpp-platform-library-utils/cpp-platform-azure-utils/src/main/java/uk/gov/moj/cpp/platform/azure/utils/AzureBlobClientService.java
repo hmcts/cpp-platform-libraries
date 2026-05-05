@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.json.JsonObject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.JsonObject;
 
 import com.google.common.base.Stopwatch;
 import com.microsoft.azure.storage.CloudStorageAccount;

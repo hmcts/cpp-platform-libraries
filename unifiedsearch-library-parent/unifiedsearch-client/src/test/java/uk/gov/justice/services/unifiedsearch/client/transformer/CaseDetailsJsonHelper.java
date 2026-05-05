@@ -2,10 +2,10 @@ package uk.gov.justice.services.unifiedsearch.client.transformer;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;

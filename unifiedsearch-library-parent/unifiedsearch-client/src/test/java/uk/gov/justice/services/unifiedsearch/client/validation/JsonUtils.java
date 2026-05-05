@@ -1,7 +1,7 @@
 package uk.gov.justice.services.unifiedsearch.client.validation;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
 

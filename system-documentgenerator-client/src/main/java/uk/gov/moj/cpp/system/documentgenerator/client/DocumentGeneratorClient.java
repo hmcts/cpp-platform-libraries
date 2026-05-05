@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.system.documentgenerator.client;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public interface DocumentGeneratorClient {
 
