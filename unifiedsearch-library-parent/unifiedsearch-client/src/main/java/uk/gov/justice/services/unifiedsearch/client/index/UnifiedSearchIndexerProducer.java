@@ -9,10 +9,10 @@ import uk.gov.justice.services.unifiedsearch.UnifiedSearchIndexer;
 import uk.gov.justice.services.unifiedsearch.UnifiedSearchName;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class UnifiedSearchIndexerProducer {

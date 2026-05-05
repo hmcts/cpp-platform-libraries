@@ -9,7 +9,7 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo;
 import uk.gov.justice.services.unifiedsearch.client.validation.JsonDocumentValidator;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;

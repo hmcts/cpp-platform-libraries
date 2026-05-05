@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;

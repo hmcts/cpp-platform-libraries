@@ -5,6 +5,20 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [21.0.0-SNAPSHOT] - 2026-04-14
+### Changed
+- Bumped version to `21.0.0-SNAPSHOT` for Java 21 / WildFly 34 migration
+- Updated parent and all 50 child module POMs to `21.0.0-SNAPSHOT`
+- Updated `cpp.common-bom.version`, `framework-libraries.version`, `framework.version`, and `event-store.version` to `21.0.0-SNAPSHOT`
+- Updated `referencedata.version`: `17.103.129` → `17.103.131`
+- Migrated all Java source files (158 files) from `javax.*` to `jakarta.*` EE imports for compatibility with Jakarta EE 10
+- Replaced `javax:javaee-api` with `jakarta.platform:jakarta.jakartaee-api` in all 30 child module POMs that declared it as a dependency
+- Replaced `org.glassfish:javax.json` with `org.glassfish:jakarta.json` in 8 test POMs to align with Jakarta JSON-P 2.x
+- Fixed `ProviderAnnotationScanner`: replaced removed `BeanManager.fireEvent()` (CDI 4.0) with `BeanManager.getEvent().fire(event)`
+- Updated `ProviderAnnotationScannerTest` to use the CDI 4.0 `BeanManager.getEvent()` API
+- Reverted `activiti-embedded-rest` to use `javax.servlet.*` and `javax.transaction.*` imports (Activiti 5.22.0 depends on Spring 4.x which is bound to the `javax.*` namespace); added `javax:javaee-api:8.0.1` as a provided compilation dependency for that module
+- Fixed `DefaultSystemIdMapperClientTest`: updated `ZonedDateTime` assertions from `ZoneId.of("UTC")` to `ZoneOffset.UTC` to match Jackson 2.21.x deserialisation of the `"Z"` timezone token
+
 # [17.105.0-M10] - 2026-04-02
 ### Changed
 - Update microservice-framework to 17.105.0-M6 and event-store to 17.105.0-M19 for:

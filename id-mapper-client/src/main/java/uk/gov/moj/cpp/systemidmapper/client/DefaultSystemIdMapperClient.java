@@ -8,9 +8,9 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
-import javax.json.JsonObject;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 import static com.jayway.jsonpath.Configuration.defaultConfiguration;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.Response.Status.fromStatusCode;
+import static jakarta.ws.rs.client.Entity.entity;
+import static jakarta.ws.rs.core.Response.Status.fromStatusCode;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 

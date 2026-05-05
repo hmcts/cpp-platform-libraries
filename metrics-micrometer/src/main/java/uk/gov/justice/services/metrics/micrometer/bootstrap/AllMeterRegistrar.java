@@ -4,7 +4,7 @@ import uk.gov.justice.services.eventstore.metrics.meters.gauges.GaugeMeterFactor
 import uk.gov.justice.services.eventstore.metrics.tags.TagProvider;
 import uk.gov.justice.services.metrics.micrometer.counters.CounterMeterFactory;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import uk.gov.justice.services.metrics.micrometer.meters.SourceComponentPair;

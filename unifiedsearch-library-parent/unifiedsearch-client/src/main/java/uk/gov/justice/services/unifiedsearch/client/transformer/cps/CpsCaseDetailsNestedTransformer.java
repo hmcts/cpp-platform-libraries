@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CpsCaseDetailsNestedTransformer {

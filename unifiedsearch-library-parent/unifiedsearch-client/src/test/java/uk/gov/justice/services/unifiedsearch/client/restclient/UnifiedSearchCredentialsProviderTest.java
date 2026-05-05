@@ -25,7 +25,7 @@ import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSe
 import uk.gov.justice.services.common.configuration.GlobalValue;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;

@@ -8,9 +8,9 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import java.io.IOException;
 
 import static org.elasticsearch.client.RequestOptions.DEFAULT;

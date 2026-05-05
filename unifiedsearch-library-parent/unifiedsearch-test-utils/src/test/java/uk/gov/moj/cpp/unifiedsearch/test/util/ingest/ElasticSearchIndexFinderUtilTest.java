@@ -23,8 +23,8 @@ import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
 import java.io.IOException;
 
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
 
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.search.SearchRequest;
