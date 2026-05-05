@@ -1,6 +1,6 @@
 package uk.gov.justice.services.unifiedsearch.client.index;
 
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.util.AnnotationLiteral;
 
 public class IndexTypeLiteral extends AnnotationLiteral<IndexType> implements IndexType {
 

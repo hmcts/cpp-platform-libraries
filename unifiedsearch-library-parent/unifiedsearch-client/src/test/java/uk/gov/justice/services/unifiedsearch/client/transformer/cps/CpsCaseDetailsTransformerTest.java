@@ -11,7 +11,7 @@ import static uk.gov.justice.services.unifiedsearch.client.transformer.cps.CpsCa
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.justice.services.unifiedsearch.client.domain.cps.CaseDetails;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.get.GetResponse;

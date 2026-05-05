@@ -8,7 +8,7 @@ import uk.gov.justice.services.unifiedsearch.client.index.UnifiedSearchIngestion
 
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;

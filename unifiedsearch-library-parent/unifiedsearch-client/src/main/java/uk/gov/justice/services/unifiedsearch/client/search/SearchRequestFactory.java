@@ -6,8 +6,8 @@ import static java.util.Objects.nonNull;
 
 import uk.gov.justice.services.common.configuration.GlobalValue;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.QueryBuilder;

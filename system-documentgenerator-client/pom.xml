@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.platform.libraries</groupId>
         <artifactId>platform-libraries-parent-pom</artifactId>
-        <version>17.105.0-M11-SNAPSHOT</version>
+        <version>21.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.system.documentgenerator</groupId>
@@ -15,8 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -57,8 +57,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

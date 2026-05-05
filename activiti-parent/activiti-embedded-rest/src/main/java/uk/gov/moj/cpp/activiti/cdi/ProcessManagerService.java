@@ -4,8 +4,8 @@ import static java.lang.String.format;
 
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;

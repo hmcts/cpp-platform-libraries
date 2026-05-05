@@ -23,8 +23,8 @@ import uk.gov.justice.services.common.configuration.GlobalValue;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
