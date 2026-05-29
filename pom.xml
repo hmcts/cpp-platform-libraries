@@ -5,13 +5,13 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>21.0.0-SNAPSHOT</version>
+        <version>21.0.0-M1-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.moj.platform.libraries</groupId>
     <artifactId>platform-libraries-parent-pom</artifactId>
     <name>cpp.platform.libraries</name>
-    <version>21.0.0-SNAPSHOT</version>
+    <version>21.0.0-M1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -37,23 +37,23 @@
             2. While release through ADO pipeline, for white listed release branches (main/release-8.x.x) it's done through git hook (legacy solution) via azure pipeline code
             3. While release through ADO pipeline, for branches other than white listed release branches, it's done through versions:set command via azure pipeline code
          -->
-        <cpp.platform-libraries.version>21.0.0-SNAPSHOT</cpp.platform-libraries.version>
+        <cpp.platform-libraries.version>21.0.0-M1-SNAPSHOT</cpp.platform-libraries.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>21.0.0-SNAPSHOT</cpp.common-bom.version>
-        <file-service.version>21.0.0-SNAPSHOT</file-service.version>
+        <cpp.common-bom.version>21.0.0-M1-SNAPSHOT</cpp.common-bom.version>
+        <file-service.version>21.0.0-M1-SNAPSHOT</file-service.version>
 
         <!-- Framework versions -->
-        <framework-libraries.version>21.0.0-SNAPSHOT</framework-libraries.version>
-        <framework.version>21.0.0-SNAPSHOT</framework.version>
-        <event-store.version>21.0.0-SNAPSHOT</event-store.version>
+        <framework-libraries.version>21.0.0-M1-SNAPSHOT</framework-libraries.version>
+        <framework.version>21.0.0-M1-SNAPSHOT</framework.version>
+        <event-store.version>21.0.0-M1-SNAPSHOT</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.104.48</usersgroups.version>
-        <progression.version>17.0.252</progression.version>
-        <hearing.version>17.0.144</hearing.version>
+        <progression.version>17.0.262</progression.version>
+        <hearing.version>17.104.168</hearing.version>
         <sjp.version>17.103.169</sjp.version>
         <referencedata.version>17.103.131</referencedata.version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>
