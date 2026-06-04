@@ -5,6 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.0-M1] - 2026-06-10
+### Changed
+- Updated parent `cpp-platform-maven-parent-pom` to `25.104.0-M1`
+- Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M1`
+- Updated `framework-libraries.version` (`cp-framework-libraries`) to `25.104.0-M6`
+- Updated `event-store.version` (`cp-event-store`) to `25.104.0-M1`
+- Updated `file-service.version` (`cp-file-service`) to `25.104.0-M3`
+
 ## [21.0.0-SNAPSHOT] - 2026-04-14
 ### Changed
 - Bumped version to `21.0.0-SNAPSHOT` for Java 21 / WildFly 34 migration
