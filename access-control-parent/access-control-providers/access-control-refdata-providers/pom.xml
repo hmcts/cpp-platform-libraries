@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.access-control</groupId>
         <artifactId>access-control-providers</artifactId>
-        <version>21.0.0-M1-SNAPSHOT</version>
+        <version>25.104.0-M1-SNAPSHOT</version>
     </parent>
 
     <artifactId>access-control-refdata-providers</artifactId>
@@ -25,6 +25,11 @@
                         <artifactId>jakarta.jakartaee-api</artifactId>
                         <version>${javaee-api.version}</version>
                         <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${jakarta.xml.bind-api.raml.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>uk.gov.moj.cpp.referencedata</groupId>
