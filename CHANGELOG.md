@@ -5,6 +5,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.0-M3] - 2026-06-18
+### Changed
+- Updated `cpp.common-bom.version` (`cp-maven-common-bom`) to `25.104.0-M2`
+- Updated `file-service.version` (`cp-file-service`) to `25.104.0-M6`
+- Updated `framework-libraries.version` (`cp-framework-libraries`) to `25.104.0-M10`
+- Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M2`
+- Updated `event-store.version` (`cp-event-store`) to `25.104.0-M2`
+- Updated `referencedata.version` to `17.103.133`
+
 ## [25.104.0-M1] - 2026-06-10
 ### Changed
 - Updated parent `cpp-platform-maven-parent-pom` to `25.104.0-M1`

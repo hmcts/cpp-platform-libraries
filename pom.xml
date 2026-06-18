@@ -44,13 +44,13 @@
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>25.104.0-M1</cpp.common-bom.version>
-        <file-service.version>25.104.0-M3</file-service.version>
+        <cpp.common-bom.version>25.104.0-M2</cpp.common-bom.version>
+        <file-service.version>25.104.0-M6</file-service.version>
 
         <!-- Framework versions -->
-        <framework-libraries.version>25.104.0-M6</framework-libraries.version>
-        <framework.version>25.104.0-M1</framework.version>
-        <event-store.version>25.104.0-M1</event-store.version>
+        <framework-libraries.version>25.104.0-M10</framework-libraries.version>
+        <framework.version>25.104.0-M2</framework.version>
+        <event-store.version>25.104.0-M2</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
@@ -59,7 +59,7 @@
         <progression.version>17.0.262</progression.version>
         <hearing.version>17.104.168</hearing.version>
         <sjp.version>17.103.169</sjp.version>
-        <referencedata.version>17.103.131</referencedata.version>
+        <referencedata.version>17.103.133</referencedata.version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>
     </properties>
 
