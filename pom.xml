@@ -38,9 +38,7 @@
             3. While release through ADO pipeline, for branches other than white listed release branches, it's done through versions:set command via azure pipeline code
          -->
         <cpp.platform-libraries.version>25.104.0-M5-SNAPSHOT</cpp.platform-libraries.version>
-        <!-- 0.8.12 (parent-pom M1) cannot instrument Java 25 class files (major version 69); override until parent-pom M2 -->
         <plugins.jacoco.version>0.8.14</plugins.jacoco.version>
-        <!-- Pinned to pre-EE9 version: rest-client-generator-plugin uses javax.xml.bind.* (via raml-parser) which is only present in jakarta.xml.bind-api 2.x. DO NOT upgrade. -->
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
