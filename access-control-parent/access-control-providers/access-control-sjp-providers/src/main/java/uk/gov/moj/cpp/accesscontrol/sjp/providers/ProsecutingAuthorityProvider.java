@@ -11,11 +11,17 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 
 import static java.lang.Boolean.valueOf;
 import static uk.gov.moj.cpp.accesscontrol.drools.constants.AccessControlFrameworkComponent.ACCESS_CONTROL;
 import static uk.gov.moj.cpp.accesscontrol.sjp.providers.SjpProvider.jsonBuilderFactory;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Provider
 @ApplicationScoped
@@ -62,7 +68,15 @@ public class ProsecutingAuthorityProvider {
 
     private ProsecutingAuthorityAccess buildFromResponseJson(final JsonObject responsePayload) {
 
-        return ProsecutingAuthorityAccess.of(responsePayload.getString("prosecutingAuthorityAccess", null));
+        List<String> agentProsecutors = Optional
+                .ofNullable(responsePayload.getJsonArray("agentProsecutorAuthorityAccess"))
+                .map(arr -> arr.getValuesAs(JsonString.class)
+                        .stream()
+                        .map(JsonString::getString)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
+
+        return ProsecutingAuthorityAccess.of(responsePayload.getString("prosecutingAuthorityAccess", null), agentProsecutors);
     }
 
     private JsonValue buildRequestPayload(final JsonEnvelope envelope) {
