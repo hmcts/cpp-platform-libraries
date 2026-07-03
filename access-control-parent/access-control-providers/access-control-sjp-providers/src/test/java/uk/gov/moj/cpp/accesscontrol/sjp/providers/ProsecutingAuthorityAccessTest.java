@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 public class ProsecutingAuthorityAccessTest {
@@ -24,7 +26,7 @@ public class ProsecutingAuthorityAccessTest {
     @Test
     public void shouldBuildSingleProsecutingAuthorityAccess() {
 
-        ProsecutingAuthorityAccess prosecutingAuthorityAccess = ProsecutingAuthorityAccess.of(PROSECUTOR);
+        ProsecutingAuthorityAccess prosecutingAuthorityAccess = ProsecutingAuthorityAccess.of(PROSECUTOR, new ArrayList<>());
 
         assertThat(prosecutingAuthorityAccess.getProsecutingAuthority(), is(PROSECUTOR));
         assertThat(prosecutingAuthorityAccess.hasAccess(PROSECUTOR), is(true));
@@ -35,7 +37,7 @@ public class ProsecutingAuthorityAccessTest {
     @Test
     public void shouldReturnFalseForInvalidProsecutingAuthorityAccess() {
 
-        ProsecutingAuthorityAccess prosecutingAuthorityAccess = ProsecutingAuthorityAccess.of("OTHER_PROSECUTOR");
+        ProsecutingAuthorityAccess prosecutingAuthorityAccess = ProsecutingAuthorityAccess.of("OTHER_PROSECUTOR", new ArrayList<>());
 
         assertThat(prosecutingAuthorityAccess.getProsecutingAuthority(), is("OTHER_PROSECUTOR"));
         assertThat(prosecutingAuthorityAccess.hasAccess(PROSECUTOR), is(false));
