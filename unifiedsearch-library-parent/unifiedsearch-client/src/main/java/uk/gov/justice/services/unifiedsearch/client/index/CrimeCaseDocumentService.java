@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.JsonObject;
 
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.core.GetResponse;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 @ApplicationScoped
 @IndexType(IndexConstants.CRIME_CASE_INDEX_NAME)
@@ -21,20 +21,20 @@ public class CrimeCaseDocumentService extends DocumentService {
 
     @Inject
     @Named(WRITE_USER)
-    private RestHighLevelClient restHighLevelClient;
+    private ElasticsearchClient elasticsearchClient;
 
     @Inject
     private CaseDetailsTransformer caseDetailsTransformer;
 
     @Override
-    protected RestHighLevelClient restHighLevelClient() {
-        return restHighLevelClient;
+    protected ElasticsearchClient elasticsearchClient() {
+        return elasticsearchClient;
     }
 
     @Override
     protected Object getTransformedCaseDetails(JsonObject document,
                                                GetResponse getResponse) throws IOException {
-        return getResponse.isExists() ?
+        return getResponse.found() ?
                 caseDetailsTransformer.transform(document, getResponse) :
                 objectMapper.readValue(document.toString(), CaseDetails.class);
     }

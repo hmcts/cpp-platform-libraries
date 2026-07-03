@@ -16,7 +16,7 @@ import java.util.List;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.get.GetResponse;
+import co.elastic.clients.elasticsearch.core.GetResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +66,7 @@ public class CaseDetailsTransformerTest {
 
         final GetResponse getResponse = mock(GetResponse.class);
 
-        when(getResponse.getSourceAsString()).thenReturn(response.toString());
+        when(getResponse.source()).thenReturn(response);
 
         final CaseDetails caseDetails = caseDetailsTransformer.transform(index, getResponse);
 
@@ -110,7 +110,7 @@ public class CaseDetailsTransformerTest {
 
         final GetResponse getResponse = mock(GetResponse.class);
 
-        when(getResponse.getSourceAsString()).thenReturn(response.toString());
+        when(getResponse.source()).thenReturn(response);
 
         final CaseDetails caseDetails = caseDetailsTransformer.transform(index, getResponse);
 
@@ -159,7 +159,7 @@ public class CaseDetailsTransformerTest {
 
         final GetResponse getResponse = mock(GetResponse.class);
 
-        when(getResponse.getSourceAsString()).thenReturn(response.toString());
+        when(getResponse.source()).thenReturn(response);
 
         final CaseDetails caseDetails = caseDetailsTransformer.transform(index, getResponse);
 

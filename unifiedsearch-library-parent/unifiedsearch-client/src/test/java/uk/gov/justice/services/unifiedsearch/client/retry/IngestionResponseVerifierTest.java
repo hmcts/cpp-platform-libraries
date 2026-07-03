@@ -7,14 +7,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import co.elastic.clients.elasticsearch._types.Result;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.justice.services.unifiedsearch.client.index.UnifiedSearchIngestionException;
 
 import java.util.UUID;
 
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.rest.RestStatus;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,26 +35,26 @@ public class IngestionResponseVerifierTest {
     @Test
     public void handleUpdateResponseWhenResponseStatusIsOK() {
         final UUID caseId = randomUUID();
-        when(updateResponse.status()).thenReturn(RestStatus.OK);
+        when(updateResponse.result()).thenReturn(Result.Updated);
         ingestionResponseVerifier.checkUpsertSucceeded(caseId, updateResponse);
     }
 
     @Test
     public void handleUpdateResponseWhenResponseStatusIsNotOK() {
         final UUID caseId = randomUUID();
-        when(updateResponse.status()).thenReturn(RestStatus.REQUEST_TIMEOUT);
+        when(updateResponse.result()).thenReturn(Result.NotFound);
 
         final UnifiedSearchIngestionException unifiedSearchIngestionException = assertThrows(
                 UnifiedSearchIngestionException.class,
                 () -> ingestionResponseVerifier.checkUpsertSucceeded(caseId, updateResponse));
 
-        assertThat(unifiedSearchIngestionException.getMessage(), is(format("Ingestion failed for index update for document with id: %s with status REQUEST_TIMEOUT", caseId)));
+        assertThat(unifiedSearchIngestionException.getMessage(), is(format("Ingestion failed for index update for document with id: %s with status NotFound", caseId)));
     }
 
     @Test
     public void handleIndexResponseWhenResponseStatusIsOK() {
         final UUID caseId = randomUUID();
-        when(indexResponse.status()).thenReturn(RestStatus.OK);
+        when(indexResponse.result()).thenReturn(Result.Created);
         ingestionResponseVerifier.checkCreateSucceeded(caseId, indexResponse);
     }
 
@@ -62,12 +62,12 @@ public class IngestionResponseVerifierTest {
     public void handleIndexResponseWhenResponseStatusIsNotOK() {
         final UUID caseId = randomUUID();
 
-        when(indexResponse.status()).thenReturn(RestStatus.REQUEST_TIMEOUT);
+        when(indexResponse.result()).thenReturn(Result.NoOp);
 
         final UnifiedSearchIngestionException unifiedSearchIngestionException = assertThrows(
                 UnifiedSearchIngestionException.class,
                 () -> ingestionResponseVerifier.checkCreateSucceeded(caseId, indexResponse));
 
-        assertThat(unifiedSearchIngestionException.getMessage(), is(format("Ingestion failed for index write for document with id: %s with status REQUEST_TIMEOUT", caseId)));
+        assertThat(unifiedSearchIngestionException.getMessage(), is(format("Ingestion failed for index write for document with id: %s with status NoOp", caseId)));
     }
 }

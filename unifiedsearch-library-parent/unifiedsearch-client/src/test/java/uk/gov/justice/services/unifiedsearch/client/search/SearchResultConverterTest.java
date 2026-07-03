@@ -1,7 +1,8 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
-import static org.apache.lucene.search.TotalHits.Relation.EQUAL_TO;
+import static java.util.Collections.singletonList;
+import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -11,21 +12,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import co.elastic.clients.json.JsonData;
+import co.elastic.clients.json.JsonpMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.extension.ExtendWith;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.unifiedsearch.client.domain.CaseDetails;
 import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientException;
-
-import java.io.IOException;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.lucene.search.TotalHits;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
+
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -39,49 +38,43 @@ public class SearchResultConverterTest {
     private ObjectMapper objectMapper;
 
     @Mock
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
+    private JsonpMapper jsonpMapper;
+
     @Mock
     private JsonObject hitAsJsonObject;
 
-    @Mock
-    private Object hitAsObject;
-
-    private SearchHits searchHits;
-    private SearchHit searchHit;
+    private Hit<JsonData> searchHit;
 
     @InjectMocks
     private SearchResultConverter searchResultConverter;
 
     @BeforeEach
     public void setUp() {
-        searchHit = new SearchHit(1);
-        searchHits = new SearchHits(new SearchHit[]{searchHit}, new TotalHits(1, EQUAL_TO), 1F);
+        searchHit = Hit.<JsonData>of(h -> h.index("dummy-index").id("1").score(1.0).source(JsonData.of(new CaseDetails())));
     }
 
     @Test
-    public void shouldThrowException() throws Exception {
-        when(objectMapper.readValue(searchHit.getSourceAsString(), Object.class)).thenThrow(new JsonGenerationException("Oops", mock(JsonGenerator.class)));
+    public void shouldThrowException() throws JsonProcessingException {
+        when(objectMapper.writeValueAsString(any(Object.class))).thenThrow(new IllegalArgumentException("Oops", mock(Throwable.class)));
 
-        var e = assertThrows(UnifiedSearchClientException.class, () -> searchResultConverter.toJsonArray(searchHits, Object.class));
+        var e = assertThrows(UnifiedSearchClientException.class, () -> searchResultConverter.toJsonArray(singletonList(searchHit), Object.class));
         assertThat(e.getMessage(), is("Failed to deserialize search response"));
 
-        verify(objectMapper).readValue(searchHit.getSourceAsString(), Object.class);
-        verifyNoMoreInteractions(objectMapper, objectToJsonObjectConverter);
+        verify(objectMapper).writeValueAsString(any(CaseDetails.class));
+        verifyNoMoreInteractions(objectMapper);
     }
 
     @Test
-    public void shouldToJsonArray() throws IOException {
-        when(objectMapper.readValue(searchHit.getSourceAsString(), Object.class)).thenReturn(hitAsObject);
-        when(objectToJsonObjectConverter.convert(hitAsObject)).thenReturn(hitAsJsonObject);
+    public void shouldToJsonArray() throws JsonProcessingException {
+        when(objectMapper.writeValueAsString(any(CaseDetails.class))).thenReturn("{}");
 
-        final JsonArray actualResult = searchResultConverter.toJsonArray(searchHits, Object.class);
+        final JsonArray actualResult = searchResultConverter.toJsonArray(singletonList(searchHit), Object.class);
 
-        verify(objectMapper).readValue(searchHit.getSourceAsString(), Object.class);
-        verify(objectToJsonObjectConverter).convert(hitAsObject);
+        verify(objectMapper).writeValueAsString(any(CaseDetails.class));
 
         assertThat(actualResult, is(notNullValue()));
         assertThat(actualResult, hasSize(1));
 
-        verifyNoMoreInteractions(objectMapper, objectToJsonObjectConverter);
+        verifyNoMoreInteractions(objectMapper);
     }
 }
