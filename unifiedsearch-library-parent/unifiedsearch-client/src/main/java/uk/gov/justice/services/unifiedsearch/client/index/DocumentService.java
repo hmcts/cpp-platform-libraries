@@ -1,6 +1,5 @@
 package uk.gov.justice.services.unifiedsearch.client.index;
 
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
 
 import uk.gov.justice.services.unifiedsearch.client.factory.GetRequestFactory;
 import uk.gov.justice.services.unifiedsearch.client.factory.IndexRequestFactory;
@@ -13,14 +12,15 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.JsonData;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.get.GetRequest;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.core.GetRequest;
+import co.elastic.clients.elasticsearch.core.GetResponse;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.elasticsearch.core.UpdateRequest;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 
 public abstract class DocumentService {
 
@@ -39,14 +39,14 @@ public abstract class DocumentService {
     @Inject
     private IngestionResponseVerifier ingestionResponseVerifier;
 
-    protected abstract RestHighLevelClient restHighLevelClient();
+    protected abstract ElasticsearchClient elasticsearchClient();
 
     protected abstract Object getTransformedCaseDetails(final JsonObject document,
                                                         final GetResponse getResponse) throws IOException;
 
     public GetResponse getDocument(final UUID caseId, final String indexName) throws IOException {
         final GetRequest getRequest = getRequestFactory.getRequest(indexName, caseId);
-        return restHighLevelClient().get(getRequest, DEFAULT);
+        return elasticsearchClient().get(getRequest, JsonData.class);
     }
 
     public void createDocument(
@@ -59,32 +59,35 @@ public abstract class DocumentService {
         final IndexRequest indexRequest = indexRequestFactory.indexRequest(
                 indexName,
                 document,
+                caseId.toString(),
                 sequenceNumber,
                 primaryTerm);
 
-        final IndexResponse indexResponse = restHighLevelClient().index(indexRequest, DEFAULT);
+        final IndexResponse indexResponse = elasticsearchClient().index(indexRequest);
         ingestionResponseVerifier.checkCreateSucceeded(caseId, indexResponse);
     }
 
     public void upsertDocument(final UUID caseId,
                                final JsonObject document, final String indexName) throws IOException {
         final GetResponse getResponse = getDocument(caseId, indexName);
-
-        final String caseDetailsString = objectMapper.writeValueAsString(getTransformedCaseDetails(document, getResponse));
+        final Object caseDetails = getTransformedCaseDetails(document, getResponse);
 
         final IndexRequest indexRequest = indexRequestFactory.indexRequest(
                 indexName,
-                document,
-                getResponse.getSeqNo(),
-                getResponse.getPrimaryTerm());
+                caseDetails,
+                caseId.toString(),
+                getResponse.seqNo(),
+                getResponse.primaryTerm());
 
         final UpdateRequest updateRequest = updateRequestFactory.updateRequest(
                 indexName,
                 caseId.toString(),
-                caseDetailsString,
+                caseDetails,
                 indexRequest);
 
-        final UpdateResponse updateResponse = restHighLevelClient().update(updateRequest, DEFAULT);
+
+
+        final UpdateResponse updateResponse = elasticsearchClient().update(updateRequest, Void.class);
         ingestionResponseVerifier.checkUpsertSucceeded(caseId, updateResponse);
     }
 }

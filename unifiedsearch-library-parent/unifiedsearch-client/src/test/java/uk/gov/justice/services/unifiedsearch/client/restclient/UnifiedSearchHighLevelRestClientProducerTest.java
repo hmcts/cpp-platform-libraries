@@ -8,9 +8,9 @@ import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSe
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.READ_USER;
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.WRITE_USER;
 
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,30 +29,30 @@ public class UnifiedSearchHighLevelRestClientProducerTest {
     @Test
     public void shouldCreateHighLevelRestClientForTheReadUser() throws Exception {
 
-        final RestHighLevelClient readHighLevelClient = mock(RestHighLevelClient.class);
+        final ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
-        when(highLevelRestClientProvider.newHighLevelClientFor(READ_USER)).thenReturn(readHighLevelClient);
+        when(highLevelRestClientProvider.newHighLevelClientFor(READ_USER)).thenReturn(elasticsearchClient);
 
-        assertThat(unifiedSearchHighLevelRestClientProducer.getReadHighLevelClient(), is(readHighLevelClient));
+        assertThat(unifiedSearchHighLevelRestClientProducer.getReadHighLevelClient(), is(elasticsearchClient));
     }
 
     @Test
     public void shouldCreateHighLevelRestClientForTheWriteUser() throws Exception {
 
-        final RestHighLevelClient writeHighLevelClient = mock(RestHighLevelClient.class);
+        final ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
-        when(highLevelRestClientProvider.newHighLevelClientFor(WRITE_USER)).thenReturn(writeHighLevelClient);
+        when(highLevelRestClientProvider.newHighLevelClientFor(WRITE_USER)).thenReturn(elasticsearchClient);
 
-        assertThat(unifiedSearchHighLevelRestClientProducer.getWriteHighLevelClient(), is(writeHighLevelClient));
+        assertThat(unifiedSearchHighLevelRestClientProducer.getWriteHighLevelClient(), is(elasticsearchClient));
     }
 
     @Test
     public void shouldCreateHighLevelRestClientForTheMonitorUser() throws Exception {
 
-        final RestHighLevelClient monitorHighLevelClient = mock(RestHighLevelClient.class);
+        final ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
-        when(highLevelRestClientProvider.newHighLevelClientFor(MONITOR_USER)).thenReturn(monitorHighLevelClient);
+        when(highLevelRestClientProvider.newHighLevelClientFor(MONITOR_USER)).thenReturn(elasticsearchClient);
 
-        assertThat(unifiedSearchHighLevelRestClientProducer.getMonitorHighLevelClient(), is(monitorHighLevelClient));
+        assertThat(unifiedSearchHighLevelRestClientProducer.getMonitorHighLevelClient(), is(elasticsearchClient));
     }
 }

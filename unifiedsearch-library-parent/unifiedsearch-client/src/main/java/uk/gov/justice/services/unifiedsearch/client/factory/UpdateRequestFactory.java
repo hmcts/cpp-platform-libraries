@@ -1,24 +1,25 @@
 package uk.gov.justice.services.unifiedsearch.client.factory;
 
-import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy.NONE;
-import static org.elasticsearch.xcontent.XContentType.JSON;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.update.UpdateRequest;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.UpdateRequest;
 
 @ApplicationScoped
 public class UpdateRequestFactory {
 
+
     public UpdateRequest updateRequest(final String indexName,
                                        final String documentId,
-                                       final String caseDetailsString,
+                                       final Object document,
                                        final IndexRequest indexRequest) {
-        return new UpdateRequest(indexName, documentId)
-                .doc(caseDetailsString, JSON)
-                .setRefreshPolicy(NONE)
-                .upsert(indexRequest);
+        return UpdateRequest.of(u -> u
+                .index(indexName)
+                .id(documentId)
+                .doc(document)
+                .upsert(indexRequest)
+        );
     }
 
 }

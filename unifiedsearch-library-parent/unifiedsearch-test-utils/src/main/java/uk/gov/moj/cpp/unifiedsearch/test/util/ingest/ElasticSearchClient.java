@@ -6,39 +6,61 @@ import static uk.gov.moj.cpp.unifiedsearch.test.util.ingest.CrimeIndexConstants.
 
 import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClientBuilder;
-import org.elasticsearch.client.RestHighLevelClient;
 
 public class ElasticSearchClient {
 
     private static final CredentialProviderUtil credentialProvider = new CredentialProviderUtil();
 
-    public RestHighLevelClient restClient() {
+    public ElasticsearchClient restClient() {
 
         return restClient(CRIME_CASE);
     }
 
-    public RestHighLevelClient adminRestClient() {
+    public ElasticsearchClient adminRestClient() {
 
         return adminRestClient(CRIME_CASE);
     }
 
-    public RestHighLevelClient restClient(final IndexInfo indexInfo) {
+    public ElasticsearchClient restClient(final IndexInfo indexInfo) {
 
         final RestClientBuilder restClientBuilder = builder(HttpHost.create(ES_URI));
 
         restClientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialProvider.credentialsProvider(indexInfo)));
 
-        return new RestHighLevelClient(restClientBuilder);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        JacksonJsonpMapper jsonpMapper = new JacksonJsonpMapper(objectMapper);
+
+        RestClientTransport transport = new RestClientTransport(restClientBuilder.build(), jsonpMapper);
+
+        return new ElasticsearchClient(transport);
     }
 
-    public RestHighLevelClient adminRestClient(final IndexInfo indexInfo) {
+    public ElasticsearchClient adminRestClient(final IndexInfo indexInfo) {
 
         final RestClientBuilder restClientBuilder = builder(HttpHost.create(ES_URI));
 
         restClientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialProvider.adminCredentialsProvider(indexInfo)));
 
-        return new RestHighLevelClient(restClientBuilder);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        JacksonJsonpMapper jsonpMapper = new JacksonJsonpMapper(objectMapper);
+
+        RestClientTransport transport = new RestClientTransport(restClientBuilder.build(), jsonpMapper);
+
+        return new ElasticsearchClient(transport);
     }
 }

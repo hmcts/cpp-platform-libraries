@@ -1,7 +1,6 @@
 package uk.gov.justice.services.unifiedsearch.client.index;
 
 import static java.util.UUID.randomUUID;
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,6 +12,9 @@ import static uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo.CPS_C
 import static uk.gov.justice.services.unifiedsearch.client.utils.IndexInfo.CRIME_CASE;
 
 import java.util.stream.Stream;
+
+import co.elastic.clients.elasticsearch.core.UpdateRequest;
+import co.elastic.clients.json.JsonData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,12 +31,12 @@ import java.util.UUID;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.get.GetRequest;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.core.GetRequest;
+import co.elastic.clients.elasticsearch.core.GetResponse;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,7 +45,7 @@ import org.mockito.MockitoAnnotations;
 public class DocumentServiceTest {
 
     @Mock
-    private RestHighLevelClient restHighLevelClient;
+    private ElasticsearchClient elasticsearchClient;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -86,10 +88,10 @@ public class DocumentServiceTest {
 
         final UUID caseId = randomUUID();
 
-        when(highLevelRestClientProvider.getWriteHighLevelClient()).thenReturn(restHighLevelClient);
+        when(highLevelRestClientProvider.getWriteHighLevelClient()).thenReturn(elasticsearchClient);
 
         final GetRequest getRequest = getRequestFactory.getRequest(indexInfo.getIndexName(), caseId);
-        final GetResponse getResponse = restHighLevelClient.get(getRequest, DEFAULT);
+        final GetResponse getResponse = elasticsearchClient.get(getRequest);
 
         assertThat(documentService.getDocument(caseId, indexInfo.getIndexName()), is(getResponse));
     }
@@ -109,10 +111,11 @@ public class DocumentServiceTest {
         when(indexRequestFactory.indexRequest(
                 indexInfo.getIndexName(),
                 document,
+                caseId.toString(),
                 sequenceNumber,
                 primaryTerm)).thenReturn(indexRequest);
-        when(highLevelRestClientProvider.getWriteHighLevelClient()).thenReturn(restHighLevelClient);
-        when(restHighLevelClient.index(indexRequest, DEFAULT)).thenReturn(indexResponse);
+        when(highLevelRestClientProvider.getWriteHighLevelClient()).thenReturn(elasticsearchClient);
+        when(elasticsearchClient.index(indexRequest)).thenReturn(indexResponse);
 
         documentService.createDocument(document, caseId, sequenceNumber, primaryTerm, indexInfo.getIndexName());
 
@@ -127,10 +130,13 @@ public class DocumentServiceTest {
         final GetResponse getResponse = mock(GetResponse.class);
         final JsonObject document = mock(JsonObject.class);
         final UpdateResponse updateResponse = mock(UpdateResponse.class);
+        final UpdateRequest updateRequest = mock(UpdateRequest.class);
 
-        when(highLevelRestClientProvider.getWriteHighLevelClient()).thenReturn(restHighLevelClient);
-        when(restHighLevelClient.get(any(), eq(DEFAULT))).thenReturn(getResponse);
-        when(restHighLevelClient.update(any(), eq(DEFAULT))).thenReturn(updateResponse);
+        when(highLevelRestClientProvider.getWriteHighLevelClient()).thenReturn(elasticsearchClient);
+        when(elasticsearchClient.get(any(GetRequest.class), eq(JsonData.class))).thenReturn(getResponse);
+        when(elasticsearchClient.update(any(UpdateRequest.class), eq(Void.class))).thenReturn(updateResponse);
+        when( getRequestFactory.getRequest(indexInfo.getIndexName(), caseId)).thenReturn(GetRequest.of(t->t.id("").index("")));
+        when(updateRequestFactory.updateRequest(any(), any(),any(),any())).thenReturn(updateRequest);
 
         documentService.upsertDocument(
                 caseId,
