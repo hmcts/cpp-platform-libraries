@@ -5,6 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.0-M7] - 2026-07-07
+### Changed
+- Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M3`
+- Updated `event-store.version` (`cp-event-store`) to `25.104.0-M4`
+
+### Added
+- `event-listener` service-component now depends on `persistence-jpa`, delivering the event-stream self-healing `EntityManagerFlushInterceptor` (and its `EVENT_LISTENER` interceptor-chain provider) plus `EntityManagerProducer` into the event-listener WARs of consuming contexts — restoring the DB-error-capture flush that was lost when `persistence-deltaspike` was orphaned
+
 ## [25.104.0-M3] - 2026-06-18
 ### Changed
 - Updated `cpp.common-bom.version` (`cp-maven-common-bom`) to `25.104.0-M2`
