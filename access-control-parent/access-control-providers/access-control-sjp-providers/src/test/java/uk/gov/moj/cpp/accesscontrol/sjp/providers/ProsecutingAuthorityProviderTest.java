@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.accesscontrol.sjp.providers;
 
+import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -160,6 +161,41 @@ public class ProsecutingAuthorityProviderTest {
 
         verifyNoInteractions(requester);
         verify(logger).trace("Skipping prosecuting authority access control due to configuration");
+    }
+
+    @Test
+    public void shouldParseAgentProsecutorAuthorityAccessAsListOfStrings() {
+
+        when(requester.requestAsAdmin(any()))
+                .thenReturn(userDetailsResponseWithAgentAccess(PROSECUTING_AUTHORITY, "TFL", "TVL"));
+
+        final ProsecutingAuthorityAccess access =
+                prosecutingAuthorityProvider.getCurrentUsersProsecutingAuthorityAccess(callingEnvelope);
+
+        assertThat(access.getProsecutingAuthority(), is(PROSECUTING_AUTHORITY));
+        assertThat(access.getAgentProsecutorAuthorityAccess(), is(asList("TFL", "TVL")));
+
+        assertLogStatement();
+    }
+
+    @Test
+    public void shouldGrantAccessViaAgentProsecutorAuthority() {
+
+        when(requester.requestAsAdmin(any()))
+                .thenReturn(userDetailsResponseWithAgentAccess(PROSECUTING_AUTHORITY, "TFL", "TVL"));
+
+        assertThat(prosecutingAuthorityProvider.userHasProsecutingAuthorityAccess(
+                callingEnvelope, "TVL"), is(true));
+
+        assertLogStatement();
+    }
+
+    private JsonEnvelope userDetailsResponseWithAgentAccess(final String prosecutingAuthorityAccess,
+                                                            final String... agentProsecutorAuthorities) {
+        return envelope()
+                .withPayloadOf(prosecutingAuthorityAccess, "prosecutingAuthorityAccess")
+                .withPayloadOf(agentProsecutorAuthorities, "agentProsecutorAuthorityAccess")
+                .build();
     }
 
     private void givenUserHasNoProsecutingAuthorityAccess() {
