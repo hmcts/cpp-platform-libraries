@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonString;
 import jakarta.json.JsonValue;
 
 import java.util.Collections;
@@ -69,9 +70,9 @@ public class ProsecutingAuthorityProvider {
 
         final List<String> agentProsecutors = Optional
                 .ofNullable(responsePayload.getJsonArray("agentProsecutorAuthorityAccess"))
-                .map(agentAccess -> agentAccess.getValuesAs(JsonObject.class)
+                .map(agentAccess -> agentAccess.getValuesAs(JsonString.class)
                         .stream()
-                        .map(agent -> agent.getString("prosecutingAuthority"))
+                        .map(JsonString::getString)
                         .collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
 
