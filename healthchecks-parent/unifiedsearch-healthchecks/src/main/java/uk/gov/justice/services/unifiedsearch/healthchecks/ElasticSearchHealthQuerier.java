@@ -2,22 +2,17 @@ package uk.gov.justice.services.unifiedsearch.healthchecks;
 
 import java.io.IOException;
 
-import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
-import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.cluster.HealthResponse;
 
 /**
  * Wrapper class for the unmockable parts of getting a health response from elastic search
  */
 public class ElasticSearchHealthQuerier {
 
-    public ClusterHealthResponse getClusterHealth(
-            final RestHighLevelClient restHighLevelClient,
-            final RequestOptions requestOptions) throws IOException {
+    public HealthResponse getClusterHealth(
+            final ElasticsearchClient client) throws IOException {
 
-        return restHighLevelClient
-                .cluster()
-                .health(new ClusterHealthRequest(), requestOptions);
+        return client.cluster().health();
     }
 }

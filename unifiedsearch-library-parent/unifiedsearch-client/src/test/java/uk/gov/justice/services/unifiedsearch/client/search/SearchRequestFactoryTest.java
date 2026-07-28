@@ -1,20 +1,17 @@
 package uk.gov.justice.services.unifiedsearch.client.search;
 
-import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
-import static org.elasticsearch.search.sort.SortOrder.ASC;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.NestedSortBuilder;
+import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.SortOptions;
 import org.junit.jupiter.api.Test;
 
 public class SearchRequestFactoryTest {
@@ -27,14 +24,14 @@ public class SearchRequestFactoryTest {
 
         setField(searchRequestFactory, "maxQueryResultSize", "100");
 
-        final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(mock(QueryBuilder.class), "indexName", 10, 100, null);
+        final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(mock(Query.Builder.class), "indexName", 10, 100, null);
 
         assertThat(searchRequest, notNullValue());
-        assertThat(searchRequest.indices().length, is(1));
-        assertThat(searchRequest.indices()[0], is("indexName"));
-        assertThat(searchRequest.source().size(), is(10));
-        assertThat(searchRequest.source().from(), is(100));
-        assertThat(searchRequest.source().sorts(), is(nullValue()));
+        assertThat(searchRequest.index().size(), is(1));
+        assertThat(searchRequest.index().get(0), is("indexName"));
+        assertThat(searchRequest.size(), is(10));
+        assertThat(searchRequest.from(), is(100));
+        assertThat(searchRequest.sort().isEmpty(), is(true));
     }
 
 
@@ -42,72 +39,88 @@ public class SearchRequestFactoryTest {
     public void shouldCreateSearchRequest() {
 
         setField(searchRequestFactory, "maxQueryResultSize", "100");
-        final FieldSortBuilder fieldSortBuilder = fieldSort("fieldName").order(ASC);
+        final SortOptions sortOptions = SortOptions.of(s -> s
+                .field(f -> f.field("fieldName").order(SortOrder.Asc))
+        );
 
-        final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(mock(QueryBuilder.class), "indexName", 10, 100, fieldSortBuilder);
+        final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(mock(Query.Builder.class), "indexName", 10, 100, sortOptions);
 
         assertThat(searchRequest, notNullValue());
-        assertThat(searchRequest.indices().length, is(1));
-        assertThat(searchRequest.indices()[0], is("indexName"));
-        assertThat(searchRequest.source().size(), is(10));
-        assertThat(searchRequest.source().from(), is(100));
-        assertThat(searchRequest.source().sorts(), hasSize(1));
-        assertThat(searchRequest.source().sorts().get(0).order(), is(ASC));
+        assertThat(searchRequest.index().size(), is(1));
+        assertThat(searchRequest.index().get(0), is("indexName"));
+        assertThat(searchRequest.size(), is(10));
+        assertThat(searchRequest.from(), is(100));
+        assertThat(searchRequest.sort(), hasSize(1));
+        assertThat(searchRequest.sort().get(0).field().order(), is(SortOrder.Asc));
     }
 
     @Test
     public void shouldCreateSearchRequestWithNestedSort() {
 
         setField(searchRequestFactory, "maxQueryResultSize", "100");
-        final FieldSortBuilder fieldSortBuilder = fieldSort("fieldName").order(ASC).setNestedSort(new NestedSortBuilder("nested.sort.path"));
+        final SortOptions sortOptions = SortOptions.of(s -> s
+                .field(f -> f
+                        .field("fieldName")
+                        .order(SortOrder.Asc)
+                        .nested(n -> n
+                                .path("nested.sort.path")
+                        )
+                )
+        );
 
-        final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(mock(QueryBuilder.class), "indexName", 10, 100, fieldSortBuilder);
+        final SearchRequest searchRequest = searchRequestFactory.getSearchRequestBy(mock(Query.Builder.class), "indexName", 10, 100, sortOptions);
 
         assertThat(searchRequest, notNullValue());
-        assertThat(searchRequest.indices().length, is(1));
-        assertThat(searchRequest.indices()[0], is("indexName"));
-        assertThat(searchRequest.source().size(), is(10));
-        assertThat(searchRequest.source().from(), is(100));
-        assertThat(searchRequest.source().sorts(), hasSize(1));
-        assertThat(searchRequest.source().sorts().get(0).order(), is(ASC));
-        final FieldSortBuilder actualFieldSort = (FieldSortBuilder) searchRequest.source().sorts().get(0);
-        assertThat(actualFieldSort.getNestedSort().getPath(), is("nested.sort.path"));
+        assertThat(searchRequest.index().size(), is(1));
+        assertThat(searchRequest.index().get(0), is("indexName"));
+        assertThat(searchRequest.size(), is(10));
+        assertThat(searchRequest.from(), is(100));
+        assertThat(searchRequest.sort(), hasSize(1));
+        assertThat(searchRequest.sort().get(0).field().order(), is(SortOrder.Asc));
+        assertThat(searchRequest.sort().get(0).field().nested().path(), is("nested.sort.path"));
 
     }
 
     @Test
     public void shouldFailForTooLargeReturnSize() {
-        final FieldSortBuilder fieldSortBuilder = fieldSort("fieldName").order(ASC);
+        final SortOptions sortOptions = SortOptions.of(s -> s
+                .field(f -> f.field("fieldName").order(SortOrder.Asc))
+        );
         setField(searchRequestFactory, "maxQueryResultSize", "10");
 
         final IllegalArgumentException illegalArgumentException = assertThrows(
                 IllegalArgumentException.class,
-                () -> searchRequestFactory.getSearchRequestBy(mock(QueryBuilder.class), "indexName", 1000, 100, fieldSortBuilder));
+                () -> searchRequestFactory.getSearchRequestBy(mock(Query.Builder.class), "indexName", 1000, 100, sortOptions));
 
         assertThat(illegalArgumentException.getMessage(), is("Provided 'pageSize' param [1000] must be between 0 and 10"));
     }
 
     @Test
     public void shouldFailForNegativeReturnSize() {
-        final FieldSortBuilder fieldSortBuilder = fieldSort("fieldName").order(ASC);
+        final SortOptions sortOptions = SortOptions.of(s -> s
+                .field(f -> f.field("fieldName").order(SortOrder.Asc))
+        );
+
         setField(searchRequestFactory, "maxQueryResultSize", "10");
 
         final IllegalArgumentException illegalArgumentException = assertThrows(
                 IllegalArgumentException.class,
-                () -> searchRequestFactory.getSearchRequestBy(mock(QueryBuilder.class), "indexName", -10, 100, fieldSortBuilder));
+                () -> searchRequestFactory.getSearchRequestBy(mock(Query.Builder.class), "indexName", -10, 100, sortOptions));
 
         assertThat(illegalArgumentException.getMessage(), is("Provided 'pageSize' param [-10] must be between 0 and 10"));
     }
 
     @Test
     public void shouldFailForInvalidFromValue() {
-        final FieldSortBuilder fieldSortBuilder = fieldSort("fieldName").order(ASC);
+        final SortOptions sortOptions = SortOptions.of(s -> s
+                .field(f -> f.field("fieldName").order(SortOrder.Asc))
+        );
         setField(searchRequestFactory, "maxQueryResultSize", "100");
 
 
         final IllegalArgumentException illegalArgumentException = assertThrows(
                 IllegalArgumentException.class,
-                () -> searchRequestFactory.getSearchRequestBy(mock(QueryBuilder.class), "indexName", 10, -10, fieldSortBuilder));
+                () -> searchRequestFactory.getSearchRequestBy(mock(Query.Builder.class), "indexName", 10, -10, sortOptions));
 
         assertThat(illegalArgumentException.getMessage(), is("Provided 'startFrom' param [-10] must be greater or equal to 0"));
     }

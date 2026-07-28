@@ -5,6 +5,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.0-M9] - 2026-07-28
+### Changed
+- **Elasticsearch client migration `7.17` → `9.2.2`** (cherry-picked from Java-17 DD-41592): `RestHighLevelClient` → `co.elastic.clients.elasticsearch.ElasticsearchClient` across the `unifiedsearch-client` library (DocumentService, DefaultUnifiedSearchService, SearchRequestFactory/SearchResultConverter, client producers/factories) and `unifiedsearch-test-utils`; new `BulkRequest` / `SearchResponse(JsonData)` / `indices()` APIs. `javax`→`jakarta` conflicts resolved during the port.
+- Bumped `cpp.common-bom.version` `25.104.0-M2` → `25.104.0-M3` — picks up ES 9.2.2 dependency management + jackson `2.21.5` (**CVE-2026-54515**).
+- Advanced all framework references to the released milestones (platform tracks the framework chain): parent `parent-pom` `M1` → `M2`, `file-service.version` `M6` → `M7`, `framework-libraries.version` `M10` → `M11`, `framework.version` (cp-microservice-framework) `M3` → `M4`, `event-store.version` `M4` → `M5`. Carries jackson `2.21.5` (**CVE-2026-54515**), the `org.junit:junit-bom` import, maven-shade `3.6.0` / jacoco `0.8.14`, and the event-store `EntityManagerFlushInterceptorPresenceVerifier` deploy-guard.
+- Bumped cross-context RAML interfaces to their latest released versions (required by `enforce-moj-latest-interfaces`): `hearing.version` `17.104.176` → `17.104.180`, `referencedata.version` `17.103.133` → `17.104.137`, `assignment.version` `8.0.5` → `8.0.7`, `usersgroups.version` `17.104.48` → `17.104.50`, `progression.version` `17.0.262` → `17.0.279`, `sjp.version` `17.103.169` → `17.104.181`.
+
 ## [25.104.0-M7] - 2026-07-07
 ### Changed
 - Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M3`
