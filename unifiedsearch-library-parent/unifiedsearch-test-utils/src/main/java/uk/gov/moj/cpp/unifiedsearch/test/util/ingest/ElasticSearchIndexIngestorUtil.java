@@ -1,30 +1,32 @@
 package uk.gov.moj.cpp.unifiedsearch.test.util.ingest;
 
 import static java.lang.String.format;
-import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy.WAIT_UNTIL;
-import static org.elasticsearch.client.RequestOptions.DEFAULT;
-import static org.elasticsearch.xcontent.XContentType.JSON;
 
 import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.Refresh;
+import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.elasticsearch.core.BulkResponse;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
+import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.client.RestHighLevelClient;
 
 public class ElasticSearchIndexIngestorUtil {
 
     private ElasticSearchClient elasticSearchClient;
     private ObjectMapper objectMapper;
-    private RestHighLevelClient restClient;
+    private ElasticsearchClient restClient;
 
 
     public ElasticSearchIndexIngestorUtil() {
@@ -38,23 +40,48 @@ public class ElasticSearchIndexIngestorUtil {
             restClient = elasticSearchClient.restClient(IndexInfo.findByIngesterClazz(caseData.get(0)));
         }
 
-        final BulkRequest bulkRequest = new BulkRequest();
-        caseData.stream()
-                .map(caseDataObject-> toIndexRequest(IndexInfo.findByIngesterClazz(caseDataObject), caseDataObject))
+        final List<BulkOperation> operations = caseData.stream()
+                .map(caseDataObject-> {
+                    IndexRequest request = toIndexRequest(IndexInfo.findByIngesterClazz(caseDataObject), caseDataObject);
+                    if (request == null) return null;
+                    return BulkOperation.of(op -> op
+                            .index(idx -> idx
+                                    .index(request.index())
+                                    .id(request.id())
+                                    .document(caseDataObject)
+                            )
+                    );
+                })
                 .filter(Objects::nonNull)
-                .forEach(bulkRequest::add);
+                .toList();
+
+        final BulkRequest bulkRequest =
+                co.elastic.clients.elasticsearch.core.BulkRequest.of(b -> b
+                        .refresh(co.elastic.clients.elasticsearch._types.Refresh.WaitFor)
+                        .operations(operations)
+                );
 
         doBulkRequest(bulkRequest);
     }
 
     private void doBulkRequest(final BulkRequest bulkRequest) throws IOException {
-        bulkRequest.setRefreshPolicy(WAIT_UNTIL);
+        BulkRequest requestWithRefresh = BulkRequest.of(b -> {
+            b.refresh(Refresh.WaitFor);
+            b.operations(bulkRequest.operations());
+            return b;
+        });
 
         try {
-            final BulkResponse response = restClient.bulk(bulkRequest, DEFAULT);
+            final BulkResponse response = restClient.bulk(requestWithRefresh);
 
-            if (response.hasFailures()) {
-                throw new RuntimeException(format("BulkRequest failed: %s", response.buildFailureMessage()));
+            if (response.errors()) {
+                throw new RuntimeException(format("BulkRequest failed: %s",
+                        response.items().stream()
+                                .filter( res -> Objects.nonNull(res.error()))
+                                .map(BulkResponseItem::error)
+                                .map(Object::toString)
+                                .collect(Collectors.joining(", "))
+                ));
             }
         } finally {
             restClient.close();
@@ -64,18 +91,12 @@ public class ElasticSearchIndexIngestorUtil {
     @SuppressWarnings("squid:S3011")
     private IndexRequest toIndexRequest(final IndexInfo indexInfo, final BaseCaseDocument caseDocument) {
         final String caseId = caseDocument.getCaseId();
-        final IndexRequest request = new IndexRequest(indexInfo.getIndexName());
-        request.id(caseId);
-        request.source(toJsonString(caseDocument), JSON);
-        return request;
-    }
 
-    private String toJsonString(final Object caseDocument) {
-        try {
-            return objectMapper.writeValueAsString(caseDocument);
-        } catch (final JsonProcessingException jpEx) {
-            throw new RuntimeException("Couldn't convert to JSON !", jpEx);
-        }
+        return IndexRequest.of(i -> i
+                .index(indexInfo.getIndexName())
+                .id(caseId)
+                .document(caseDocument)
+        );
     }
 
 }

@@ -10,6 +10,9 @@ import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CPS_CASE
 import static uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo.CRIME_CASE;
 
 import java.util.stream.Stream;
+
+import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
+import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,11 +20,7 @@ import uk.gov.moj.cpp.unifiedsearch.test.util.constant.IndexInfo;
 
 import java.io.IOException;
 
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.indices.CreateIndexRequest;
-import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -47,8 +46,8 @@ public class ElasticSearchIndexCreatorUtilTest {
         final ElasticSearchIndexCreatorUtil elasticSearchIndexCreatorUtil = new ElasticSearchIndexCreatorUtil(elasticSearchClient);
         final CreateIndexResponse createIndexResponse = mock(CreateIndexResponse.class);
 
-        when(createIndexResponse.isAcknowledged()).thenReturn(true);
-        when(elasticSearchClient.adminRestClient(indexInfo).indices().create(any(CreateIndexRequest.class), any(RequestOptions.class))).thenReturn(createIndexResponse);
+        when(createIndexResponse.acknowledged()).thenReturn(true);
+        when(elasticSearchClient.adminRestClient(indexInfo).indices().create(any(CreateIndexRequest.class))).thenReturn(createIndexResponse);
 
         final boolean caseIndex = elasticSearchIndexCreatorUtil.createCaseIndex(indexInfo.getIndexName());
 
