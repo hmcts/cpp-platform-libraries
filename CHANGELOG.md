@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.0-M10] - 2026-07-29
+### Changed
+- Bumped `cpp.common-bom.version` `25.104.0-M3` → `25.104.0-M4` — picks up the Elasticsearch `9.2.2` → `9.3.3` dependency-management bump (aligns the ES client with the `9.3.3` image/`elasticsearch-eck` chart in ACR). API-compatible: `unifiedsearch-client` compiles and its 92 tests pass unchanged against `elasticsearch-java 9.3.3`.
+
 ## [25.104.0-M9] - 2026-07-28
 ### Changed
 - **Elasticsearch client migration `7.17` → `9.2.2`** (cherry-picked from Java-17 DD-41592): `RestHighLevelClient` → `co.elastic.clients.elasticsearch.ElasticsearchClient` across the `unifiedsearch-client` library (DocumentService, DefaultUnifiedSearchService, SearchRequestFactory/SearchResultConverter, client producers/factories) and `unifiedsearch-test-utils`; new `BulkRequest` / `SearchResponse(JsonData)` / `indices()` APIs. `javax`→`jakarta` conflicts resolved during the port.
