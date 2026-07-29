@@ -42,7 +42,7 @@
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>25.104.0-M3</cpp.common-bom.version>
+        <cpp.common-bom.version>25.104.0-M4</cpp.common-bom.version>
         <file-service.version>25.104.0-M7</file-service.version>
 
         <!-- Framework versions -->

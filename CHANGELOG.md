@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Bumped `cpp.common-bom.version` `25.104.0-M3` → `25.104.0-M4` — picks up the Elasticsearch `9.2.2` → `9.3.3` dependency-management bump (aligns the ES client with the `9.3.3` image/`elasticsearch-eck` chart in ACR). API-compatible: `unifiedsearch-client` compiles and its 92 tests pass unchanged against `elasticsearch-java 9.3.3`.
 
 ## [25.104.0-M9] - 2026-07-28
 ### Changed
