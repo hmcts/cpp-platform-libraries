@@ -42,13 +42,13 @@
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>25.104.0-M4</cpp.common-bom.version>
-        <file-service.version>25.104.0-M7</file-service.version>
+        <cpp.common-bom.version>25.104.0-M5</cpp.common-bom.version>
+        <file-service.version>25.104.0-M8</file-service.version>
 
         <!-- Framework versions -->
-        <framework-libraries.version>25.104.0-M11</framework-libraries.version>
-        <framework.version>25.104.0-M4</framework.version>
-        <event-store.version>25.104.0-M5</event-store.version>
+        <framework-libraries.version>25.104.0-M12</framework-libraries.version>
+        <framework.version>25.104.0-M5</framework.version>
+        <event-store.version>25.104.0-M6</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
