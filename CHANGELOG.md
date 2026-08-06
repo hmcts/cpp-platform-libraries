@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### [17.104.4]  - 2026-07-06
+### Changed
+- updated common-bom to 17.104.1 to fix json-smart version
+
 ### [17.104.2]  - 2026-03-31
 ### Changed
 - framework-stream-rest-resources dependency is added to expose `/internal` endpoints
