@@ -5,13 +5,13 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>25.104.0-M2</version>
+        <version>25.104.0</version>
     </parent>
 
     <groupId>uk.gov.moj.platform.libraries</groupId>
     <artifactId>platform-libraries-parent-pom</artifactId>
     <name>cpp.platform.libraries</name>
-    <version>25.104.0-M12-SNAPSHOT</version>
+    <version>25.104.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -37,27 +37,27 @@
             2. While release through ADO pipeline, for white listed release branches (main/release-8.x.x) it's done through git hook (legacy solution) via azure pipeline code
             3. While release through ADO pipeline, for branches other than white listed release branches, it's done through versions:set command via azure pipeline code
          -->
-        <cpp.platform-libraries.version>25.104.0-M12-SNAPSHOT</cpp.platform-libraries.version>
+        <cpp.platform-libraries.version>25.104.0-SNAPSHOT</cpp.platform-libraries.version>
         <plugins.jacoco.version>0.8.14</plugins.jacoco.version>
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>25.104.0-M5</cpp.common-bom.version>
-        <file-service.version>25.104.0-M8</file-service.version>
+        <cpp.common-bom.version>25.104.0</cpp.common-bom.version>
+        <file-service.version>25.104.0</file-service.version>
 
         <!-- Framework versions -->
-        <framework-libraries.version>25.104.0-M12</framework-libraries.version>
-        <framework.version>25.104.0-M5</framework.version>
-        <event-store.version>25.104.0-M6</event-store.version>
+        <framework-libraries.version>25.104.0</framework-libraries.version>
+        <framework.version>25.104.0</framework.version>
+        <event-store.version>25.104.0</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.7</assignment.version>
         <usersgroups.version>17.104.50</usersgroups.version>
-        <progression.version>17.0.279</progression.version>
-        <hearing.version>17.104.180</hearing.version>
-        <sjp.version>17.104.181</sjp.version>
-        <referencedata.version>17.104.137</referencedata.version>
+        <progression.version>17.104.299</progression.version>
+        <hearing.version>17.104.197</hearing.version>
+        <sjp.version>17.104.193</sjp.version>
+        <referencedata.version>17.104.140</referencedata.version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>
     </properties>
 

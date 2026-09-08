@@ -5,45 +5,18 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [25.104.0-M11] - 2026-08-05
-### Changed
-- Bumped `cpp.common-bom.version` M4→M5, `framework.version` M4→M5, `event-store.version` M5→M6, `framework-libraries.version` M11→M12, and `file-service.version` M7→M8 — picks up the Apache Artemis client bump `2.53.0` → `2.54.0` (via common-bom M7).
-
-## [25.104.0-M10] - 2026-07-29
-### Changed
-- Bumped `cpp.common-bom.version` `25.104.0-M3` → `25.104.0-M4` — picks up the Elasticsearch `9.2.2` → `9.3.3` dependency-management bump (aligns the ES client with the `9.3.3` image/`elasticsearch-eck` chart in ACR). API-compatible: `unifiedsearch-client` compiles and its 92 tests pass unchanged against `elasticsearch-java 9.3.3`.
-
-## [25.104.0-M9] - 2026-07-28
-### Changed
-- **Elasticsearch client migration `7.17` → `9.2.2`** (cherry-picked from Java-17 DD-41592): `RestHighLevelClient` → `co.elastic.clients.elasticsearch.ElasticsearchClient` across the `unifiedsearch-client` library (DocumentService, DefaultUnifiedSearchService, SearchRequestFactory/SearchResultConverter, client producers/factories) and `unifiedsearch-test-utils`; new `BulkRequest` / `SearchResponse(JsonData)` / `indices()` APIs. `javax`→`jakarta` conflicts resolved during the port.
-- Bumped `cpp.common-bom.version` `25.104.0-M2` → `25.104.0-M3` — picks up ES 9.2.2 dependency management + jackson `2.21.5` (**CVE-2026-54515**).
-- Advanced all framework references to the released milestones (platform tracks the framework chain): parent `parent-pom` `M1` → `M2`, `file-service.version` `M6` → `M7`, `framework-libraries.version` `M10` → `M11`, `framework.version` (cp-microservice-framework) `M3` → `M4`, `event-store.version` `M4` → `M5`. Carries jackson `2.21.5` (**CVE-2026-54515**), the `org.junit:junit-bom` import, maven-shade `3.6.0` / jacoco `0.8.14`, and the event-store `EntityManagerFlushInterceptorPresenceVerifier` deploy-guard.
-- Bumped cross-context RAML interfaces to their latest released versions (required by `enforce-moj-latest-interfaces`): `hearing.version` `17.104.176` → `17.104.180`, `referencedata.version` `17.103.133` → `17.104.137`, `assignment.version` `8.0.5` → `8.0.7`, `usersgroups.version` `17.104.48` → `17.104.50`, `progression.version` `17.0.262` → `17.0.279`, `sjp.version` `17.103.169` → `17.104.181`.
-
-## [25.104.0-M7] - 2026-07-07
-### Changed
-- Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M3`
-- Updated `event-store.version` (`cp-event-store`) to `25.104.0-M4`
+## [25.104.0] - 2026-09-08
+First official (non-milestone) release of the Java 25 / WildFly 40 / Jakarta EE 11 line,
+consolidating milestones `25.104.0-M1` to `25.104.0-M11`.
 
 ### Added
 - `event-listener` service-component now depends on `persistence-jpa`, delivering the event-stream self-healing `EntityManagerFlushInterceptor` (and its `EVENT_LISTENER` interceptor-chain provider) plus `EntityManagerProducer` into the event-listener WARs of consuming contexts — restoring the DB-error-capture flush that was lost when `persistence-deltaspike` was orphaned
 
-## [25.104.0-M3] - 2026-06-18
 ### Changed
-- Updated `cpp.common-bom.version` (`cp-maven-common-bom`) to `25.104.0-M2`
-- Updated `file-service.version` (`cp-file-service`) to `25.104.0-M6`
-- Updated `framework-libraries.version` (`cp-framework-libraries`) to `25.104.0-M10`
-- Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M2`
-- Updated `event-store.version` (`cp-event-store`) to `25.104.0-M2`
-- Updated `referencedata.version` to `17.103.133`
-
-## [25.104.0-M1] - 2026-06-10
-### Changed
-- Updated parent `cpp-platform-maven-parent-pom` to `25.104.0-M1`
-- Updated `framework.version` (`cp-microservice-framework`) to `25.104.0-M1`
-- Updated `framework-libraries.version` (`cp-framework-libraries`) to `25.104.0-M6`
-- Updated `event-store.version` (`cp-event-store`) to `25.104.0-M1`
-- Updated `file-service.version` (`cp-file-service`) to `25.104.0-M3`
+- Updated parent `cpp-platform-maven-parent-pom` (`parent-pom`) and `cpp.common-bom.version` to the released `25.104.0`
+- Advanced every framework reference to the released `25.104.0` (platform tracks the framework chain): `file-service.version`, `framework-libraries.version`, `framework.version` (cp-microservice-framework) and `event-store.version`. Carries Java 25 / Jakarta EE 11 targeting (`java.major.version=25`, `enforcer.java.version.range=[25,)`), the Jakarta EE 11 API set, WildFly `40.0.0.Final`, Weld 6, RESTEasy 7, Hibernate ORM 6, Apache Artemis `2.54.0` under the new `org.apache.artemis` groupId, `liquibase.version=5.0.3`, Jackson `2.21.5` (**CVE-2026-54515**), the `org.junit:junit-bom` import, maven-shade `3.6.0` / jacoco `0.8.14`, and the event-store `EntityManagerFlushInterceptorPresenceVerifier` deploy-guard
+- **Elasticsearch client migration `7.17` → `9.3.3`** (cherry-picked from Java-17 DD-41592): `RestHighLevelClient` → `co.elastic.clients.elasticsearch.ElasticsearchClient` across the `unifiedsearch-client` library (DocumentService, DefaultUnifiedSearchService, SearchRequestFactory/SearchResultConverter, client producers/factories) and `unifiedsearch-test-utils`; new `BulkRequest` / `SearchResponse(JsonData)` / `indices()` APIs, with `javax`→`jakarta` conflicts resolved during the port. The final step to `9.3.3` aligns the client with the `9.3.3` image and `elasticsearch-eck` chart in ACR and is API-compatible — `unifiedsearch-client` compiles and its 92 tests pass unchanged
+- Bumped cross-context RAML interfaces to their latest released versions (required by `enforce-moj-latest-interfaces`): `progression.version` `17.0.279` → `17.104.299`, `hearing.version` `17.104.180` → `17.104.197`, `sjp.version` `17.104.181` → `17.104.193`, `referencedata.version` `17.104.137` → `17.104.140`. `assignment.version` (`8.0.7`) and `usersgroups.version` (`17.104.50`) were already current. Note `progression` had drifted across version lines (`17.0.x` → `17.104.x`) and its `progression.search.court.list.data.json` schema had grown 4799 → 6149 bytes; the access-control progression providers build and their tests pass unchanged against the newer interface
 
 ## [21.0.0-SNAPSHOT] - 2026-04-14
 ### Changed
