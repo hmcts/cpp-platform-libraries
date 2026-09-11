@@ -3,7 +3,12 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [25.104.1] - 2026-09-11
+### Changed
+- Updated the parent `parent-pom` to 25.104.2 to take the changes from it
+- Updated `common-bom` to 25.104.1
+- Updated `cp-file-service`, `framework-libraries`, `microservice-framework` and `event-store` to 25.104.1
+- Updated the `hearing` interface to 17.104.200
 
 ## [25.104.0] - 2026-09-08
 First official (non-milestone) release of the Java 25 / WildFly 40 / Jakarta EE 11 line,

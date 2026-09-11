@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>25.104.0</version>
+        <version>25.104.2</version>
     </parent>
 
     <groupId>uk.gov.moj.platform.libraries</groupId>
@@ -42,20 +42,20 @@
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>25.104.0</cpp.common-bom.version>
-        <file-service.version>25.104.0</file-service.version>
+        <cpp.common-bom.version>25.104.1</cpp.common-bom.version>
+        <file-service.version>25.104.1</file-service.version>
 
         <!-- Framework versions -->
-        <framework-libraries.version>25.104.0</framework-libraries.version>
-        <framework.version>25.104.0</framework.version>
-        <event-store.version>25.104.0</event-store.version>
+        <framework-libraries.version>25.104.1</framework-libraries.version>
+        <framework.version>25.104.1</framework.version>
+        <event-store.version>25.104.1</event-store.version>
 
         <cpp.framework.version>${framework.version}</cpp.framework.version>
 
         <assignment.version>8.0.7</assignment.version>
         <usersgroups.version>17.104.50</usersgroups.version>
         <progression.version>17.104.299</progression.version>
-        <hearing.version>17.104.197</hearing.version>
+        <hearing.version>17.104.200</hearing.version>
         <sjp.version>17.104.193</sjp.version>
         <referencedata.version>17.104.140</referencedata.version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>
