@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [25.104.2] - 2026-09-15
+### Changed
+- Updated the parent `parent-pom` to 25.104.4 and `cpp.common-bom` to 25.104.2
+- Updated `framework-libraries`, `framework` and `event-store` to 25.104.3. This carries the `framework-libraries-bom` entry for `liquibase-postgres-compatibility` down to the contexts, so their Liquibase jars pick it up through `platform-libraries-bom` without pinning a version.
+
 ## [25.104.1] - 2026-09-11
 ### Changed
 - Updated the parent `parent-pom` to 25.104.2 to take the changes from it
