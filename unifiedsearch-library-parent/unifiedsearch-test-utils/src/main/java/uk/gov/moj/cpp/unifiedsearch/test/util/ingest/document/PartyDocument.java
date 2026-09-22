@@ -149,6 +149,33 @@ public class PartyDocument {
         return defendantAddress;
     }
 
+    @Override
+    public String toString() {
+        return "PartyDocument{" +
+                "partyId='" + partyId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", title='" + title + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender='" + gender + '\'' +
+                ", addressLines='" + addressLines + '\'' +
+                ", postCode='" + postCode + '\'' +
+                ", pncId='" + pncId + '\'' +
+                ", arrestSummonsNumber='" + arrestSummonsNumber + '\'' +
+                ", _party_type='" + _party_type + '\'' +
+                ", organisationName='" + organisationName + '\'' +
+                ", aliases=" + aliases +
+                ", nationalInsuranceNumber='" + nationalInsuranceNumber + '\'' +
+                ", proceedingsConcluded=" + proceedingsConcluded +
+                ", representationOrder=" + representationOrder +
+                ", offences=" + offences +
+                ", masterPartyId='" + masterPartyId + '\'' +
+                ", croNumber='" + croNumber + '\'' +
+                ", courtProceedingsInitiated='" + courtProceedingsInitiated + '\'' +
+                ", defendantAddress=" + defendantAddress +
+                '}';
+    }
 
     public static class Builder {
 

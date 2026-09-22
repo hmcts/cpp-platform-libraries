@@ -6,13 +6,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchSecurityConstants.WRITE_USER;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.justice.services.unifiedsearch.client.index.HighLevelRestClientFactory;
 
 import org.apache.http.client.CredentialsProvider;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -42,7 +41,7 @@ public class HighLevelRestClientProviderTest {
         final int threadCount = 23;
 
         final CredentialsProvider credentialsProvider = mock(CredentialsProvider.class);
-        final RestHighLevelClient restHighLevelClient = mock(RestHighLevelClient.class);
+        final ElasticsearchClient elasticsearchClient = mock(ElasticsearchClient.class);
 
         when(restClientConfiguration.getElasticsearchBaseUri()).thenReturn(elasticsearchBaseUri);
         when(restClientConfiguration.getElasticsearchTimeout()).thenReturn(elasticsearchTimeout);
@@ -53,8 +52,8 @@ public class HighLevelRestClientProviderTest {
                 elasticsearchBaseUri,
                 credentialsProvider,
                 elasticsearchTimeout,
-                threadCount)).thenReturn(restHighLevelClient);
+                threadCount)).thenReturn(elasticsearchClient);
 
-        assertThat(highLevelRestClientProvider.newHighLevelClientFor(userType), is(restHighLevelClient));
+        assertThat(highLevelRestClientProvider.newHighLevelClientFor(userType), is(elasticsearchClient));
     }
 }

@@ -2,17 +2,15 @@ package uk.gov.justice.services.unifiedsearch.client.search;
 
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
-import static java.util.Objects.nonNull;
 
 import uk.gov.justice.services.common.configuration.GlobalValue;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.SortOptions;
 
 @ApplicationScoped
 public class SearchRequestFactory {
@@ -22,28 +20,24 @@ public class SearchRequestFactory {
     private String maxQueryResultSize;
 
 
-    public SearchRequest getSearchRequestBy(final QueryBuilder queryBuilder, final String indexName, final int pageSize, final int startFrom,
-                                            final FieldSortBuilder fieldSortBuilder) {
+    public SearchRequest getSearchRequestBy(final Query.Builder queryBuilder, final String indexName, final int pageSize, final int startFrom,
+                                            final SortOptions sortOptions) {
 
         checkValid(pageSize, startFrom);
 
-        final SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(queryBuilder);
-        searchSourceBuilder.size(pageSize);
-        searchSourceBuilder.from(startFrom);
-        /* Forcing ES to accurately count like in ES 6.x
-         See https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-request-track-total-hits.html
-        */
-        searchSourceBuilder.trackTotalHits(true);
+        return SearchRequest.of(s -> {
+            s.index(indexName)
+                    .query(queryBuilder.build())
+                    .size(pageSize)
+                    .from(startFrom)
+                    .trackTotalHits(t -> t.enabled(true));
 
-        if (nonNull(fieldSortBuilder)) {
-            searchSourceBuilder.sort(fieldSortBuilder);
-        }
+            if (sortOptions != null) {
+                s.sort(sortOptions);
+            }
 
-        final SearchRequest searchRequest = new SearchRequest(indexName);
-        searchRequest.source(searchSourceBuilder);
-
-        return searchRequest;
+            return s;
+        });
     }
 
 

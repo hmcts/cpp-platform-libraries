@@ -14,10 +14,9 @@ import uk.gov.justice.services.unifiedsearch.client.domain.cps.CaseDetails;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.get.GetResponse;
+import co.elastic.clients.elasticsearch.core.GetResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -56,7 +55,7 @@ public class CpsCaseDetailsTransformerTest {
 
         final GetResponse getResponse = mock(GetResponse.class);
 
-        when(getResponse.getSourceAsString()).thenReturn(response.toString());
+        when(getResponse.source()).thenReturn(response);
 
         final CaseDetails caseDetails = cpsCaseDetailsTransformer.transform(index, getResponse);
 
@@ -93,7 +92,7 @@ public class CpsCaseDetailsTransformerTest {
 
         final GetResponse getResponse = mock(GetResponse.class);
 
-        when(getResponse.getSourceAsString()).thenReturn(response.toString());
+        when(getResponse.source()).thenReturn(response);
 
         final CaseDetails caseDetails = cpsCaseDetailsTransformer.transform(index, getResponse);
 
@@ -131,7 +130,7 @@ public class CpsCaseDetailsTransformerTest {
 
         final GetResponse getResponse = mock(GetResponse.class);
 
-        when(getResponse.getSourceAsString()).thenReturn(response.toString());
+        when(getResponse.source()).thenReturn(response);
 
         final CaseDetails caseDetails = cpsCaseDetailsTransformer.transform(index, getResponse);
 

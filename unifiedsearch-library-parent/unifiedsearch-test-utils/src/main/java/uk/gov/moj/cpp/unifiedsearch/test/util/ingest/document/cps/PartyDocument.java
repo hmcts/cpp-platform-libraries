@@ -19,6 +19,23 @@ public class PartyDocument {
     private PartyDocument() {
     }
 
+    @Override
+    public String toString() {
+        return "PartyDocument{" +
+                "partyId='" + partyId + '\'' +
+                ", _party_type=" + _party_type +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", aliases=" + aliases +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", asn='" + asn + '\'' +
+                ", pncId='" + pncId + '\'' +
+                ", organisationName='" + organisationName + '\'' +
+                ", oicShoulderNumber='" + oicShoulderNumber + '\'' +
+                ", offences=" + offences +
+                '}';
+    }
+
     public PartyDocument(final String partyId, final List<String> _party_type, final String firstName, final String lastName, final List<AliasDocument> aliases,
                          final String dateOfBirth, final String asn, final String pncId,
                          final String organisationName, final String oicShoulderNumber,

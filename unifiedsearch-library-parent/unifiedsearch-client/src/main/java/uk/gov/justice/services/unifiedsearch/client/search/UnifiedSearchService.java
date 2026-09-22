@@ -2,19 +2,19 @@ package uk.gov.justice.services.unifiedsearch.client.search;
 
 import javax.json.JsonObject;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 
 public interface UnifiedSearchService {
 
     JsonObject search(final String documentId, final String indexName);
 
-    JsonObject search(final QueryBuilder queryBuilder, final String indexName, final Class<?> resultHitType,
+    JsonObject search(final Query.Builder queryBuilder, final String indexName, final Class<?> resultHitType,
                       final String resultHitNodeName, final int pageSize, final int startFrom,
-                      final FieldSortBuilder fieldSortBuilder);
+                      final SortOptions sortOptions);
 
-    JsonObject search(final QueryBuilder queryBuilder, final String indexName, final Class<?> resultHitType,
+    JsonObject search(final Query.Builder queryBuilder, final String indexName, final Class<?> resultHitType,
                       final String resultHitNodeName, final int pageSize, final int startFrom,
-                      final FieldSortBuilder fieldSortBuilder, final Class<?> innerHitResultType,
+                      final SortOptions sortOptions, final Class<?> innerHitResultType,
                       final String innerResultHightNodeName);
 }
