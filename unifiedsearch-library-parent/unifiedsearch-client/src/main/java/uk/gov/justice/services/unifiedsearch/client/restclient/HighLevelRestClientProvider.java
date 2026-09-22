@@ -6,7 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.apache.http.client.CredentialsProvider;
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 @ApplicationScoped
 public class HighLevelRestClientProvider {
@@ -20,7 +20,7 @@ public class HighLevelRestClientProvider {
     @Inject
     private HighLevelRestClientFactory highLevelRestClientFactory;
 
-    public RestHighLevelClient newHighLevelClientFor(final String userType) {
+    public ElasticsearchClient newHighLevelClientFor(final String userType) {
 
         final String elasticsearchBaseUri = restClientConfiguration.getElasticsearchBaseUri();
         final int elasticsearchTimeout = restClientConfiguration.getElasticsearchTimeout();

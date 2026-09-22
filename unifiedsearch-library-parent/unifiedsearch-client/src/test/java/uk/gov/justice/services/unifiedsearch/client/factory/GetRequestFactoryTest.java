@@ -7,7 +7,7 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.util.UUID;
 
-import org.elasticsearch.action.get.GetRequest;
+import co.elastic.clients.elasticsearch.core.GetRequest;
 import org.junit.jupiter.api.Test;
 
 public class GetRequestFactoryTest {

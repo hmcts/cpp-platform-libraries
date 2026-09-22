@@ -40,7 +40,7 @@
         <cpp.platform-libraries.version>17.104.5-SNAPSHOT</cpp.platform-libraries.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>17.104.1</cpp.common-bom.version>
+        <cpp.common-bom.version>17.104.2</cpp.common-bom.version>
         <file-service.version>17.104.0</file-service.version>
 
         <!-- Framework versions -->
@@ -52,10 +52,10 @@
 
         <assignment.version>8.0.5</assignment.version>
         <usersgroups.version>17.104.50</usersgroups.version>
-        <progression.version>17.0.275</progression.version>
-        <hearing.version>17.104.173</hearing.version>
+        <progression.version>17.104.299</progression.version>
+        <hearing.version>17.104.200</hearing.version>
         <sjp.version>17.104.181</sjp.version>
-        <referencedata.version>17.104.136</referencedata.version>
+        <referencedata.version>17.104.140</referencedata.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <azure-storage-version>8.4.0</azure-storage-version>
         <versions-manven-plugin.version>2.15.0</versions-manven-plugin.version>

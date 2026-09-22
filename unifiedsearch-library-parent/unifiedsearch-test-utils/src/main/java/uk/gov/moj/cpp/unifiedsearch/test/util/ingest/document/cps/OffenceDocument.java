@@ -10,6 +10,19 @@ public class OffenceDocument {
     private String startDate;
     private String endDate;
 
+    @Override
+    public String toString() {
+        return "OffenceDocument{" +
+                "offenceId='" + offenceId + '\'' +
+                ", offenceCode='" + offenceCode + '\'' +
+                ", custodyTimeLimit='" + custodyTimeLimit + '\'' +
+                ", type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                '}';
+    }
+
     public OffenceDocument(final String offenceId, final String offenceCode, final String custodyTimeLimit, final String type, final String description, final String startDate, final String endDate) {
 
         this.offenceId = offenceId;

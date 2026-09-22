@@ -15,7 +15,6 @@ import uk.gov.justice.services.unifiedsearch.client.utils.UnifiedSearchClientExc
 import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
