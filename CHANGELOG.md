@@ -3,6 +3,20 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+## [25.104.3] - 2026-09-25
+### Security
+- `unifiedsearch-client` no longer pins `httpclient5` and `httpcore5` at 5.2.1; both now come from the common-bom
+  (httpclient5 5.6.4, httpcore5 5.4.4), fixing [CVE-2026-54399](https://www.cve.org/CVERecord?id=CVE-2026-54399)
+  and [CVE-2026-54428](https://www.cve.org/CVERecord?id=CVE-2026-54428). 5.2.x is also the version the common-bom
+  notes breaks the Elasticsearch 9.3.3 client
+
+### Changed
+- Updated `cpp.common-bom` to 25.104.3, `file-service` to 25.104.2, and `framework-libraries`, `framework` and
+  `event-store` to 25.104.4, which carry the September 2026 security updates (netty 4.1.138, httpcore5 5.4.4,
+  postgresql 42.7.13, micrometer 1.16.7, log4j 2.25.5, plexus-utils 3.6.2)
+
 ## [25.104.2] - 2026-09-15
 ### Changed
 - Updated the parent `parent-pom` to 25.104.4 and `cpp.common-bom` to 25.104.2
