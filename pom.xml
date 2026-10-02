@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>25.104.4</version>
+        <version>25.104.5</version>
     </parent>
 
     <groupId>uk.gov.moj.platform.libraries</groupId>
@@ -42,7 +42,7 @@
         <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
 
         <!-- Github libraries versions -->
-        <cpp.common-bom.version>25.104.3</cpp.common-bom.version>
+        <cpp.common-bom.version>25.104.4</cpp.common-bom.version>
         <file-service.version>25.104.2</file-service.version>
 
         <!-- Framework versions -->

@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.4] - 2026-10-02
+### Changed
+- Updated the parent `parent-pom` to 25.104.5 and `cpp.common-bom.version` to 25.104.4
+
 ## [25.104.3] - 2026-09-25
 ### Security
 - `unifiedsearch-client` no longer pins `httpclient5` and `httpcore5` at 5.2.1; both now come from the common-bom
