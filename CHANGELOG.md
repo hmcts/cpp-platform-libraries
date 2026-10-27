@@ -5,6 +5,21 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.5] - 2026-10-28
+### Security
+- Updated `cpp.common-bom` to 25.104.5, `file-service` to 25.104.3, and `framework-libraries`, `framework` and
+  `event-store` to 25.104.5, which carry:
+  - jackson 2.21.5 → 2.21.8: [CVE-2026-89425](https://www.cve.org/CVERecord?id=CVE-2026-89425),
+    [CVE-2026-89407](https://www.cve.org/CVERecord?id=CVE-2026-89407), [CVE-2026-91777](https://www.cve.org/CVERecord?id=CVE-2026-91777),
+    [CVE-2026-91776](https://www.cve.org/CVERecord?id=CVE-2026-91776), [CVE-2026-68497](https://www.cve.org/CVERecord?id=CVE-2026-68497),
+    [CVE-2026-83557](https://www.cve.org/CVERecord?id=CVE-2026-83557), [CVE-2026-19032](https://www.cve.org/CVERecord?id=CVE-2026-19032)
+  - jsoup 1.21.2 → 1.23.2: [CVE-2026-75140](https://www.cve.org/CVERecord?id=CVE-2026-75140),
+    [CVE-2026-71497](https://www.cve.org/CVERecord?id=CVE-2026-71497)
+
+### Changed
+- Updated the interface versions checked by the MoJ interface enforcer to their latest releases: `progression`
+  17.104.299 → 17.104.306, `hearing` 17.104.200 → 17.104.209, `sjp` 17.104.193 → 17.104.195
+
 ## [25.104.4] - 2026-10-02
 ### Changed
 - Updated the parent `parent-pom` to 25.104.5 and `cpp.common-bom.version` to 25.104.4
