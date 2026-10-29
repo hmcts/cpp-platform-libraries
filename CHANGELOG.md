@@ -4,6 +4,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- feature-control: a failed fetch from Azure App Configuration no longer looks like "no features", which silently
+  disabled every feature ([PEG-3655](https://hmcts.atlassian.net/browse/PEG-3655)):
+  - `AzureRestClient` throws `AzureRequestException` on a non-200 response (401, 403, 429, 5xx) instead of
+    returning an empty object with no error logged
+  - `DefaultAzureFeatureFetcher` no longer swallows `AzureRequestException`, and throws it if the response
+    has no `items`. It still returns an empty list if the Azure connection isn't configured
+### Changed
+- Updated MoJ interface versions for the latest-interface enforcer rule: progression 17.104.306, hearing 17.104.209,
+  sjp 17.104.195
 
 ## [17.104.5] - 2026-09-22
 ### Changed
