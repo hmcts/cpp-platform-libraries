@@ -5,6 +5,20 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.6] - 2026-11-03
+### Fixed
+- feature-control: a failed fetch from Azure App Configuration no longer looks like "no features", which silently
+  disabled every feature ([PEG-3655](https://hmcts.atlassian.net/browse/PEG-3655)):
+  - `AzureRestClient` throws `AzureRequestException` on a non-200 response (401, 403, 429, 5xx) instead of
+    returning an empty object with no error logged
+  - `DefaultAzureFeatureFetcher` no longer swallows `AzureRequestException`, and throws it if the response
+    has no `items`. It still returns an empty list if the Azure connection isn't configured
+  - New WireMock integration test `FeatureControlAzureIT` covering each of these failures against a stubbed
+    Azure App Configuration
+### Changed
+- Update framework to 25.104.6 and event-store to 25.104.6: a failed refresh of the remote Features keeps the
+  previously cached Features and logs an error ([PEG-3655](https://hmcts.atlassian.net/browse/PEG-3655))
+
 ## [25.104.5] - 2026-10-28
 ### Security
 - Updated `cpp.common-bom` to 25.104.5, `file-service` to 25.104.3, and `framework-libraries`, `framework` and

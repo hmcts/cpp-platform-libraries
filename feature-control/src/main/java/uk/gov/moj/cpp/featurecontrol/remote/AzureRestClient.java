@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
@@ -29,21 +29,26 @@ public class AzureRestClient {
         HttpUriRequest request = azureSignedRequest.createSignedRequest(url, id, secret);
         try (final CloseableHttpResponse closeableHttpResponse = httpClient.execute(request)) {
 
-            if (getStatusCode(closeableHttpResponse) != HttpStatus.SC_OK) {
-                return getJsonBuilderFactory().createObjectBuilder().build();
+            final int statusCode = getStatusCode(closeableHttpResponse);
+            if (statusCode == HttpStatus.SC_OK) {
+                return readBody(closeableHttpResponse);
             }
 
-            String result = EntityUtils.toString(closeableHttpResponse.getEntity());
-            if (isEmpty(result)) {
-                return getJsonBuilderFactory().createObjectBuilder().build();
-            } else {
-                try (JsonReader reader = getJsonReaderFactory().createReader(new StringReader(result))) {
-                    return reader.readObject();
-                }
-            }
+            throw new AzureRequestException(format("Failed to fetch features from azure; url %s returned HTTP status %d", url, statusCode));
         } catch (IOException e) {
             throw new AzureRequestException(format("Failed to getting feature from azure; url %s", url), e);
         }
+    }
+
+    private JsonObject readBody(final CloseableHttpResponse closeableHttpResponse) throws IOException {
+        final String result = EntityUtils.toString(closeableHttpResponse.getEntity());
+        if (isNotEmpty(result)) {
+            try (JsonReader reader = getJsonReaderFactory().createReader(new StringReader(result))) {
+                return reader.readObject();
+            }
+        }
+
+        return getJsonBuilderFactory().createObjectBuilder().build();
     }
 
     private int getStatusCode(final CloseableHttpResponse closeableHttpResponse) {
