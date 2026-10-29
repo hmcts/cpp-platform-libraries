@@ -23,7 +23,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.AutoRetryHttpClient;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -97,19 +98,21 @@ public class AzureRestClientTest {
         assertThat(jsonObject.size(), is(0));
     }
 
-    @Test
-    public void shouldReturnEmptyObjectWhenHttpStatusIsForbidden() throws IOException {
+    @ParameterizedTest
+    @ValueSource(ints = {HttpStatus.SC_UNAUTHORIZED, HttpStatus.SC_FORBIDDEN, 429, HttpStatus.SC_INTERNAL_SERVER_ERROR, HttpStatus.SC_SERVICE_UNAVAILABLE})
+    public void shouldThrowAzureRequestExceptionWhenHttpStatusIsNotOk(final int httpStatus) throws IOException {
 
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         StatusLine statusLine = mock(StatusLine.class);
         when(azureSignedRequest.createSignedRequest(any(), any(), any())).thenReturn(new HttpGet());
         when(httpClient.execute(any())).thenReturn(response);
-        when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_FORBIDDEN);
+        when(statusLine.getStatusCode()).thenReturn(httpStatus);
         when(response.getStatusLine()).thenReturn(statusLine);
 
-        final JsonObject jsonObject = azureRestClient.executeGet(URL, ID, SECRET);
+        final AzureRequestException azureRequestException = assertThrows(AzureRequestException.class, () ->
+                azureRestClient.executeGet(URL, ID, SECRET));
 
-        assertThat(jsonObject.size(), is(0));
+        assertThat(azureRequestException.getMessage(), is(format("Failed to fetch features from azure; url %s returned HTTP status %d", URL, httpStatus)));
     }
 
 

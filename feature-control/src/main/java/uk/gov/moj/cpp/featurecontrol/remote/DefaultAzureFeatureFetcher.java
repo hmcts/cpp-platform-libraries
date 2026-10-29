@@ -10,18 +10,17 @@ import uk.gov.justice.services.core.featurecontrol.domain.Feature;
 import javax.annotation.Priority;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 @Alternative
@@ -31,7 +30,7 @@ public class DefaultAzureFeatureFetcher implements FeatureFetcher {
     @Inject
     private Logger logger;
 
-    private static final String LOGGER_FAILURE_MESSAGE = "Failed to fetch Features from azure {}";
+    private static final String ITEMS = "items";
     private static final String KEY_VALUE_URI = "/kv?label=%s";
     private static final String FEATURE_PREFIX = ".appconfig.featureflag/";
 
@@ -48,34 +47,41 @@ public class DefaultAzureFeatureFetcher implements FeatureFetcher {
     private AzureRestClient azureRestClient;
 
 
+    /**
+     * Fetches the Features from Azure App Configuration. Returns an empty list only if the
+     * connection to Azure is not configured. If Azure can't be reached, or doesn't return a list
+     * of Features, an {@link AzureRequestException} is thrown so that the caller can tell a failed
+     * fetch from there being no Features.
+     */
     @Override
     public List<Feature> fetchFeatures() {
 
-        if (!validateJndiProperties()) {
-            return emptyList();
-        }
+        if (validateJndiProperties()) {
+            logger.info("fetching Features from azure ...");
 
-        logger.info("fetching Features from azure ...");
+            final String[] connectionDetails = splitConnectionString();
+            final JsonObject response = azureRestClient.executeGet(
+                    getUrl(connectionDetails[0]),
+                    getId(connectionDetails[1]),
+                    getSecret(connectionDetails[2]));
 
-        try {
-            String[] connectionDetails = splitConnectionString();
-            return Optional.ofNullable(
-                    azureRestClient.executeGet(
-                            getUrl(connectionDetails[0]),
-                            getId(connectionDetails[1]),
-                            getSecret(connectionDetails[2]))
-                            .getJsonArray("items"))
-                    .orElse(getJsonBuilderFactory().createArrayBuilder().build())
+            return featureItemsFrom(response)
                     .getValuesAs(JsonObject.class)
                     .stream()
                     .filter(f -> StringUtils.isNotEmpty(f.getString("content_type")))
                     .map(ft -> new Feature(removeFeaturePrefix(ft.getString("key")), convertToBoolean(ft.getString("value"))))
                     .collect(toList());
-        } catch (AzureRequestException ex) {
-            logger.error(LOGGER_FAILURE_MESSAGE, ex);
         }
 
         return emptyList();
+    }
+
+    private JsonArray featureItemsFrom(final JsonObject response) {
+        if (response.containsKey(ITEMS)) {
+            return response.getJsonArray(ITEMS);
+        }
+
+        throw new AzureRequestException(format("Failed to fetch features from azure; response has no '%s': %s", ITEMS, response));
     }
 
     private boolean validateJndiProperties() {
