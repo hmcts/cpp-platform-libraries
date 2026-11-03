@@ -45,6 +45,7 @@ public abstract class BaseDroolsAccessControlTest {
 
     private static final String ACTION_IDENTIFIER = "action";
     private static final String OUTCOME_IDENTIFIER = "outcome";
+    private static final String KMODULE_XML = "META-INF/kmodule.xml";
 
     private JsonEnvelopeBuilder jsonEnvelopeBuilder;
 
@@ -62,9 +63,9 @@ public abstract class BaseDroolsAccessControlTest {
         final KieServices kieServices = KieServices.get();
         final ClassLoader classLoader = getClass().getClassLoader();
 
-        final URL kmoduleUrl = classLoader.getResource("META-INF/kmodule.xml");
+        final URL kmoduleUrl = classLoader.getResource(KMODULE_XML);
         if (kmoduleUrl == null) {
-            throw new IllegalStateException("No META-INF/kmodule.xml found on classpath");
+            throw new IllegalStateException("No " + KMODULE_XML + " found on classpath");
         }
 
         // Use KieFileSystem to build the KieContainer. Drools 10.x classpath scanning via
@@ -73,7 +74,7 @@ public abstract class BaseDroolsAccessControlTest {
         // around this limitation.
         final KieFileSystem kfs = kieServices.newKieFileSystem();
 
-        try (InputStream is = classLoader.getResourceAsStream("META-INF/kmodule.xml")) {
+        try (InputStream is = classLoader.getResourceAsStream(KMODULE_XML)) {
             kfs.writeKModuleXML(new String(is.readAllBytes(), StandardCharsets.UTF_8));
         }
 
@@ -81,7 +82,7 @@ public abstract class BaseDroolsAccessControlTest {
         // This works for file: URLs (i.e. target/classes directories in Maven builds).
         final String kmoduleUrlStr = kmoduleUrl.toExternalForm();
         if (kmoduleUrlStr.startsWith("file:")) {
-            final String rootUrlStr = kmoduleUrlStr.substring(0, kmoduleUrlStr.length() - "META-INF/kmodule.xml".length());
+            final String rootUrlStr = kmoduleUrlStr.substring(0, kmoduleUrlStr.length() - KMODULE_XML.length());
             final File rootDir = new File(new URI(rootUrlStr));
             addDrlFilesToKfs(kfs, rootDir, rootDir);
         }
@@ -90,9 +91,9 @@ public abstract class BaseDroolsAccessControlTest {
         kieBuilder.buildAll();
 
         final Results results = kieBuilder.getResults();
-        for (final Message msg : results.getMessages(Message.Level.ERROR)) {
-            throw new IllegalStateException("Drools build error in " + msg.getPath() + ": " + msg.getText());
-        }
+        results.getMessages(Message.Level.ERROR).stream().findFirst().ifPresent(error -> {
+            throw new IllegalStateException("Drools build error in " + error.getPath() + ": " + error.getText());
+        });
 
         final KieContainer kieContainer = kieServices.newKieContainer(
                 kieServices.getRepository().getDefaultReleaseId(), classLoader);
