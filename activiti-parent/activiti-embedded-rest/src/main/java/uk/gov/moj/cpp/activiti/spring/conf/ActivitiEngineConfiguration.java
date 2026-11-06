@@ -9,6 +9,8 @@ import java.io.IOException;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import jakarta.transaction.TransactionManager;
+
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -29,6 +31,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class ActivitiEngineConfiguration {
+
+    private static final String TRANSACTION_MANAGER_JNDI_NAME = "java:jboss/TransactionManager";
 
     @Value("${cpp.activiti.datasource.name}")
     private String dataSourceJndiName;
@@ -57,12 +61,11 @@ public class ActivitiEngineConfiguration {
     }
 
     @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager() {
-        // Activiti is configured with transactionsExternallyManaged=true, so WildFly's JTA
-        // container controls transactions — the PlatformTransactionManager is wired by Spring
-        // but never called for commit/rollback. A no-op avoids the javax.transaction dependency
-        // which is absent from WildFly 32 / Jakarta EE 10.
-        return new NoOpPlatformTransactionManager();
+    public PlatformTransactionManager transactionManager() throws NamingException {
+        // Activiti calls this manager around every engine command. On its job executor there is no container
+        // transaction, so the manager has to begin one: otherwise each statement commits on its own and a failed job
+        // cannot roll back the JMS messages it has already sent (PEG-3680).
+        return new JakartaJtaTransactionManager(new JndiTemplate().lookup(TRANSACTION_MANAGER_JNDI_NAME, TransactionManager.class));
     }
 
     @Bean(name="processEngineFactoryBean")

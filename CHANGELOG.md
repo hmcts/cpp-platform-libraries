@@ -5,6 +5,23 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.7] - 2026-11-06
+### Changed
+- Updated common-bom to 25.104.6, file-service to 25.104.4, framework-libraries to 25.104.6, framework to 25.104.7 and
+  event-store to 25.104.7, which move Hibernate ORM from 6.6.1.Final to 7.3.2.Final, the version WildFly 40.0.1 ships
+
+### Fixed
+- activiti-embedded-rest: work that Activiti runs on its job executor (timer jobs, `activiti:async` steps) runs in a
+  JTA transaction again, as on Java 17. Since 25.104.0-M1 it ran with `NoOpPlatformTransactionManager`, so a job that
+  failed part way kept the writes and JMS sends it had made, and each retry repeated them: duplicate commands and
+  events, and partial state behind a failed job ([PEG-3680](https://hmcts.atlassian.net/browse/PEG-3680)):
+  - new `JakartaJtaTransactionManager`, a Spring `PlatformTransactionManager` over WildFly's
+    `jakarta.transaction.TransactionManager` (`java:jboss/TransactionManager`), doing what Spring's
+    `JtaTransactionManager` did on Java 17: it begins a JTA transaction on a thread that has none, joins a container
+    transaction (marking it rollback-only on failure), and suspends it for REQUIRES_NEW and NOT_SUPPORTED. Spring 4.1,
+    which Activiti 5.22 brings in, only has a `javax.transaction` `JtaTransactionManager`
+  - `NoOpPlatformTransactionManager` is removed
+
 ## [25.104.6] - 2026-11-03
 ### Fixed
 - feature-control: a failed fetch from Azure App Configuration no longer looks like "no features", which silently
