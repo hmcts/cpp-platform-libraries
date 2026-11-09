@@ -1,10 +1,9 @@
 package uk.gov.moj.cpp.activiti.spring.conf;
 
-import static org.activiti.engine.impl.history.HistoryLevel.AUDIT;
-
 import uk.gov.moj.cpp.activiti.spring.CustomProcessEngineConfiguration;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -20,6 +19,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.history.HistoryLevel;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +54,14 @@ public class ActivitiEngineConfiguration {
 
     @Value("${cpp.activiti.createDiagramOnDeploy}")
     private boolean createDiagramOnDeploy = true;
+
+    /**
+     * Activiti history level: none, activity, audit or full. Defaults to audit, the level this library has always
+     * used. A context that ran its own engine on J17 with history switched off (e.g. staging-prosecutors-spi) sets
+     * none to keep writing nothing to the act_hi_* tables.
+     */
+    @Value("${cpp.activiti.historyLevel:audit}")
+    private String historyLevel = HistoryLevel.AUDIT.getKey();
 
     @Bean
     public DataSource dataSource() throws NamingException {
@@ -100,7 +108,7 @@ public class ActivitiEngineConfiguration {
             processEngineConfiguration.setJobExecutorActivate(jobExecutorActivate);
             processEngineConfiguration.setAsyncExecutorEnabled(asyncExecutorEnabled);
             processEngineConfiguration.setAsyncExecutorActivate(asyncExecutorActivate);
-            processEngineConfiguration.setHistoryLevel(AUDIT);
+            processEngineConfiguration.setHistoryLevel(historyLevel());
             processEngineConfiguration.setDeploymentName(appName);
             processEngineConfiguration.setDeploymentResources(resources);
             processEngineConfiguration.setDeploymentMode("custom");
@@ -109,6 +117,15 @@ public class ActivitiEngineConfiguration {
             return processEngineConfiguration;
         } catch (IOException|NamingException e ) {
             throw new ActivitiEngineConfigException("Problems while configuring Activiti Engine", e);
+        }
+    }
+
+    private HistoryLevel historyLevel() {
+        final String key = historyLevel == null || historyLevel.isBlank() ? HistoryLevel.AUDIT.getKey() : historyLevel.trim().toLowerCase(Locale.ROOT);
+        try {
+            return HistoryLevel.getHistoryLevelForKey(key);
+        } catch (final RuntimeException e) {
+            throw new ActivitiEngineConfigException("Invalid cpp.activiti.historyLevel '" + historyLevel + "': expected one of none, activity, audit, full", e);
         }
     }
 
