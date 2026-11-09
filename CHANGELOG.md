@@ -4,12 +4,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [25.104.7] - 2026-11-09
 ### Added
 - activiti-embedded-rest: new `cpp.activiti.historyLevel` property (none/activity/audit/full, default audit)
-### Fixed
-- activiti-embedded-rest: `/internal/activiti/service` publishes only the Activiti resources
+  ([PEG-3497](https://hmcts.atlassian.net/browse/PEG-3497))
 
-## [25.104.7] - 2026-11-06
 ### Changed
 - Updated common-bom to 25.104.6, file-service to 25.104.4, framework-libraries to 25.104.6, framework to 25.104.7 and
   event-store to 25.104.7, which move Hibernate ORM from 6.6.1.Final to 7.3.2.Final, the version WildFly 40.0.1 ships
@@ -25,6 +25,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
     transaction (marking it rollback-only on failure), and suspends it for REQUIRES_NEW and NOT_SUPPORTED. Spring 4.1,
     which Activiti 5.22 brings in, only has a `javax.transaction` `JtaTransactionManager`
   - `NoOpPlatformTransactionManager` is removed
+- activiti-embedded-rest: `/internal/activiti/service` publishes only the Activiti resources
+  ([PEG-3497](https://hmcts.atlassian.net/browse/PEG-3497))
 
 ## [25.104.6] - 2026-11-03
 ### Fixed
