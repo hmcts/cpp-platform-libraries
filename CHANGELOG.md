@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- activiti-embedded-rest: new `cpp.activiti.historyLevel` property (none/activity/audit/full, default audit)
+### Fixed
+- activiti-embedded-rest: `/internal/activiti/service` publishes only the Activiti resources
 
 ## [25.104.7] - 2026-11-06
 ### Changed

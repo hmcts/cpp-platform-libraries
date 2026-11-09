@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.activiti.spring.conf;
 import static jakarta.transaction.Status.STATUS_NO_TRANSACTION;
 import static org.activiti.engine.impl.history.HistoryLevel.AUDIT;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
@@ -18,6 +19,10 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.moj.cpp.activiti.spring.CustomProcessEngineConfiguration;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -32,14 +37,21 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.history.HistoryLevel;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.beans.factory.annotation.QualifierAnnotationAutowireCandidateResolver;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -178,5 +190,75 @@ class ActivitiEngineConfigurationTest {
         assertThat(activitiEngineConfiguration.formService(), is(sameInstance(formService)));
         assertThat(activitiEngineConfiguration.identityService(), is(sameInstance(identityService)));
         assertThat(activitiEngineConfiguration.managementService(), is(sameInstance(managementService)));
+    }
+
+    @Test
+    void shouldDefaultTheHistoryLevelToAuditWhenThePropertyIsNotSet() {
+        final ActivitiEngineConfiguration activitiEngineConfiguration = resolvedFrom(requiredProperties());
+
+        assertThat(configuredWithJndiStubs(activitiEngineConfiguration).getHistoryLevel(), is(AUDIT));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"none, none", "activity, activity", "audit, audit", "full, full", "' NONE ', none", "'', audit"})
+    void shouldConfigureTheHistoryLevelFromTheProperty(final String property, final String expectedKey) {
+        final Map<String, String> properties = requiredProperties();
+        properties.put("cpp.activiti.historyLevel", property);
+
+        final ProcessEngineConfigurationImpl configured = configuredWithJndiStubs(resolvedFrom(properties));
+
+        assertThat(configured.getHistoryLevel(), is(HistoryLevel.getHistoryLevelForKey(expectedKey)));
+    }
+
+    @Test
+    void shouldReportAnUnknownHistoryLevelAsAConfigurationProblem() {
+        final Map<String, String> properties = requiredProperties();
+        properties.put("cpp.activiti.historyLevel", "everything");
+        final ActivitiEngineConfiguration activitiEngineConfiguration = resolvedFrom(properties);
+
+        final ActivitiEngineConfigException exception = assertThrows(ActivitiEngineConfigException.class,
+                () -> configuredWithJndiStubs(activitiEngineConfiguration));
+
+        assertThat(exception.getMessage(), containsString("cpp.activiti.historyLevel 'everything'"));
+    }
+
+    private ProcessEngineConfigurationImpl configuredWithJndiStubs(final ActivitiEngineConfiguration activitiEngineConfiguration) {
+        try (MockedConstruction<JndiTemplate> ignored = mockConstruction(JndiTemplate.class, (jndiTemplate, context) -> {
+            lenient().when(jndiTemplate.lookup(any(), eq(DataSource.class))).thenReturn(dataSource);
+            lenient().when(jndiTemplate.lookup(APP_NAME_JNDI_NAME, String.class)).thenReturn(APP_NAME);
+            lenient().when(jndiTemplate.lookup(TRANSACTION_MANAGER_JNDI_NAME, TransactionManager.class)).thenReturn(transactionManager);
+        })) {
+            return activitiEngineConfiguration.processEngineConfiguration();
+        }
+    }
+
+    /** The @Value fields resolved the way the WAR resolves them: placeholders against application.properties. */
+    private static ActivitiEngineConfiguration resolvedFrom(final Map<String, String> applicationProperties) {
+        final Properties properties = new Properties();
+        properties.putAll(applicationProperties);
+        final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+        beanFactory.setAutowireCandidateResolver(new QualifierAnnotationAutowireCandidateResolver());
+        final PropertySourcesPlaceholderConfigurer placeholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        placeholderConfigurer.setProperties(properties);
+        placeholderConfigurer.postProcessBeanFactory(beanFactory);
+        final AutowiredAnnotationBeanPostProcessor autowiring = new AutowiredAnnotationBeanPostProcessor();
+        autowiring.setBeanFactory(beanFactory);
+        beanFactory.addBeanPostProcessor(autowiring);
+
+        final ActivitiEngineConfiguration activitiEngineConfiguration = new ActivitiEngineConfiguration();
+        beanFactory.autowireBean(activitiEngineConfiguration);
+        return activitiEngineConfiguration;
+    }
+
+    private static Map<String, String> requiredProperties() {
+        final Map<String, String> properties = new HashMap<>();
+        properties.put("cpp.activiti.datasource.name", "java:/DS.test");
+        properties.put("cpp.activiti.databaseSchemaUpdate", "true");
+        properties.put("cpp.activiti.transactionsExternallyManaged", "true");
+        properties.put("cpp.activiti.jobExecutorActivate", "false");
+        properties.put("cpp.activiti.asyncExecutorEnabled", "false");
+        properties.put("cpp.activiti.asyncExecutorActivate", "false");
+        properties.put("cpp.activiti.createDiagramOnDeploy", "true");
+        return properties;
     }
 }
